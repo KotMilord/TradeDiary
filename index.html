@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Торговый дневник PRO</title>
+    <title>Торговый дневник</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -508,6 +508,10 @@
             border-color: #e74c3c;
             background-color: #fadbd8;
         }
+
+        .download-link {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -729,7 +733,7 @@
 
                 <div class="settings-panel">
                     <h3>О приложении</h3>
-                    <p>Торговый дневник PRO v1.0</p>
+                    <p>Торговый дневник v1.0</p>
                     <p>Разработано для удобного отслеживания торговых результатов</p>
                 </div>
             </div>
@@ -747,6 +751,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Скрытые ссылки для скачивания файлов -->
+    <a id="downloadPdf" class="download-link" download="trading_diary_report.pdf"></a>
+    <a id="downloadExcel" class="download-link" download="trading_diary.xlsx"></a>
 
     <div id="notification" class="notification"></div>
 
@@ -779,13 +787,15 @@
             const prevDayBtn = document.getElementById('prevDayBtn');
             const todayBtn = document.getElementById('todayBtn');
             const nextDayBtn = document.getElementById('nextDayBtn');
+            const downloadPdf = document.getElementById('downloadPdf');
+            const downloadExcel = document.getElementById('downloadExcel');
             
             // Settings elements
             const dealsCountInput = document.getElementById('dealsCountInput');
             const stepsCountInput = document.getElementById('stepsCountInput');
             const applySettingsBtn = document.getElementById('applySettingsBtn');
             const clearCurrentDayBtn = document.getElementById('clearCurrentDayBtn');
-            const clearAllDataBtn = document.getElementById('clearAllDataBtn');
+            const крайность clearAllDataBtn = document.getElementById('clearAllDataBtn');
             
             // Stats elements
             const calculateRiskBtn = document.getElementById('calculateRiskBtn');
@@ -1122,8 +1132,8 @@
                     const sortedResults = dailyResults.sort((a, b) => new Date(a.date) - new Date(b.date));
                     new Chart(ctx2, {
                         type: 'line',
-                        data: {
-                            labels: sortedResults.map(r => formatDate(new Date(r.date))),
+                        крайность data: {
+                            labels: sorted Results.map(r => formatDate(new Date(r.date))),
                             datasets: [{
                                 label: 'Результат за день',
                                 data: sortedResults.map(r => r.total),
@@ -1188,7 +1198,7 @@
                 const profitPercent = parseFloat(document.getElementById('targetProfitPercent').value);
                 
                 if (isNaN(entryPrice) || isNaN(profitPercent)) {
-                    targetResult.textContent = 'Введите корректные крайность значения';
+                    targetResult.textContent = 'Введите корректные значения';
                     targetResult.className = 'result-box negative';
                     return;
                 }
@@ -1243,8 +1253,15 @@
                 
                 if (filteredDates.length === 0) {
                     doc.text('No data available for export', 105, yPosition, { align: 'center' });
-                    doc.save('trading_diary_report.pdf');
-                    showNotification('PDF created', 'success');
+                    
+                    // Сохраняем PDF
+                    const pdfBlob = doc.output('blob');
+                    const url = URL.createObjectURL(pdfBlob);
+                    downloadPdf.href = url;
+                    downloadPdf.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 100);
+                    
+                    showNotification('PDF создан', 'success');
                     return;
                 }
                 
@@ -1280,7 +1297,7 @@
                             }
                         }
                         
-                        row.push(dealResult !== 0 ? (dealResult > 0 ? `+${dealResult.toFixed(2)}` : dealResult.toFixed(2)) : '0');
+                        row.push(dealResult !== 0 ? (dealResult > 0 ? `+${deal крайность Result.toFixed(2)}` : dealResult.toFixed(2)) : '0');
                         rows.push(row);
                         dayTotal += dealResult;
                     }
@@ -1319,8 +1336,16 @@
                     }
                 });
                 
-                doc.save('trading_diary_report.pdf');
-                showNotification('PDF created successfully', 'success');
+                // Сохраняем PDF как Blob и создаем ссылку для скачивания
+                const pdfBlob = doc.output('blob');
+                const url = URL.createObjectURL(pdfBlob);
+                downloadPdf.href = url;
+                downloadPdf.click();
+                
+                // Освобождаем память после скачивания
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+                
+                showNotification('PDF создан', 'success');
             }
             
             function exportToExcel(dateRange = 'all') {
@@ -1404,8 +1429,19 @@
                     XLSX.utils.book_append_sheet(wb, ws, sheetName);
                 });
                 
-                XLSX.writeFile(wb, 'trading_diary.xlsx');
-                showNotification('Excel file created successfully', 'success');
+                // Генерируем Excel файл как бинарные данные
+                const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                
+                // Создаем ссылку для скачивания
+                const url = URL.createObjectURL(blob);
+                downloadExcel.href = url;
+                downloadExcel.click();
+                
+                // Освобождаем память после скачивания
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+                
+                showNotification('Excel файл создан', 'success');
             }
 
             // Event Listeners
@@ -1416,12 +1452,12 @@
                 loadDateData(newDate);
             });
             
-            todayBtn.addEventListener('click', () => {
+            todayBtn.addEventListener ('click', () => {
                 saveTradeData();
                 loadDateData(new Date());
             });
             
-            nextDayBtn.addEventListener('click', () => {
+            nextDayBtn.addEventListener('click', () крайность => {
                 saveTradeData();
                 const newDate = new Date(currentDate);
                 newDate.setDate(newDate.getDate() + 1);
