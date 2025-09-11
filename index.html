@@ -618,38 +618,6 @@
                     <button class="btn" id="calculateRiskBtn">Рассчитать</button>
                     <div class="result-box" id="riskResult"></div>
                 </div>
-                
-                <div class="tool-card">
-                    <h3>Калькулятор позиции</h3>
-                    <div class="input-group">
-                        <label>Цена входа:</label>
-                        <input type="number" id="entryPrice" placeholder="100">
-                    </div>
-                    <div class="input-group">
-                        <label>Стоп-лосс:</label>
-                        <input type="number" id="stopLoss" placeholder="95">
-                    </div>
-                    <div class="input-group">
-                        <label>Размер риска ($):</label>
-                        <input type="number" id="riskAmount" placeholder="50">
-                    </div>
-                    <button class="btn" id="calculatePositionBtn">Рассчитать</button>
-                    <div class="result-box" id="positionResult"></div>
-                </div>
-                
-                <div class="tool-card">
-                    <h3>Цели по прибыли</h3>
-                    <div class="input-group">
-                        <label>Цена входа:</label>
-                        <input type="number" id="targetEntryPrice" placeholder="100">
-                    </div>
-                    <div class="input-group">
-                        <label>Желаемая прибыль (%):</label>
-                        <input type="number" id="targetProfitPercent" placeholder="5">
-                    </div>
-                    <button class="btn" id="calculateTargetBtn">Рассчитать</button>
-                    <div class="result-box" id="targetResult"></div>
-                </div>
             </div>
             
             <div class="tab-content" id="export-tab">
@@ -790,10 +758,6 @@
             // Stats elements
             const calculateRiskBtn = document.getElementById('calculateRiskBtn');
             const riskResult = document.getElementById('riskResult');
-            const calculatePositionBtn = document.getElementById('calculatePositionBtn');
-            const positionResult = document.getElementById('positionResult');
-            const calculateTargetBtn = document.getElementById('calculateTargetBtn');
-            const targetResult = document.getElementById('targetResult');
             
             // Export buttons
             const exportCurrentPdf = document.getElementById('exportCurrentPdf');
@@ -1165,41 +1129,6 @@
                 riskResult.className = 'result-box ' + (riskAmount > 0 ? 'positive' : '');
             }
             
-            function calculatePosition() {
-                const entryPrice = parseFloat(document.getElementById('entryPrice').value);
-                const stopLoss = parseFloat(document.getElementById('stopLoss').value);
-                const riskAmount = parseFloat(document.getElementById('riskAmount').value);
-                
-                if (isNaN(entryPrice) || isNaN(stopLoss) || isNaN(riskAmount)) {
-                    positionResult.textContent = 'Введите корректные значения';
-                    positionResult.className = 'result-box negative';
-                    return;
-                }
-                
-                const riskPerShare = entryPrice - stopLoss;
-                const positionSize = riskAmount / riskPerShare;
-                
-                positionResult.textContent = `Размер позиции: ${Math.floor(positionSize)} акций`;
-                positionResult.className = 'result-box positive';
-            }
-            
-            function calculateTarget() {
-                const entryPrice = parseFloat(document.getElementById('targetEntryPrice').value);
-                const profitPercent = parseFloat(document.getElementById('targetProfitPercent').value);
-                
-                if (isNaN(entryPrice) || isNaN(profitPercent)) {
-                    targetResult.textContent = 'Введите корректные значения';
-                    targetResult.className = 'result-box negative';
-                    return;
-                }
-                
-                const targetPrice = entryPrice * (1 + profitPercent / 100);
-                const profitPerShare = targetPrice - entryPrice;
-                
-                targetResult.textContent = `Целевая цена: ${targetPrice.toFixed(2)} (+${profitPerShare.toFixed(2)})`;
-                targetResult.className = 'result-box positive';
-            }
-            
             function exportToPDF(dateRange = 'all') {
                 const doc = new jsPDF();
                 let startDate, endDate;
@@ -1504,8 +1433,6 @@
             
             // Risk calculator
             calculateRiskBtn.addEventListener('click', calculateRisk);
-            calculatePositionBtn.addEventListener('click', calculatePosition);
-            calculateTargetBtn.addEventListener('click', calculateTarget);
             
             // Export buttons
             exportCurrentPdf.addEventListener('click', () => {
