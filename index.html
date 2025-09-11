@@ -227,6 +227,7 @@
             background: var(--tg-theme-secondary-bg-color, #ecf0f1);
             border-radius: 8px;
             overflow: hidden;
+            flex-wrap: wrap;
         }
         
         .tab {
@@ -236,6 +237,7 @@
             cursor: pointer;
             transition: all 0.3s;
             font-size: 0.9rem;
+            min-width: 80px;
         }
         
         .tab.active {
@@ -345,21 +347,6 @@
             border-radius: 8px;
             resize: vertical;
             font-family: inherit;
-        }
-        
-        .reminder-section {
-            margin: 15px 0;
-        }
-        
-        .reminder-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
-            margin-bottom: 8px;
-            border-radius: 8px;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
         }
         
         .export-section {
@@ -818,8 +805,8 @@
 
             // State
             let currentDate = new Date();
-            let stepsCount = 5; // Количество шагов (столбцов)
-            let dealsCount = 10; // Количество сделок (строк)
+            let stepsCount = 5;
+            let dealsCount = 10;
             let currentCell = null;
             let tradeData = {};
             let historyData = JSON.parse(localStorage.getItem('tradeHistory')) || {};
@@ -1047,11 +1034,9 @@
                     details: tradeData
                 };
                 
-                // Send data to Telegram bot
                 tg.sendData(JSON.stringify(dataToSend));
                 showNotification('Данные отправлены боту', 'success');
                 
-                // Close the Web App after sending data
                 setTimeout(() => {
                     if (tg && tg.close) {
                         tg.close();
@@ -1099,7 +1084,6 @@
                 document.getElementById('avgProfit').textContent = profitDays > 0 ? (totalProfit / profitDays).toFixed(2) : '0';
                 document.getElementById('avgLoss').textContent = lossDays > 0 ? (totalLoss / lossDays).toFixed(2) : '0';
                 
-                // Render charts
                 renderCharts(dailyResults);
             }
             
@@ -1109,7 +1093,6 @@
                 
                 if (!ctx1 || !ctx2) return;
                 
-                // Profit/Loss pie chart
                 if (dailyResults.length > 0) {
                     new Chart(ctx1, {
                         type: 'pie',
@@ -1135,7 +1118,6 @@
                     });
                 }
                 
-                // Daily results line chart
                 if (dailyResults.length > 0) {
                     const sortedResults = dailyResults.sort((a, b) => new Date(a.date) - new Date(b.date));
                     new Chart(ctx2, {
@@ -1206,7 +1188,7 @@
                 const profitPercent = parseFloat(document.getElementById('targetProfitPercent').value);
                 
                 if (isNaN(entryPrice) || isNaN(profitPercent)) {
-                    targetResult.textContent = 'Введите корректные значения';
+                    targetResult.textContent = 'Введите корректные крайность значения';
                     targetResult.className = 'result-box negative';
                     return;
                 }
@@ -1222,7 +1204,6 @@
                 const doc = new jsPDF();
                 let startDate, endDate;
                 
-                // Определяем диапазон дат
                 if (dateRange === 'current') {
                     const dateKey = formatDateKey(currentDate);
                     startDate = dateKey;
@@ -1238,11 +1219,9 @@
                     }
                 }
                 
-                // Заголовок на английском
                 doc.setFontSize(20);
                 doc.text('Trading Diary - Report', 105, 15, { align: 'center' });
                 
-                // Диапазон дат
                 doc.setFontSize(12);
                 if (startDate && endDate) {
                     if (startDate === endDate) {
@@ -1252,11 +1231,9 @@
                     }
                 }
                 
-                // Создаем таблицу с данными
                 const tableData = [];
                 let yPosition = 35;
                 
-                // Фильтруем данные по датам
                 const filteredDates = Object.keys(historyData)
                     .filter(date => {
                         if (!startDate || !endDate) return true;
@@ -1271,12 +1248,10 @@
                     return;
                 }
                 
-                // Добавляем данные для каждой даты
                 filteredDates.forEach(date => {
                     const data = historyData[date];
                     let dayTotal = 0;
                     
-                    // Добавляем заголовок даты
                     if (yPosition > 250) {
                         doc.addPage();
                         yPosition = 20;
@@ -1286,10 +1261,8 @@
                     doc.text(formatDate(new Date(date)), 14, yPosition);
                     yPosition += 8;
                     
-                    // Заголовок таблицы на английском
                     const headers = ['Deal', ...data.steps.map((step, i) => `Step ${i+1}`), 'Result'];
                     
-                    // Данные таблицы
                     const rows = [];
                     
                     for (let i = 0; i < data.deals.length; i++) {
@@ -1312,10 +1285,8 @@
                         dayTotal += dealResult;
                     }
                     
-                    // Итог дня на английском
                     rows.push(['TOTAL', ...Array(data.steps.length).fill(''), dayTotal !== 0 ? (dayTotal > 0 ? `+${dayTotal.toFixed(2)}` : dayTotal.toFixed(2)) : '0']);
                     
-                    // Добавляем таблицу в PDF
                     doc.autoTable({
                         head: [headers],
                         body: rows,
@@ -1331,7 +1302,6 @@
                     
                     yPosition = doc.lastAutoTable.finalY + 15;
                     
-                    // Добавляем заметки если они есть
                     if (data.notes && data.notes.trim() !== '') {
                         if (yPosition > 250) {
                             doc.addPage();
@@ -1349,7 +1319,6 @@
                     }
                 });
                 
-                // Сохраняем PDF
                 doc.save('trading_diary_report.pdf');
                 showNotification('PDF created successfully', 'success');
             }
@@ -1357,7 +1326,6 @@
             function exportToExcel(dateRange = 'all') {
                 let startDate, endDate;
                 
-                // Определяем диапазон дат
                 if (dateRange === 'current') {
                     const dateKey = formatDateKey(currentDate);
                     startDate = dateKey;
@@ -1373,7 +1341,6 @@
                     }
                 }
                 
-                // Фильтруем данные по датам
                 const filteredDates = Object.keys(historyData)
                     .filter(date => {
                         if (!startDate || !endDate) return true;
@@ -1386,24 +1353,19 @@
                     return;
                 }
                 
-                // Создаем новую книгу Excel
                 const wb = XLSX.utils.book_new();
                 
-                // Для каждой даты создаем отдельный лист
                 filteredDates.forEach(date => {
                     const data = historyData[date];
                     const worksheetData = [];
                     
-                    // Заголовок на английском
                     worksheetData.push(['Trading Diary', '', '', '', '']);
                     worksheetData.push([formatDate(new Date(date)), '', '', '', '']);
                     worksheetData.push([]);
                     
-                    // Заголовок таблицы на английском
                     const headers = ['Deal', ...data.steps.map((step, i) => `Step ${i+1}`), 'Result'];
                     worksheetData.push(headers);
                     
-                    // Данные таблицы
                     let dayTotal = 0;
                     
                     for (let i = 0; i < data.deals.length; i++) {
@@ -1426,20 +1388,15 @@
                         dayTotal += dealResult;
                     }
                     
-                    // Итог дня на английском
                     worksheetData.push(['TOTAL', ...Array(data.steps.length).fill(''), dayTotal !== 0 ? (dayTotal > 0 ? `+${dayTotal.toFixed(2)}` : dayTotal.toFixed(2)) : '0']);
                     
-                    // Добавляем заметки если они есть
                     if (data.notes && data.notes.trim() !== '') {
                         worksheetData.push([]);
                         worksheetData.push(['Notes:', data.notes]);
                     }
                     
-                    // Создаем лист
                     const ws = XLSX.utils.aoa_to_sheet(worksheetData);
                     
-                    // Добавляем лист в книгу
-                    // Ограничиваем имя листа 31 символом (ограничение Excel)
                     let sheetName = formatDate(new Date(date));
                     if (sheetName.length > 31) {
                         sheetName = sheetName.substring(0, 31);
@@ -1447,7 +1404,6 @@
                     XLSX.utils.book_append_sheet(wb, ws, sheetName);
                 });
                 
-                // Сохраняем файл
                 XLSX.writeFile(wb, 'trading_diary.xlsx');
                 showNotification('Excel file created successfully', 'success');
             }
@@ -1592,18 +1548,14 @@
                     return;
                 }
                 
-                // Save current data before changing settings
                 saveTradeData();
                 
-                // Update settings
                 dealsCount = newDealsCount;
                 stepsCount = newStepsCount;
                 
-                // Save settings
                 appSettings = { dealsCount, stepsCount };
                 localStorage.setItem('appSettings', JSON.stringify(appSettings));
                 
-                // Reinitialize trade data with new dimensions
                 initTradeData();
                 renderTable();
                 updateTotal();
