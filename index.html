@@ -394,49 +394,6 @@
             font-size: 0.9rem;
         }
         
-        .tools-section {
-            margin: 15px 0;
-        }
-        
-        .tool-card {
-            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
-        }
-        
-        .tool-card h3 {
-            margin-bottom: 10px;
-            color: var(--tg-theme-text-color, #2c3e50);
-        }
-        
-        .input-group {
-            margin-bottom: 10px;
-        }
-        
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
-        
-        .input-group input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
-            border-radius: 4px;
-        }
-        
-        .result-box {
-            background: var(--tg-theme-bg-color, white);
-            padding: 12px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
         .amount-input {
             width: 100%;
             padding: 10px;
@@ -508,6 +465,187 @@
             border-color: #e74c3c;
             background-color: #fadbd8;
         }
+        
+        /* Новые стили для баланса и плана */
+        .balance-panel {
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+        
+        .balance-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .balance-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        .balance-label {
+            font-size: 0.9rem;
+            color: var(--tg-theme-hint-color, #7f8c8d);
+        }
+        
+        .risk-goal-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .goal-progress, .risk-progress {
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+        
+        .progress-bar-container {
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #2ecc71;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        
+        .progress-bar.risk {
+            background: #e74c3c;
+        }
+        
+        .progress-label {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .progress-value {
+            font-size: 0.8rem;
+            color: var(--tg-theme-hint-color, #7f8c8d);
+        }
+        
+        .plan-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .plan-card {
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+        
+        .plan-card h3 {
+            margin-bottom: 10px;
+            color: var(--tg-theme-text-color, #2c3e50);
+        }
+        
+        .risk-slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .plan-input-group {
+            margin-bottom: 10px;
+        }
+        
+        .plan-input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .plan-input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 4px;
+        }
+        
+        .plan-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .plan-stat {
+            text-align: center;
+            padding: 10px;
+            background: var(--tg-theme-bg-color, white);
+            border-radius: 5px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+        
+        .plan-stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .plan-stat-label {
+            font-size: 0.8rem;
+            color: var(--tg-theme-hint-color, #7f8c8d);
+        }
+        
+        .calculator-card {
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+        
+        .calculator-card h3 {
+            margin-bottom: 10px;
+            color: var(--tg-theme-text-color, #2c3e50);
+        }
+        
+        .input-group {
+            margin-bottom: 10px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 4px;
+        }
+        
+        .result-box {
+            background: var(--tg-theme-bg-color, white);
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .plan-grid, .risk-goal-panel {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -519,15 +657,47 @@
         
         <div class="tabs">
             <div class="tab active" data-tab="table">Таблица</div>
+            <div class="tab" data-tab="plan">План</div>
             <div class="tab" data-tab="stats">Статистика</div>
             <div class="tab" data-tab="history">История</div>
-            <div class="tab" data-tab="tools">Инструменты</div>
             <div class="tab" data-tab="export">Экспорт</div>
             <div class="tab" data-tab="settings">Настройки</div>
         </div>
         
         <div class="main-content">
             <div class="tab-content active" id="table-tab">
+                <!-- Панель баланса и дня -->
+                <div class="balance-panel">
+                    <div class="balance-info">
+                        <div>
+                            <div class="balance-label">Текущий баланс</div>
+                            <div class="balance-value" id="currentBalanceValue">100000</div>
+                        </div>
+                        <div>
+                            <div class="balance-label">Торговый день</div>
+                            <div class="balance-value" id="tradingDayNumber">1</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Панель риска и цели -->
+                <div class="risk-goal-panel">
+                    <div class="goal-progress">
+                        <div class="progress-label">Цель: <span id="dailyGoalValue">500</span></div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="goalProgressBar" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-value" id="goalProgressText">0/500 (0%)</div>
+                    </div>
+                    <div class="risk-progress">
+                        <div class="progress-label">Риск: <span id="dailyRiskValue">2000</span></div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar risk" id="riskProgressBar" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-value" id="riskProgressText">0/2000 (0%)</div>
+                    </div>
+                </div>
+                
                 <div class="date-navigation">
                     <button class="date-btn" id="prevDayBtn">←</button>
                     <button class="date-btn" id="todayBtn">Сегодня</button>
@@ -561,6 +731,120 @@
                 <div class="telegram-actions">
                     <button class="btn btn-success" id="saveDataBtn">Сохранить</button>
                     <button class="btn" id="sendToBotBtn">Отправить в бот</button>
+                </div>
+            </div>
+            
+            <!-- Вкладка "План" -->
+            <div class="tab-content" id="plan-tab">
+                <h2>План торговли</h2>
+                
+                <div class="balance-panel">
+                    <div class="balance-info">
+                        <div>
+                            <div class="balance-label">Текущий баланс</div>
+                            <div class="balance-value" id="planBalanceValue">100000</div>
+                        </div>
+                        <div>
+                            <div class="balance-label">Торговый день</div>
+                            <div class="balance-value" id="planDayNumber">1</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="plan-grid">
+                    <div class="plan-card">
+                        <h3>Настройки баланса</h3>
+                        <div class="plan-input-group">
+                            <label>Начальный баланс:</label>
+                            <input type="number" id="initialBalanceInput" placeholder="100000">
+                        </div>
+                        <div class="plan-input-group">
+                            <label>Текущий баланс:</label>
+                            <input type="number" id="currentBalanceInput" placeholder="100000">
+                        </div>
+                        <div class="plan-input-group">
+                            <label>Торговый день:</label>
+                            <input type="number" id="tradingDayInput" placeholder="1" min="1">
+                        </div>
+                        <button class="btn" id="saveBalanceBtn">Сохранить</button>
+                    </div>
+                    
+                    <div class="plan-card">
+                        <h3>Цели на день</h3>
+                        <div class="plan-input-group">
+                            <label>Целевая прибыль:</label>
+                            <input type="number" id="dailyGoalInput" placeholder="500">
+                        </div>
+                        <div class="plan-input-group">
+                            <label>Минимальная цель:</label>
+                            <input type="number" id="minDailyGoalInput" placeholder="200">
+                        </div>
+                        <button class="btn" id="setGoalsBtn">Установить цели</button>
+                    </div>
+                    
+                    <div class="plan-card">
+                        <h3>Управление рисками</h3>
+                        <div class="plan-input-group">
+                            <label>Риск на день (%):</label>
+                            <input type="range" min="0.5" max="10" step="0.5" value="2" class="risk-slider" id="dailyRiskSlider">
+                            <div id="riskSliderValue">2%</div>
+                        </div>
+                        <div class="plan-input-group">
+                            <label>Максимальный риск:</label>
+                            <input type="number" id="dailyRiskInput" placeholder="2000">
+                        </div>
+                        <button class="btn" id="setRiskBtn">Установить риск</button>
+                    </div>
+                    
+                    <div class="plan-card">
+                        <h3>Ежедневные цели</h3>
+                        <div class="plan-input-group">
+                            <label>Количество сделок в день:</label>
+                            <input type="number" id="dailyDealsInput" placeholder="5" min="1" max="20">
+                        </div>
+                        <div class="plan-input-group">
+                            <label>Цель по win rate (%):</label>
+                            <input type="number" id="winRateGoalInput" placeholder="60" min="1" max="100">
+                        </div>
+                        <button class="btn" id="setDailyGoalsBtn">Сохранить</button>
+                    </div>
+                </div>
+                
+                <!-- Калькулятор риска -->
+                <div class="calculator-card">
+                    <h3>Калькулятор рисков</h3>
+                    <div class="input-group">
+                        <label>Размер депозита:</label>
+                        <input type="number" id="depositAmount" placeholder="1000">
+                    </div>
+                    <div class="input-group">
+                        <label>Риск на сделку (%):</label>
+                        <input type="number" id="riskPerTrade" placeholder="2">
+                    </div>
+                    <button class="btn" id="calculateRiskBtn">Рассчитать</button>
+                    <div class="result-box" id="riskResult"></div>
+                </div>
+                
+                <div class="plan-card">
+                    <h3>Прогресс месяца</h3>
+                    <div class="plan-stats">
+                        <div class="plan-stat">
+                            <div class="plan-stat-value" id="monthProfitValue">0</div>
+                            <div class="plan-stat-label">Прибыль за месяц</div>
+                        </div>
+                        <div class="plan-stat">
+                            <div class="plan-stat-value" id="monthGoalProgress">0%</div>
+                            <div class="plan-stat-label">Выполнение цели</div>
+                        </div>
+                        <div class="plan-stat">
+                            <div class="plan-stat-value" id="successfulDays">0</div>
+                            <div class="plan-stat-label">Успешных дней</div>
+                        </div>
+                        <div class="plan-stat">
+                            <div class="plan-stat-value" id="totalDays">0</div>
+                            <div class="plan-stat-label">Торговых дней</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -599,24 +883,6 @@
                 <h2>История торговых дней</h2>
                 <div id="historyList">
                     <!-- History items will be generated here -->
-                </div>
-            </div>
-            
-            <div class="tab-content" id="tools-tab">
-                <h2>Инструменты</h2>
-                
-                <div class="tool-card">
-                    <h3>Калькулятор рисков</h3>
-                    <div class="input-group">
-                        <label>Размер депозита:</label>
-                        <input type="number" id="depositAmount" placeholder="1000">
-                    </div>
-                    <div class="input-group">
-                        <label>Риск на сделку (%):</label>
-                        <input type="number" id="riskPerTrade" placeholder="2">
-                    </div>
-                    <button class="btn" id="calculateRiskBtn">Рассчитать</button>
-                    <div class="result-box" id="riskResult"></div>
                 </div>
             </div>
             
@@ -720,7 +986,7 @@
 
     <script>
         // Инициализация Telegram Web App
-        let tg = window.Telegram.WebApp;
+        let tg = window.Telegram?.WebApp;
         
         // Инициализация jsPDF
         const { jsPDF } = window.jspdf;
@@ -767,6 +1033,40 @@
             const exportRangeExcel = document.getElementById('exportRangeExcel');
             const exportAllExcel = document.getElementById('exportAllExcel');
 
+            // Новые элементы для баланса и плана
+            const currentBalanceValue = document.getElementById('currentBalanceValue');
+            const tradingDayNumber = document.getElementById('tradingDayNumber');
+            const planBalanceValue = document.getElementById('planBalanceValue');
+            const planDayNumber = document.getElementById('planDayNumber');
+            
+            // Элементы плана
+            const initialBalanceInput = document.getElementById('initialBalanceInput');
+            const currentBalanceInput = document.getElementById('currentBalanceInput');
+            const tradingDayInput = document.getElementById('tradingDayInput');
+            const saveBalanceBtn = document.getElementById('saveBalanceBtn');
+            const dailyGoalInput = document.getElementById('dailyGoalInput');
+            const minDailyGoalInput = document.getElementById('minDailyGoalInput');
+            const setGoalsBtn = document.getElementById('setGoalsBtn');
+            const goalProgressBar = document.getElementById('goalProgressBar');
+            const goalProgressText = document.getElementById('goalProgressText');
+            const dailyRiskSlider = document.getElementById('dailyRiskSlider');
+            const riskSliderValue = document.getElementById('riskSliderValue');
+            const dailyRiskInput = document.getElementById('dailyRiskInput');
+            const setRiskBtn = document.getElementById('setRiskBtn');
+            const dailyDealsInput = document.getElementById('dailyDealsInput');
+            const winRateGoalInput = document.getElementById('winRateGoalInput');
+            const setDailyGoalsBtn = document.getElementById('setDailyGoalsBtn');
+            const monthProfitValue = document.getElementById('monthProfitValue');
+            const monthGoalProgress = document.getElementById('monthGoalProgress');
+            const successfulDays = document.getElementById('successfulDays');
+            const totalDays = document.getElementById('totalDays');
+            
+            // Элементы прогресс-баров над таблицей
+            const dailyGoalValue = document.getElementById('dailyGoalValue');
+            const dailyRiskValue = document.getElementById('dailyRiskValue');
+            const riskProgressBar = document.getElementById('riskProgressBar');
+            const riskProgressText = document.getElementById('riskProgressText');
+
             // State
             let currentDate = new Date();
             let stepsCount = 5;
@@ -774,7 +1074,21 @@
             let currentCell = null;
             let tradeData = {};
             let historyData = JSON.parse(localStorage.getItem('tradeHistory')) || {};
-            let appSettings = JSON.parse(localStorage.getItem('appSettings')) || { stepsCount: 5, dealsCount: 10 };
+            let appSettings = JSON.parse(localStorage.getItem('appSettings')) || { 
+                stepsCount: 5, 
+                dealsCount: 10,
+                // Новые настройки баланса и плана
+                balance: 100000,
+                initialBalance: 100000,
+                tradingDay: 1,
+                dailyGoal: 500,
+                minDailyGoal: 200,
+                dailyRiskPercent: 2,
+                dailyRiskAmount: 2000,
+                dailyDealsGoal: 5,
+                winRateGoal: 60,
+                monthGoal: 5000
+            };
 
             // Initialize
             function init() {
@@ -783,17 +1097,17 @@
                 if (appSettings.dealsCount) dealsCount = appSettings.dealsCount;
                 
                 // Update settings inputs
-                dealsCountInput.value = dealsCount;
-                stepsCountInput.value = stepsCount;
+                if (dealsCountInput) dealsCountInput.value = dealsCount;
+                if (stepsCountInput) stepsCountInput.value = stepsCount;
                 
-                currentDateEl.textContent = formatDate(currentDate);
+                if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
                 
                 const dateKey = formatDateKey(currentDate);
                 if (historyData[dateKey]) {
                     tradeData = historyData[dateKey];
                     renderTable();
                     updateTotal();
-                    if (tradeData.notes) {
+                    if (tradeData.notes && dailyNotes) {
                         dailyNotes.value = tradeData.notes;
                     }
                 } else {
@@ -801,16 +1115,61 @@
                     renderTable();
                 }
                 
+                // Загружаем настройки баланса
+                if (appSettings.balance && currentBalanceValue) {
+                    currentBalanceValue.textContent = formatNumber(appSettings.balance);
+                    if (planBalanceValue) planBalanceValue.textContent = formatNumber(appSettings.balance);
+                    if (currentBalanceInput) currentBalanceInput.value = appSettings.balance;
+                }
+                
+                if (appSettings.initialBalance && initialBalanceInput) {
+                    initialBalanceInput.value = appSettings.initialBalance;
+                }
+                
+                if (appSettings.tradingDay && tradingDayNumber) {
+                    tradingDayNumber.textContent = appSettings.tradingDay;
+                    if (planDayNumber) planDayNumber.textContent = appSettings.tradingDay;
+                    if (tradingDayInput) tradingDayInput.value = appSettings.tradingDay;
+                }
+                
+                // Загружаем настройки плана
+                if (appSettings.dailyGoal && dailyGoalInput) {
+                    dailyGoalInput.value = appSettings.dailyGoal;
+                    if (dailyGoalValue) dailyGoalValue.textContent = appSettings.dailyGoal;
+                }
+                
+                if (appSettings.minDailyGoal && minDailyGoalInput) minDailyGoalInput.value = appSettings.minDailyGoal;
+                if (appSettings.dailyRiskPercent && dailyRiskSlider) {
+                    dailyRiskSlider.value = appSettings.dailyRiskPercent;
+                    if (riskSliderValue) riskSliderValue.textContent = appSettings.dailyRiskPercent + '%';
+                }
+                if (appSettings.dailyRiskAmount && dailyRiskInput) {
+                    dailyRiskInput.value = appSettings.dailyRiskAmount;
+                    if (dailyRiskValue) dailyRiskValue.textContent = appSettings.dailyRiskAmount;
+                }
+                if (appSettings.dailyDealsGoal && dailyDealsInput) dailyDealsInput.value = appSettings.dailyDealsGoal;
+                if (appSettings.winRateGoal && winRateGoalInput) winRateGoalInput.value = appSettings.winRateGoal;
+                
+                // Обновляем отображение прогресса
+                updateGoalProgress();
+                updateRiskDisplay();
+                updateMonthProgress();
+                
                 renderHistory();
                 updateStats();
                 
                 // Set default date values for export
                 const dates = Object.keys(historyData).sort();
                 if (dates.length > 0) {
-                    document.getElementById('pdfStartDate').value = dates[0];
-                    document.getElementById('pdfEndDate').value = dates[dates.length - 1];
-                    document.getElementById('excelStartDate').value = dates[0];
-                    document.getElementById('excelEndDate').value = dates[dates.length - 1];
+                    const pdfStartDate = document.getElementById('pdfStartDate');
+                    const pdfEndDate = document.getElementById('pdfEndDate');
+                    const excelStartDate = document.getElementById('excelStartDate');
+                    const excelEndDate = document.getElementById('excelEndDate');
+                    
+                    if (pdfStartDate) pdfStartDate.value = dates[0];
+                    if (pdfEndDate) pdfEndDate.value = dates[dates.length - 1];
+                    if (excelStartDate) excelStartDate.value = dates[0];
+                    if (excelEndDate) excelEndDate.value = dates[dates.length - 1];
                 }
             }
 
@@ -823,6 +1182,11 @@
                 return date.toISOString().split('T')[0];
             }
             
+            // Функция для форматирования чисел
+            function formatNumber(amount) {
+                return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(amount);
+            }
+            
             function initTradeData() {
                 tradeData = {
                     steps: Array.from({length: stepsCount}, (_, i) => i + 1),
@@ -832,8 +1196,12 @@
             }
             
             function renderTable() {
+                if (!tradingTable) return;
+                
                 const thead = tradingTable.querySelector('thead tr');
                 const tbody = tradingTable.querySelector('tbody');
+                
+                if (!thead || !tbody) return;
                 
                 // Clear existing headers
                 while (thead.children.length > 1) {
@@ -880,8 +1248,8 @@
                         
                         cell.addEventListener('click', () => {
                             currentCell = cell;
-                            amountInput.value = '';
-                            cellModal.style.display = 'flex';
+                            if (amountInput) amountInput.value = '';
+                            if (cellModal) cellModal.style.display = 'flex';
                         });
                         
                         row.appendChild(cell);
@@ -903,36 +1271,98 @@
                     }
                 }
                 
-                totalValueEl.textContent = total.toFixed(2);
+                if (totalValueEl) {
+                    totalValueEl.textContent = total.toFixed(2);
+                    
+                    if (total > 0) {
+                        totalValueEl.className = 'summary-value positive';
+                    } else if (total < 0) {
+                        totalValueEl.className = 'summary-value negative';
+                    } else {
+                        totalValueEl.className = 'summary-value';
+                    }
+                }
                 
-                if (total > 0) {
-                    totalValueEl.className = 'summary-value positive';
-                } else if (total < 0) {
-                    totalValueEl.className = 'summary-value negative';
+                // Добавляем обновление прогресса
+                updateGoalProgress();
+                updateRiskDisplay();
+            }
+            
+            // Обновление прогресса цели
+            function updateGoalProgress() {
+                if (!goalProgressBar || !goalProgressText || !dailyGoalValue) return;
+                
+                const dayResult = parseFloat(totalValueEl?.textContent || '0');
+                const goal = appSettings.dailyGoal || 500;
+                const progress = Math.min(100, Math.max(0, (dayResult / goal) * 100));
+                
+                goalProgressBar.style.width = progress + '%';
+                goalProgressText.textContent = `${dayResult.toFixed(2)}/${goal} (${progress.toFixed(1)}%)`;
+                
+                if (progress >= 100) {
+                    goalProgressBar.style.background = '#2ecc71';
+                } else if (progress >= 50) {
+                    goalProgressBar.style.background = '#f39c12';
                 } else {
-                    totalValueEl.className = 'summary-value';
+                    goalProgressBar.style.background = '#e74c3c';
                 }
             }
             
+            // Обновление отображения рисков
+            function updateRiskDisplay() {
+                if (!riskProgressBar || !riskProgressText || !dailyRiskValue) return;
+                
+                const dayResult = parseFloat(totalValueEl?.textContent || '0');
+                const riskAmount = appSettings.dailyRiskAmount || 2000;
+                const usedRisk = Math.max(0, -dayResult); // учитываем только убытки
+                const riskProgress = Math.min(100, (usedRisk / riskAmount) * 100);
+                
+                riskProgressBar.style.width = riskProgress + '%';
+                riskProgressText.textContent = `${usedRisk.toFixed(2)}/${riskAmount} (${riskProgress.toFixed(1)}%)`;
+                
+                if (riskProgress >= 80) {
+                    riskProgressBar.style.background = '#e74c3c';
+                } else if (riskProgress >= 50) {
+                    riskProgressBar.style.background = '#f39c12';
+                } else {
+                    riskProgressBar.style.background = '#2ecc71';
+                }
+            }
+            
+            // Обновление прогресса за месяц
+            function updateMonthProgress() {
+                // Здесь будет логика подсчета статистики за месяц
+                // Пока заглушки
+                if (monthProfitValue) monthProfitValue.textContent = '0';
+                if (monthGoalProgress) monthGoalProgress.textContent = '0%';
+                if (successfulDays) successfulDays.textContent = '0';
+                if (totalDays) totalDays.textContent = '0';
+            }
+            
             function saveTradeData() {
-                tradeData.notes = dailyNotes.value;
+                if (dailyNotes) tradeData.notes = dailyNotes.value;
                 const dateKey = formatDateKey(currentDate);
                 historyData[dateKey] = {...tradeData};
                 localStorage.setItem('tradeHistory', JSON.stringify(historyData));
                 showNotification('Данные сохранены', 'success');
             }
             
+            // Сохранение настроек
+            function saveSettings() {
+                localStorage.setItem('appSettings', JSON.stringify(appSettings));
+            }
+            
             function loadDateData(date) {
                 currentDate = date;
-                currentDateEl.textContent = formatDate(currentDate);
+                if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
                 
                 const dateKey = formatDateKey(currentDate);
                 if (historyData[dateKey]) {
                     tradeData = historyData[dateKey];
-                    dailyNotes.value = tradeData.notes || '';
+                    if (dailyNotes) dailyNotes.value = tradeData.notes || '';
                 } else {
                     initTradeData();
-                    dailyNotes.value = '';
+                    if (dailyNotes) dailyNotes.value = '';
                 }
                 
                 renderTable();
@@ -942,6 +1372,8 @@
             }
             
             function renderHistory() {
+                if (!historyList) return;
+                
                 historyList.innerHTML = '';
                 const dates = Object.keys(historyData).sort().reverse();
                 
@@ -965,19 +1397,33 @@
                     
                     const historyItem = document.createElement('div');
                     historyItem.className = 'history-item';
-                    historyItem.innerHTML = `
-                        <div class="history-date">${formatDate(new Date(date))}</div>
-                        <div class="history-total ${dayTotal > 0 ? 'positive' : dayTotal < 0 ? 'negative' : ''}">
-                            Итог: ${dayTotal.toFixed(2)}
-                        </div>
-                        ${data.notes ? `<div class="history-notes">Заметки: ${data.notes}</div>` : ''}
-                    `;
+                    
+                    const dateEl = document.createElement('div');
+                    dateEl.className = 'history-date';
+                    dateEl.textContent = formatDate(new Date(date));
+                    historyItem.appendChild(dateEl);
+                    
+                    const totalEl = document.createElement('div');
+                    totalEl.className = 'history-total';
+                    if (dayTotal > 0) totalEl.classList.add('positive');
+                    else if (dayTotal < 0) totalEl.classList.add('negative');
+                    totalEl.textContent = `Итог: ${dayTotal.toFixed(2)}`;
+                    historyItem.appendChild(totalEl);
+                    
+                    if (data.notes && data.notes.trim() !== '') {
+                        const notesEl = document.createElement('div');
+                        notesEl.className = 'history-notes';
+                        notesEl.textContent = `Заметки: ${data.notes}`;
+                        historyItem.appendChild(notesEl);
+                    }
                     
                     historyList.appendChild(historyItem);
                 });
             }
             
             function showNotification(message, type) {
+                if (!notification) return;
+                
                 notification.textContent = message;
                 notification.className = `notification ${type}`;
                 
@@ -994,7 +1440,7 @@
                 
                 const dataToSend = {
                     date: formatDate(currentDate),
-                    total: parseFloat(totalValueEl.textContent),
+                    total: parseFloat(totalValueEl?.textContent || '0'),
                     details: tradeData
                 };
                 
@@ -1043,10 +1489,10 @@
                     }
                 });
                 
-                document.getElementById('profitDays').textContent = profitDays;
-                document.getElementById('lossDays').textContent = lossDays;
-                document.getElementById('avgProfit').textContent = profitDays > 0 ? (totalProfit / profitDays).toFixed(2) : '0';
-                document.getElementById('avgLoss').textContent = lossDays > 0 ? (totalLoss / lossDays).toFixed(2) : '0';
+                if (document.getElementById('profitDays')) document.getElementById('profitDays').textContent = profitDays;
+                if (document.getElementById('lossDays')) document.getElementById('lossDays').textContent = lossDays;
+                if (document.getElementById('avgProfit')) document.getElementById('avgProfit').textContent = profitDays > 0 ? (totalProfit / profitDays).toFixed(2) : '0';
+                if (document.getElementById('avgLoss')) document.getElementById('avgLoss').textContent = lossDays > 0 ? (totalLoss / lossDays).toFixed(2) : '0';
                 
                 renderCharts(dailyResults);
             }
@@ -1057,66 +1503,85 @@
                 
                 if (!ctx1 || !ctx2) return;
                 
+                // Очистка предыдущих графиков
+                if (window.resultsChartInstance) window.resultsChartInstance.destroy();
+                if (window.dailyResultsChartInstance) window.dailyResultsChartInstance.destroy();
+                
                 if (dailyResults.length > 0) {
-                    new Chart(ctx1, {
-                        type: 'pie',
-                        data: {
-                            labels: ['Прибыльные дни', 'Убыточные дни'],
-                            datasets: [{
-                                data: [
-                                    document.getElementById('profitDays').textContent,
-                                    document.getElementById('lossDays').textContent
-                                ],
-                                backgroundColor: ['#2ecc71', '#e74c3c']
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: 'Соотношение прибыльных/убыточных дней'
+                    try {
+                        window.resultsChartInstance = new Chart(ctx1, {
+                            type: 'pie',
+                            data: {
+                                labels: ['Прибыльные дни', 'Убыточные дни'],
+                                datasets: [{
+                                    data: [
+                                        document.getElementById('profitDays')?.textContent || 0,
+                                        document.getElementById('lossDays')?.textContent || 0
+                                    ],
+                                    backgroundColor: ['#2ecc71', '#e74c3c']
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Соотношение прибыльных/убыточных дней'
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } catch (e) {
+                        console.error('Ошибка при создании круговой диаграммы:', e);
+                    }
                 }
                 
                 if (dailyResults.length > 0) {
-                    const sortedResults = dailyResults.sort((a, b) => new Date(a.date) - new Date(b.date));
-                    new Chart(ctx2, {
-                        type: 'line',
-                        data: {
-                            labels: sortedResults.map(r => formatDate(new Date(r.date))),
-                            datasets: [{
-                                label: 'Результат за день',
-                                data: sortedResults.map(r => r.total),
-                                borderColor: '#3498db',
-                                tension: 0.1,
-                                fill: false
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: 'Динамика результатов по дням'
-                                }
+                    try {
+                        const sortedResults = dailyResults.sort((a, b) => new Date(a.date) - new Date(b.date));
+                        window.dailyResultsChartInstance = new Chart(ctx2, {
+                            type: 'line',
+                            data: {
+                                labels: sortedResults.map(r => formatDate(new Date(r.date))),
+                                datasets: [{
+                                    label: 'Результат за день',
+                                    data: sortedResults.map(r => r.total),
+                                    borderColor: '#3498db',
+                                    tension: 0.1,
+                                    fill: false
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Динамика результатов по дням'
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } catch (e) {
+                        console.error('Ошибка при создании линейного графика:', e);
+                    }
                 }
             }
             
             function calculateRisk() {
-                const deposit = parseFloat(document.getElementById('depositAmount').value);
-                const risk = parseFloat(document.getElementById('riskPerTrade').value);
+                if (!riskResult) return;
+                
+                const depositInput = document.getElementById('depositAmount');
+                const riskInput = document.getElementById('riskPerTrade');
+                
+                if (!depositInput || !riskInput) return;
+                
+                const deposit = parseFloat(depositInput.value);
+                const risk = parseFloat(riskInput.value);
                 
                 if (isNaN(deposit) || isNaN(risk)) {
                     riskResult.textContent = 'Введите корректные значения';
@@ -1130,6 +1595,11 @@
             }
             
             function exportToPDF(dateRange = 'all') {
+                if (typeof jsPDF === 'undefined') {
+                    showNotification('Ошибка: Библиотека jsPDF не загружена', 'error');
+                    return;
+                }
+                
                 const doc = new jsPDF();
                 let startDate, endDate;
                 
@@ -1138,8 +1608,10 @@
                     startDate = dateKey;
                     endDate = dateKey;
                 } else if (dateRange === 'range') {
-                    startDate = document.getElementById('pdfStartDate').value;
-                    endDate = document.getElementById('pdfEndDate').value;
+                    const pdfStartDate = document.getElementById('pdfStartDate');
+                    const pdfEndDate = document.getElementById('pdfEndDate');
+                    startDate = pdfStartDate?.value;
+                    endDate = pdfEndDate?.value;
                 } else {
                     const dates = Object.keys(historyData).sort();
                     if (dates.length > 0) {
@@ -1253,6 +1725,11 @@
             }
             
             function exportToExcel(dateRange = 'all') {
+                if (typeof XLSX === 'undefined') {
+                    showNotification('Ошибка: Библиотека XLSX не загружена', 'error');
+                    return;
+                }
+                
                 let startDate, endDate;
                 
                 if (dateRange === 'current') {
@@ -1260,8 +1737,10 @@
                     startDate = dateKey;
                     endDate = dateKey;
                 } else if (dateRange === 'range') {
-                    startDate = document.getElementById('excelStartDate').value;
-                    endDate = document.getElementById('excelEndDate').value;
+                    const excelStartDate = document.getElementById('excelStartDate');
+                    const excelEndDate = document.getElementById('excelEndDate');
+                    startDate = excelStartDate?.value;
+                    endDate = excelEndDate?.value;
                 } else {
                     const dates = Object.keys(historyData).sort();
                     if (dates.length > 0) {
@@ -1338,73 +1817,85 @@
             }
 
             // Event Listeners
-            prevDayBtn.addEventListener('click', () => {
-                saveTradeData();
-                const newDate = new Date(currentDate);
-                newDate.setDate(newDate.getDate() - 1);
-                loadDateData(newDate);
-            });
+            if (prevDayBtn) {
+                prevDayBtn.addEventListener('click', () => {
+                    saveTradeData();
+                    const newDate = new Date(currentDate);
+                    newDate.setDate(newDate.getDate() - 1);
+                    loadDateData(newDate);
+                });
+            }
             
-            todayBtn.addEventListener('click', () => {
-                saveTradeData();
-                loadDateData(new Date());
-            });
+            if (todayBtn) {
+                todayBtn.addEventListener('click', () => {
+                    saveTradeData();
+                    loadDateData(new Date());
+                });
+            }
             
-            nextDayBtn.addEventListener('click', () => {
-                saveTradeData();
-                const newDate = new Date(currentDate);
-                newDate.setDate(newDate.getDate() + 1);
-                loadDateData(newDate);
-            });
+            if (nextDayBtn) {
+                nextDayBtn.addEventListener('click', () => {
+                    saveTradeData();
+                    const newDate = new Date(currentDate);
+                    newDate.setDate(newDate.getDate() + 1);
+                    loadDateData(newDate);
+                });
+            }
             
             // Modal event listeners
-            const modalButtons = cellModal.querySelectorAll('.modal-btn');
-            modalButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const value = button.dataset.value;
-                    const amount = parseFloat(amountInput.value.replace(',', '.'));
-                    
-                    if (currentCell && value === 'reset') {
-                        const row = parseInt(currentCell.dataset.row);
-                        const col = parseInt(currentCell.dataset.col);
+            const modalButtons = cellModal?.querySelectorAll('.modal-btn');
+            if (modalButtons) {
+                modalButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const value = button.dataset.value;
+                        const amount = parseFloat(amountInput?.value.replace(',', '.'));
                         
-                        currentCell.className = 'cell';
-                        currentCell.innerHTML = '';
-                        tradeData.deals[row][col] = null;
-                        
-                        updateTotal();
-                        saveTradeData();
-                        cellModal.style.display = 'none';
-                    } else if (currentCell && !isNaN(amount) && amount > 0) {
-                        const row = parseInt(currentCell.dataset.row);
-                        const col = parseInt(currentCell.dataset.col);
-                        
-                        if (value === 'profit') {
-                            currentCell.className = 'cell profit';
-                            currentCell.innerHTML = `<div class="cell-content">+${amount.toFixed(2)}</div>`;
-                            tradeData.deals[row][col] = { outcome: 'profit', amount: amount };
-                        } else if (value === 'loss') {
-                            currentCell.className = 'cell loss';
-                            currentCell.innerHTML = `<div class="cell-content">-${amount.toFixed(2)}</div>`;
-                            tradeData.deals[row][col] = { outcome: 'loss', amount: amount };
+                        if (currentCell && value === 'reset') {
+                            const row = parseInt(currentCell.dataset.row);
+                            const col = parseInt(currentCell.dataset.col);
+                            
+                            currentCell.className = 'cell';
+                            currentCell.innerHTML = '';
+                            tradeData.deals[row][col] = null;
+                            
+                            updateTotal();
+                            saveTradeData();
+                            if (cellModal) cellModal.style.display = 'none';
+                        } else if (currentCell && !isNaN(amount) && amount > 0) {
+                            const row = parseInt(currentCell.dataset.row);
+                            const col = parseInt(currentCell.dataset.col);
+                            
+                            if (value === 'profit') {
+                                currentCell.className = 'cell profit';
+                                currentCell.innerHTML = `<div class="cell-content">+${amount.toFixed(2)}</div>`;
+                                tradeData.deals[row][col] = { outcome: 'profit', amount: amount };
+                            } else if (value === 'loss') {
+                                currentCell.className = 'cell loss';
+                                currentCell.innerHTML = `<div class="cell-content">-${amount.toFixed(2)}</div>`;
+                                tradeData.deals[row][col] = { outcome: 'loss', amount: amount };
+                            }
+                            
+                            updateTotal();
+                            saveTradeData();
+                            if (cellModal) cellModal.style.display = 'none';
+                        } else {
+                            showNotification('Введите корректную положительную сумму', 'error');
+                            if (amountInput) {
+                                amountInput.classList.add('error-input');
+                                setTimeout(() => amountInput.classList.remove('error-input'), 1000);
+                            }
                         }
-                        
-                        updateTotal();
-                        saveTradeData();
+                    });
+                });
+            }
+            
+            if (cellModal) {
+                cellModal.addEventListener('click', (e) => {
+                    if (e.target === cellModal) {
                         cellModal.style.display = 'none';
-                    } else {
-                        showNotification('Введите корректную положительную сумму', 'error');
-                        amountInput.classList.add('error-input');
-                        setTimeout(() => amountInput.classList.remove('error-input'), 1000);
                     }
                 });
-            });
-            
-            cellModal.addEventListener('click', (e) => {
-                if (e.target === cellModal) {
-                    cellModal.style.display = 'none';
-                }
-            });
+            }
             
             // Tab switching
             tabs.forEach(tab => {
@@ -1415,7 +1906,8 @@
                     tabContents.forEach(tc => tc.classList.remove('active'));
                     
                     tab.classList.add('active');
-                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                    const tabContent = document.getElementById(`${tabId}-tab`);
+                    if (tabContent) tabContent.classList.add('active');
                     
                     if (tabId === 'stats') {
                         updateStats();
@@ -1424,95 +1916,212 @@
             });
             
             // Save and send buttons
-            saveDataBtn.addEventListener('click', () => {
-                saveTradeData();
-                showNotification('Данные сохранены', 'success');
-            });
+            if (saveDataBtn) {
+                saveDataBtn.addEventListener('click', () => {
+                    saveTradeData();
+                    showNotification('Данные сохранены', 'success');
+                });
+            }
             
-            sendToBotBtn.addEventListener('click', sendDataToBot);
+            if (sendToBotBtn) {
+                sendToBotBtn.addEventListener('click', sendDataToBot);
+            }
             
             // Risk calculator
-            calculateRiskBtn.addEventListener('click', calculateRisk);
+            if (calculateRiskBtn) {
+                calculateRiskBtn.addEventListener('click', calculateRisk);
+            }
             
             // Export buttons
-            exportCurrentPdf.addEventListener('click', () => {
-                saveTradeData();
-                exportToPDF('current');
-            });
-            exportRangePdf.addEventListener('click', () => {
-                saveTradeData();
-                exportToPDF('range');
-            });
-            exportAllPdf.addEventListener('click', () => {
-                saveTradeData();
-                exportToPDF('all');
-            });
-            exportCurrentExcel.addEventListener('click', () => {
-                saveTradeData();
-                exportToExcel('current');
-            });
-            exportRangeExcel.addEventListener('click', () => {
-                saveTradeData();
-                exportToExcel('range');
-            });
-            exportAllExcel.addEventListener('click', () => {
-                saveTradeData();
-                exportToExcel('all');
-            });
+            if (exportCurrentPdf) {
+                exportCurrentPdf.addEventListener('click', () => {
+                    saveTradeData();
+                    exportToPDF('current');
+                });
+            }
+            if (exportRangePdf) {
+                exportRangePdf.addEventListener('click', () => {
+                    saveTradeData();
+                    exportToPDF('range');
+                });
+            }
+            if (exportAllPdf) {
+                exportAllPdf.addEventListener('click', () => {
+                    saveTradeData();
+                    exportToPDF('all');
+                });
+            }
+            if (exportCurrentExcel) {
+                exportCurrentExcel.addEventListener('click', () => {
+                    saveTradeData();
+                    exportToExcel('current');
+                });
+            }
+            if (exportRangeExcel) {
+                exportRangeExcel.addEventListener('click', () => {
+                    saveTradeData();
+                    exportToExcel('range');
+                });
+            }
+            if (exportAllExcel) {
+                exportAllExcel.addEventListener('click', () => {
+                    saveTradeData();
+                    exportToExcel('all');
+                });
+            }
 
             // Settings buttons
-            applySettingsBtn.addEventListener('click', () => {
-                const newDealsCount = parseInt(dealsCountInput.value);
-                const newStepsCount = parseInt(stepsCountInput.value);
-                
-                if (isNaN(newDealsCount) || newDealsCount < 1 || newDealsCount > 20) {
-                    showNotification('Количество сделок должно быть от 1 до 20', 'error');
-                    return;
-                }
-                
-                if (isNaN(newStepsCount) || newStepsCount < 1 || newStepsCount > 10) {
-                    showNotification('Количество шагов должно быть от 1 до 10', 'error');
-                    return;
-                }
-                
-                saveTradeData();
-                
-                dealsCount = newDealsCount;
-                stepsCount = newStepsCount;
-                
-                appSettings = { dealsCount, stepsCount };
-                localStorage.setItem('appSettings', JSON.stringify(appSettings));
-                
-                initTradeData();
-                renderTable();
-                updateTotal();
-                
-                showNotification('Настройки применены', 'success');
-            });
-            
-            clearCurrentDayBtn.addEventListener('click', () => {
-                if (confirm('Вы уверены, что хотите очистить данные текущего дня?')) {
+            if (applySettingsBtn) {
+                applySettingsBtn.addEventListener('click', () => {
+                    const newDealsCount = parseInt(dealsCountInput?.value || '10');
+                    const newStepsCount = parseInt(stepsCountInput?.value || '5');
+                    
+                    if (isNaN(newDealsCount) || newDealsCount < 1 || newDealsCount > 20) {
+                        showNotification('Количество сделок должно быть от 1 до 20', 'error');
+                        return;
+                    }
+                    
+                    if (isNaN(newStepsCount) || newStepsCount < 1 || newStepsCount > 10) {
+                        showNotification('Количество шагов должно быть от 1 до 10', 'error');
+                        return;
+                    }
+                    
+                    saveTradeData();
+                    
+                    dealsCount = newDealsCount;
+                    stepsCount = newStepsCount;
+                    
+                    appSettings = { ...appSettings, dealsCount, stepsCount };
+                    localStorage.setItem('appSettings', JSON.stringify(appSettings));
+                    
                     initTradeData();
-                    dailyNotes.value = '';
                     renderTable();
                     updateTotal();
-                    showNotification('Текущий день очищен', 'success');
-                }
-            });
+                    
+                    showNotification('Настройки применены', 'success');
+                });
+            }
             
-            clearAllDataBtn.addEventListener('click', () => {
-                if (confirm('Вы уверены, что хотите удалить всю историю? Это действие нельзя отменить.')) {
-                    localStorage.removeItem('tradeHistory');
-                    historyData = {};
-                    initTradeData();
-                    dailyNotes.value = '';
-                    renderTable();
-                    updateTotal();
-                    renderHistory();
-                    updateStats();
-                    showNotification('Все данные очищены', 'success');
-                }
-            });
+            if (clearCurrentDayBtn) {
+                clearCurrentDayBtn.addEventListener('click', () => {
+                    if (confirm('Вы уверены, что хотите очистить данные текущего дня?')) {
+                        initTradeData();
+                        if (dailyNotes) dailyNotes.value = '';
+                        renderTable();
+                        updateTotal();
+                        showNotification('Текущий день очищен', 'success');
+                    }
+                });
+            }
+            
+            if (clearAllDataBtn) {
+                clearAllDataBtn.addEventListener('click', () => {
+                    if (confirm('Вы уверены, что хотите удалить всю историю? Это действие нельзя отменить.')) {
+                        localStorage.removeItem('tradeHistory');
+                        historyData = {};
+                        initTradeData();
+                        if (dailyNotes) dailyNotes.value = '';
+                        renderTable();
+                        updateTotal();
+                        renderHistory();
+                        updateStats();
+                        showNotification('Все данные очищены', 'success');
+                    }
+                });
+            }
+
+            // Обработчики для плана
+            if (saveBalanceBtn) {
+                saveBalanceBtn.addEventListener('click', () => {
+                    const initialBalance = parseFloat(initialBalanceInput?.value || '0');
+                    const currentBalance = parseFloat(currentBalanceInput?.value || '0');
+                    const tradingDay = parseInt(tradingDayInput?.value || '1');
+                    
+                    if (!isNaN(initialBalance) && !isNaN(currentBalance) && !isNaN(tradingDay) && tradingDay > 0) {
+                        appSettings.initialBalance = initialBalance;
+                        appSettings.balance = currentBalance;
+                        appSettings.tradingDay = tradingDay;
+                        
+                        if (currentBalanceValue) currentBalanceValue.textContent = formatNumber(appSettings.balance);
+                        if (planBalanceValue) planBalanceValue.textContent = formatNumber(appSettings.balance);
+                        if (tradingDayNumber) tradingDayNumber.textContent = appSettings.tradingDay;
+                        if (planDayNumber) planDayNumber.textContent = appSettings.tradingDay;
+                        
+                        saveSettings();
+                        showNotification('Настройки баланса сохранены', 'success');
+                    } else {
+                        showNotification('Введите корректные значения', 'error');
+                    }
+                });
+            }
+            
+            if (setGoalsBtn) {
+                setGoalsBtn.addEventListener('click', () => {
+                    const dailyGoal = parseFloat(dailyGoalInput?.value || '0');
+                    const minDailyGoal = parseFloat(minDailyGoalInput?.value || '0');
+                    
+                    if (!isNaN(dailyGoal) && !isNaN(minDailyGoal) && dailyGoal > 0 && minDailyGoal > 0) {
+                        appSettings.dailyGoal = dailyGoal;
+                        appSettings.minDailyGoal = minDailyGoal;
+                        
+                        if (dailyGoalValue) dailyGoalValue.textContent = appSettings.dailyGoal;
+                        
+                        saveSettings();
+                        updateGoalProgress();
+                        showNotification('Цели установлены', 'success');
+                    } else {
+                        showNotification('Введите корректные значения', 'error');
+                    }
+                });
+            }
+            
+            if (dailyRiskSlider && riskSliderValue) {
+                dailyRiskSlider.addEventListener('input', () => {
+                    const riskPercent = parseFloat(dailyRiskSlider.value);
+                    riskSliderValue.textContent = riskPercent + '%';
+                    
+                    // Автоматически пересчитываем сумму риска
+                    const riskAmount = appSettings.balance * (riskPercent / 100);
+                    if (dailyRiskInput) dailyRiskInput.value = riskAmount.toFixed(2);
+                    if (dailyRiskValue) dailyRiskValue.textContent = riskAmount.toFixed(0);
+                });
+            }
+            
+            if (setRiskBtn) {
+                setRiskBtn.addEventListener('click', () => {
+                    const riskPercent = parseFloat(dailyRiskSlider?.value || '0');
+                    const riskAmount = parseFloat(dailyRiskInput?.value || '0');
+                    
+                    if (!isNaN(riskPercent) && !isNaN(riskAmount) && riskPercent > 0 && riskAmount > 0) {
+                        appSettings.dailyRiskPercent = riskPercent;
+                        appSettings.dailyRiskAmount = riskAmount;
+                        
+                        if (dailyRiskValue) dailyRiskValue.textContent = appSettings.dailyRiskAmount;
+                        
+                        saveSettings();
+                        updateRiskDisplay();
+                        showNotification('Риски установлены', 'success');
+                    } else {
+                        showNotification('Введите корректные значения', 'error');
+                    }
+                });
+            }
+            
+            if (setDailyGoalsBtn) {
+                setDailyGoalsBtn.addEventListener('click', () => {
+                    const dailyDeals = parseInt(dailyDealsInput?.value || '0');
+                    const winRateGoal = parseInt(winRateGoalInput?.value || '0');
+                    
+                    if (!isNaN(dailyDeals) && !isNaN(winRateGoal) && dailyDeals > 0 && winRateGoal > 0 && winRateGoal <= 100) {
+                        appSettings.dailyDealsGoal = dailyDeals;
+                        appSettings.winRateGoal = winRateGoal;
+                        saveSettings();
+                        showNotification('Настройки сохранены', 'success');
+                    } else {
+                        showNotification('Введите корректные значения', 'error');
+                    }
+                });
+            }
 
             // Initialize the app
             init();
