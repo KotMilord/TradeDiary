@@ -513,7 +513,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Торговый дневник PRO</h1>
+            <h1>Торговый дневник</h1>
             <div class="date-display" id="currentDate"></div>
         </header>
         
@@ -1188,7 +1188,7 @@
                 const profitPercent = parseFloat(document.getElementById('targetProfitPercent').value);
                 
                 if (isNaN(entryPrice) || isNaN(profitPercent)) {
-                    targetResult.textContent = 'Введите корректные крайность значения';
+                    targetResult.textContent = 'Введите корректные значения';
                     targetResult.className = 'result-box negative';
                     return;
                 }
