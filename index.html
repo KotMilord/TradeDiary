@@ -865,15 +865,19 @@
                 return date.toLocaleDateString('ru-RU', options);
             }
             
-            function formatDateKey(date) {
-                return date.toISOString().split('T')[0];
-            }
+           function formatDateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
             
             function initTradeData() {
                 tradeData = {
                     steps: Array.from({length: stepsCount}, (_, i) => i + 1),
                     deals: Array(dealsCount).fill().map(() => Array(stepsCount).fill(null)),
-                    notes: ''
+                    notes: dailyNotes.value || '' // Сохраняем существующие заметки
                 };
             }
             
@@ -960,27 +964,35 @@
                 }
             }
             
-            function saveTradeData() {
-                tradeData.notes = dailyNotes.value;
-                const dateKey = formatDateKey(currentDate);
-                historyData[dateKey] = {...tradeData};
-                localStorage.setItem('tradeHistory', JSON.stringify(historyData));
-                showNotification('Данные сохранены', 'success');
-            }
+           function saveTradeData() {
+    try {
+        tradeData.notes = dailyNotes.value;
+        const dateKey = formatDateKey(currentDate);
+        historyData[dateKey] = {...tradeData};
+        localStorage.setItem('tradeHistory', JSON.stringify(historyData));
+        showNotification('Данные сохранены', 'success');
+    } catch (error) {
+        console.error('Ошибка при сохранении:', error);
+        showNotification('Ошибка при сохранении', 'error');
+    }
+}
             
             function loadDateData(date) {
                 currentDate = date;
                 currentDateEl.textContent = formatDate(currentDate);
                 
                 const dateKey = formatDateKey(currentDate);
-                if (historyData[dateKey]) {
-                    tradeData = historyData[dateKey];
-                    dailyNotes.value = tradeData.notes || '';
-                } else {
-                    initTradeData();
-                    dailyNotes.value = '';
-                }
-                
+if (historyData[dateKey] && historyData[dateKey].deals) {
+    tradeData = JSON.parse(JSON.stringify(historyData[dateKey]));
+    // Убедимся, что структура данных соответствует текущим настройкам
+    if (tradeData.deals.length !== dealsCount || tradeData.steps.length !== stepsCount) {
+        initTradeData(); // Пересоздаем структуру, если настройки изменились
+    }
+    dailyNotes.value = tradeData.notes || '';
+} else {
+    initTradeData();
+    dailyNotes.value = '';
+}
                 renderTable();
                 updateTotal();
                 renderHistory();
@@ -1133,7 +1145,7 @@
                     new Chart(ctx2, {
                         type: 'line',
                         data: {
-                            labels: sorted Results.map(r => formatDate(new Date(r.date))),
+                            labels: sortedResults.map(r => formatDate(new Date(r.date))),
                             datasets: [{
                                 label: 'Результат за день',
                                 data: sortedResults.map(r => r.total),
