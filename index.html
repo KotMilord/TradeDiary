@@ -827,7 +827,9 @@
                 // Load settings
                 if (appSettings.stepsCount) stepsCount = appSettings.stepsCount;
                 if (appSettings.dealsCount) dealsCount = appSettings.dealsCount;
-                
+                if (currentDateEl) {
+    currentDateEl.textContent = formatDate(currentDate);
+}
                 // Update settings inputs
                 dealsCountInput.value = dealsCount;
                 stepsCountInput.value = stepsCount;
@@ -865,7 +867,7 @@
                 return date.toLocaleDateString('ru-RU', options);
             }
             
-           function formatDateKey(date) {
+          function formatDateKey(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -873,13 +875,13 @@
 }
 
             
-            function initTradeData() {
-                tradeData = {
-                    steps: Array.from({length: stepsCount}, (_, i) => i + 1),
-                    deals: Array(dealsCount).fill().map(() => Array(stepsCount).fill(null)),
-                    notes: dailyNotes.value || '' // Сохраняем существующие заметки
-                };
-            }
+        function initTradeData() {
+    tradeData = {
+        steps: Array.from({length: stepsCount}, (_, i) => i + 1),
+        deals: Array.from({length: dealsCount}, () => Array(stepsCount).fill(null)),
+        notes: dailyNotes.value || ''
+    };
+}
             
             function renderTable() {
                 const thead = tradingTable.querySelector('thead tr');
@@ -964,11 +966,19 @@
                 }
             }
             
-           function saveTradeData() {
+          function saveTradeData() {
     try {
         tradeData.notes = dailyNotes.value;
         const dateKey = formatDateKey(currentDate);
-        historyData[dateKey] = {...tradeData};
+        
+        // Создаем глубокую копию объекта
+        const dataToSave = {
+            steps: [...tradeData.steps],
+            deals: tradeData.deals.map(row => [...row]),
+            notes: tradeData.notes
+        };
+        
+        historyData[dateKey] = dataToSave;
         localStorage.setItem('tradeHistory', JSON.stringify(historyData));
         showNotification('Данные сохранены', 'success');
     } catch (error) {
@@ -977,27 +987,45 @@
     }
 }
             
-            function loadDateData(date) {
-                currentDate = date;
-                currentDateEl.textContent = formatDate(currentDate);
-                
-                const dateKey = formatDateKey(currentDate);
-if (historyData[dateKey] && historyData[dateKey].deals) {
-    tradeData = JSON.parse(JSON.stringify(historyData[dateKey]));
-    // Убедимся, что структура данных соответствует текущим настройкам
-    if (tradeData.deals.length !== dealsCount || tradeData.steps.length !== stepsCount) {
-        initTradeData(); // Пересоздаем структуру, если настройки изменились
-    }
-    dailyNotes.value = tradeData.notes || '';
-} else {
-    initTradeData();
-    dailyNotes.value = '';
-}
-                renderTable();
-                updateTotal();
-                renderHistory();
-                updateStats();
+           function loadDateData(date) {
+    currentDate = date;
+    currentDateEl.textContent = formatDate(currentDate);
+    
+    const dateKey = formatDateKey(currentDate);
+    
+    if (historyData[dateKey]) {
+        // Восстанавливаем данные, проверяя структуру
+        const savedData = historyData[dateKey];
+        
+        // Проверяем соответствие структуры данных текущим настройкам
+        if (savedData.deals && Array.isArray(savedData.deals) && 
+            savedData.deals.length === dealsCount && 
+            savedData.steps && Array.isArray(savedData.steps) && 
+            savedData.steps.length === stepsCount) {
+            
+            tradeData = {
+                steps: [...savedData.steps],
+                deals: savedData.deals.map(row => [...row]),
+                notes: savedData.notes || ''
+            };
+        } else {
+            // Если структура не соответствует, инициализируем заново
+            initTradeData();
+            if (savedData.notes) {
+                tradeData.notes = savedData.notes;
+                dailyNotes.value = savedData.notes;
             }
+        }
+    } else {
+        initTradeData();
+        dailyNotes.value = '';
+    }
+    
+    renderTable();
+    updateTotal();
+    renderHistory();
+    updateStats();
+}
             
             function renderHistory() {
                 historyList.innerHTML = '';
