@@ -668,17 +668,18 @@
             <div class="tab-content active" id="table-tab">
                 <!-- Панель баланса и дня -->
                 <div class="balance-panel">
-                    <div class="balance-info">
-                        <div>
-                            <div class="balance-label">Текущий баланс</div>
-                            <div class="balance-value" id="currentBalanceValue">100000</div>
-                        </div>
-                        <div>
-                            <div class="balance-label">Торговый день</div>
-                            <div class="balance-value" id="tradingDayNumber">1</div>
-                        </div>
-                    </div>
-                </div>
+    <div class="balance-info">
+        <div>
+            <div class="balance-label">Баланс начала дня</div>
+            <div class="balance-value" id="startingBalanceValue">100000</div>
+        </div>
+        <div>
+            <div class="balance-label">Текущий баланс</div>
+            <div class="balance-value" id="currentBalanceValue">100000</div>
+        </div>
+        <button class="btn btn-success" id="endDayBtn">Завершить день</button>
+    </div>
+</div>
                 
                 <!-- Панель риска и цели -->
                 <div class="risk-goal-panel">
@@ -1068,6 +1069,8 @@
             const riskProgressText = document.getElementById('riskProgressText');
 
             // State
+            let startingBalance = 100000;
+            let currentBalance = 100000;
             let currentDate = new Date();
             let stepsCount = 5;
             let dealsCount = 10;
@@ -1092,6 +1095,11 @@
 
             // Initialize
             function init() {
+                // инициализация баланса
+               if (appSettings.startingBalance) {
+    startingBalance = appSettings.startingBalance;
+    currentBalance = appSettings.currentBalance || startingBalance;
+}
                 // Load settings
                 if (appSettings.stepsCount) stepsCount = appSettings.stepsCount;
                 if (appSettings.dealsCount) dealsCount = appSettings.dealsCount;
@@ -1259,18 +1267,101 @@
                 }
             }
             
-            function updateTotal() {
-                let total = 0;
-                
-                for (let i = 0; i < dealsCount; i++) {
-                    for (let j = 0; j < tradeData.steps.length; j++) {
-                        if (tradeData.deals[i] && tradeData.deals[i][j] !== null) {
-                            const deal = tradeData.deals[i][j];
-                            total += deal.outcome === 'profit' ? deal.amount : -deal.amount;
-                        }
-                    }
+        function updateTotal() {
+    let total = 0;
+    
+    for (let i = 0; i < dealsCount; i++) {
+        for (let j = 0; j < tradeData.steps.length; j++) {
+            if (tradeData.deals[i] && tradeData.deals[i][j] !== null) {
+                const deal = tradeData.deals[i][j];
+                total += deal.outcome === 'profit' ? deal.amount : -deal.amount;
+            }
+        }
+    }
+    
+    // Обновляем текущий баланс
+    currentBalance = startingBalance + total;
+    
+    if (currentBalanceValue) {
+        currentBalanceValue.textContent = formatNumber(currentBalance);
+    }
+    
+    if (totalValueEl) {
+        totalValueEl.textContent = total.toFixed(2);
+        
+        if (total > 0) {
+            totalValueEl.className = 'summary-value positive';
+        } else if (total < 0) {
+            totalValueEl.className = 'summary-value negative';
+        } else {
+            totalValueEl.className = 'summary-value';
+        }
+    }
+    
+    updateGoalProgress();
+    updateRiskDisplay();
+}
+
+            // Добавьте обработчик для кнопки завершения дня
+document.getElementById('endDayBtn').addEventListener('click', function() {
+    // Сохраняем текущий баланс как начальный для следующего дня
+    startingBalance = currentBalance;
+    
+    // Сохраняем в настройках
+    appSettings.startingBalance = startingBalance;
+    appSettings.currentBalance = currentBalance;
+    saveSettings();
+    
+    // Обновляем отображение
+    document.getElementById('startingBalanceValue').textContent = formatNumber(startingBalance);
+    document.getElementById('currentBalanceValue').textContent = formatNumber(currentBalance);
+    
+    showNotification('День завершен. Баланс перенесен на следующий день', 'success');
+});
+
+// Обновите функцию loadDateData для правильной загрузки баланса при смене дня
+function loadDateData(date) {
+    // Сохраняем данные текущего дня
+    saveTradeData();
+    
+    currentDate = date;
+    if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
+    
+    const dateKey = formatDateKey(currentDate);
+    if (historyData[dateKey]) {
+        tradeData = historyData[dateKey];
+        if (dailyNotes) dailyNotes.value = tradeData.notes || '';
+        
+        // Пересчитываем баланс для загруженного дня
+        let dayTotal = 0;
+        for (let i = 0; i < tradeData.deals.length; i++) {
+            for (let j = 0; j < tradeData.steps.length; j++) {
+                if (tradeData.deals[i] && tradeData.deals[i][j] !== null) {
+                    const deal = tradeData.deals[i][j];
+                    dayTotal += deal.outcome === 'profit' ? deal.amount : -deal.amount;
                 }
-                
+            }
+        }
+        
+        currentBalance = startingBalance + dayTotal;
+    } else {
+        initTradeData();
+        if (dailyNotes) dailyNotes.value = '';
+        // Для нового дня используем текущий startingBalance
+        currentBalance = startingBalance;
+    }
+    
+    // Обновляем отображение баланса
+    if (currentBalanceValue) currentBalanceValue.textContent = formatNumber(currentBalance);
+    if (document.getElementById('startingBalanceValue')) {
+        document.getElementById('startingBalanceValue').textContent = formatNumber(startingBalance);
+    }
+    
+    renderTable();
+    updateTotal();
+    renderHistory();
+    updateStats();
+}
                 if (totalValueEl) {
                     totalValueEl.textContent = total.toFixed(2);
                     
