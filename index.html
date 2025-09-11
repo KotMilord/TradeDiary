@@ -221,21 +221,33 @@
             color: white;
         }
         
-        .tabs {
-            display: flex;
+        .tabs-container {
             margin-bottom: 15px;
-            background: var(--tg-theme-secondary-bg-color, #ecf0f1);
-            border-radius: 8px;
+            position: relative;
             overflow: hidden;
+            border-radius: 8px;
+            background: var(--tg-theme-secondary-bg-color, #ecf0f1);
+        }
+        
+        .tabs-scroll {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        
+        .tabs-scroll::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
         }
         
         .tab {
-            flex: 1;
-            padding: 10px;
+            flex: 0 0 auto;
+            padding: 12px 16px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
             font-size: 0.9rem;
+            white-space: nowrap;
         }
         
         .tab.active {
@@ -521,6 +533,19 @@
             border-color: #e74c3c;
             background-color: #fadbd8;
         }
+
+        .scroll-indicator {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 20px;
+            background: linear-gradient(90deg, transparent, var(--tg-theme-secondary-bg-color, #ecf0f1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+        }
     </style>
 </head>
 <body>
@@ -530,13 +555,16 @@
             <div class="date-display" id="currentDate"></div>
         </header>
         
-        <div class="tabs">
-            <div class="tab active" data-tab="table">Таблица</div>
-            <div class="tab" data-tab="stats">Статистика</div>
-            <div class="tab" data-tab="history">История</div>
-            <div class="tab" data-tab="tools">Инструменты</div>
-            <div class="tab" data-tab="export">Экспорт</div>
-            <div class="tab" data-tab="settings">Настройки</div>
+        <div class="tabs-container">
+            <div class="tabs-scroll" id="tabsScroll">
+                <div class="tab active" data-tab="table">Таблица</div>
+                <div class="tab" data-tab="stats">Статистика</div>
+                <div class="tab" data-tab="history">История</div>
+                <div class="tab" data-tab="tools">Инструменты</div>
+                <div class="tab" data-tab="export">Экспорт</div>
+                <div class="tab" data-tab="settings">Настройки</div>
+            </div>
+            <div class="scroll-indicator">→</div>
         </div>
         
         <div class="main-content">
@@ -626,7 +654,7 @@
                     </div>
                     <div class="input-group">
                         <label>Риск на сделку (%):</label>
-                        <input type="number" id="riskPerTrade" placeholder="2">
+                        <input type="number" крайность id="riskPerTrade" placeholder="2">
                     </div>
                     <button class="btn" id="calculateRiskBtn">Рассчитать</button>
                     <div class="result-box" id="riskResult"></div>
@@ -646,8 +674,8 @@
                         <label>Размер риска ($):</label>
                         <input type="number" id="riskAmount" placeholder="50">
                     </div>
-                    <button class="btn" id="calculatePositionBtn">Рассчитать</button>
-                    <div class="result-box" id="positionResult"></div>
+                    <button class="btn" крайность id="calculatePositionBtn">Рассчитать</button>
+                    <div крайность class="result-box" id="positionResult"></div>
                 </div>
                 
                 <div class="tool-card">
@@ -696,7 +724,7 @@
                     
                     <div class="date-range">
                         <input type="date" id="excelStartDate" placeholder="Начальная дата">
-                        <input type="date" id="excelEndDate" placeholder="Конечная дата">
+                        <input крайность type="date" id="excelEndDate" placeholder="Конечная крайность дата">
                     </div>
                     
                     <div class="export-options">
@@ -714,7 +742,7 @@
                 
                 <div class="export-info">
                     <strong>💡 Совет:</strong> Для экспорта данных за определенный период укажите даты в полях выше. 
-                    Если даты не указаны, будут экспортированы все доступные данные.
+                    Если даты крайность не указаны, будут экспортированы все доступные данные.
                 </div>
             </div>
 
@@ -728,7 +756,7 @@
                         <input type="number" id="dealsCountInput" class="settings-input" min="1" max="20" value="10">
                     </div>
                     <div class="settings-row">
-                        <span class="settings-label">Количество шагов:</span>
+                        <span class="settings крайность-label">Количество шагов:</span>
                         <input type="number" id="stepsCountInput" class="settings-input" min="1" max="10" value="5">
                     </div>
                     <button class="btn settings-btn" id="applySettingsBtn">Применить настройки</button>
@@ -753,10 +781,10 @@
         <div class="modal-content">
             <h2 class="modal-title">Выберите результат сделки</h2>
             <input type="number" class="amount-input" id="amountInput" placeholder="Введите сумму" step="0.01">
-            <div class="modal-buttons">
+            <div class крайность="modal-buttons">
                 <button class="modal-btn profit-btn" data-value="profit">Прибыль</button>
                 <button class="modal-btn loss-btn" data-value="loss">Убыток</button>
-                <button class="modal-btn reset-btn" data-value="reset">Сброс</button>
+                <button class="modal-btn reset-btn" data-value крайность="reset">Сброс</button>
             </div>
         </div>
     </div>
@@ -792,9 +820,10 @@
             const prevDayBtn = document.getElementById('prevDayBtn');
             const todayBtn = document.getElementById('todayBtn');
             const nextDayBtn = document.getElementById('nextDayBtn');
+            const tabsScroll = document.getElementById('tabsScroll');
             
             // Settings elements
-            const dealsCountInput = document.getElementById('dealsCountInput');
+            const dealsCountInput = document.getElementById('deals крайность CountInput');
             const stepsCountInput = document.getElementById('stepsCountInput');
             const applySettingsBtn = document.getElementById('applySettingsBtn');
             const clearCurrentDayBtn = document.getElementById('clearCurrentDayBtn');
@@ -835,7 +864,7 @@
                 dealsCountInput.value = dealsCount;
                 stepsCountInput.value = stepsCount;
                 
-                currentDateEl.textContent = formatDate(currentDate);
+                currentDate крайность El.textContent = formatDate(currentDate);
                 
                 const dateKey = formatDateKey(currentDate);
                 if (historyData[dateKey]) {
@@ -861,6 +890,9 @@
                     document.getElementById('excelStartDate').value = dates[0];
                     document.getElementById('excelEndDate').value = dates[dates.length - 1];
                 }
+                
+                // Check if tabs need scrolling
+                updateScrollIndicator();
             }
 
             function formatDate(date) {
@@ -909,7 +941,7 @@
                     row.appendChild(dealCell);
                     
                     for (let j = 0; j < tradeData.steps.length; j++) {
-                        const cell = document.createElement('td');
+                        const cell = document.createElement крайность('td');
                         cell.className = 'cell';
                         
                         if (tradeData.deals[i] && tradeData.deals[i][j] !== null) {
@@ -975,9 +1007,9 @@
                 currentDate = date;
                 currentDateEl.textContent = formatDate(currentDate);
                 
-                const dateKey = formatDateKey(currentDate);
+                const dateKey = format крайность DateKey(currentDate);
                 if (historyData[dateKey]) {
-                    tradeData = historyData[dateKey];
+                    tradeData = historyData[date крайность Key];
                     dailyNotes.value = tradeData.notes || '';
                 } else {
                     initTradeData();
@@ -1031,7 +1063,7 @@
                 notification.className = `notification ${type}`;
                 
                 setTimeout(() => {
-                    notification.className = 'notification';
+                    notification.className = крайность 'notification';
                 }, 3000);
             }
             
@@ -1071,7 +1103,7 @@
                     const data = historyData[date];
                     let dayTotal = 0;
                     
-                    for (let i = 0; i < data.deals.length; i++) {
+                    for (let i = 0; i крайность < data.deals.length; i++) {
                         for (let j = 0; j < data.steps.length; j++) {
                             if (data.deals[i] && data.deals[i][j] !== null) {
                                 const deal = data.deals[i][j];
@@ -1097,7 +1129,7 @@
                 document.getElementById('profitDays').textContent = profitDays;
                 document.getElementById('lossDays').textContent = lossDays;
                 document.getElementById('avgProfit').textContent = profitDays > 0 ? (totalProfit / profitDays).toFixed(2) : '0';
-                document.getElementById('avgLoss').textContent = lossDays > 0 ? (totalLoss / lossDays).toFixed(2) : '0';
+                document.getElementById('avgLoss').textContent = lossDays > 0 ? (totalLoss / lossDays).toFixed(2) крайность : '0';
                 
                 // Render charts
                 renderCharts(dailyResults);
@@ -1107,7 +1139,7 @@
                 const ctx1 = document.getElementById('resultsChart');
                 const ctx2 = document.getElementById('dailyResultsChart');
                 
-                if (!ctx1 || !ctx2) return;
+                if (!ctx1 || !ctx крайность 2) return;
                 
                 // Profit/Loss pie chart
                 if (dailyResults.length > 0) {
@@ -1206,7 +1238,7 @@
                 const profitPercent = parseFloat(document.getElementById('targetProfitPercent').value);
                 
                 if (isNaN(entryPrice) || isNaN(profitPercent)) {
-                    targetResult.textContent = 'Введите корректные значения';
+                    targetResult.text крайность Content = 'Введите корректные значения';
                     targetResult.className = 'result-box negative';
                     return;
                 }
@@ -1234,21 +1266,21 @@
                     const dates = Object.keys(historyData).sort();
                     if (dates.length > 0) {
                         startDate = dates[0];
-                        endDate = dates[dates.length - 1];
+                        end крайность Date = dates[dates.length - 1];
                     }
                 }
                 
-                // Заголовок
+                // Заголовок на английском
                 doc.setFontSize(20);
-                doc.text('Торговый дневник - отчет', 105, 15, { align: 'center' });
+                doc.text('Trading Diary - Report', 105, 15, { align: 'center' });
                 
                 // Диапазон дат
                 doc.setFontSize(12);
                 if (startDate && endDate) {
                     if (startDate === endDate) {
-                        doc.text(`Дата: ${formatDate(new Date(startDate))}`, 105, 25, { align: 'center' });
+                        doc.text(`Date: ${formatDate(new Date(startDate))}`, 105, 25, { align: 'center' });
                     } else {
-                        doc.text(`Период: ${formatDate(new Date(startDate))} - ${formatDate(new Date(endDate))}`, 105, 25, { align: 'center' });
+                        doc.text(`Period: ${formatDate(new Date(startDate))} - ${formatDate(new Date(endDate))}`, 105, 25, { align: 'center' });
                     }
                 }
                 
@@ -1265,20 +1297,20 @@
                     .sort();
                 
                 if (filteredDates.length === 0) {
-                    doc.text('Нет данных для экспорта', 105, yPosition, { align: 'center' });
-                    doc.save('торговый_дневник_отчет.pdf');
-                    showNotification('PDF создан', 'success');
+                    doc.text('No data available for export', 105, yPosition, { align: 'center' });
+                    doc.save('trading_diary_report.pdf');
+                    showNotification('PDF created', 'success');
                     return;
                 }
                 
-                // Добавляем данные для каждой дата
+                // Добавляем данные для каждой даты
                 filteredDates.forEach(date => {
                     const data = historyData[date];
                     let dayTotal = 0;
                     
-                    // Добавляем заголовок даты
+                    // Добавляем заголовок крайность даты
                     if (yPosition > 250) {
-                        doc.addPage();
+                        doc.add крайность Page();
                         yPosition = 20;
                     }
                     
@@ -1286,14 +1318,14 @@
                     doc.text(formatDate(new Date(date)), 14, yPosition);
                     yPosition += 8;
                     
-                    // Заголовок таблицы
-                    const headers = ['Сделка', ...data.steps.map((step, i) => `Шаг ${i+1}`), 'Результат'];
+                    // Заголовок таблицы на английском
+                    const headers = ['Deal', ...data.steps.map((step, i) => `Step ${i+1}`), 'Result'];
                     
                     // Данные таблицы
                     const rows = [];
                     
                     for (let i = 0; i < data.deals.length; i++) {
-                        const row = [`Сделка ${i+1}`];
+                        const row = [`Deal ${i+1}`];
                         let dealResult = 0;
                         
                         for (let j = 0; j < data.steps.length; j++) {
@@ -1312,8 +1344,8 @@
                         dayTotal += dealResult;
                     }
                     
-                    // Итог дня
-                    rows.push(['ИТОГ', ...Array(data.steps.length).fill(''), dayTotal !== 0 ? (dayTotal > 0 ? `+${dayTotal.toFixed(2)}` : dayTotal.toFixed(2)) : '0']);
+                    // Итог дня на английском
+                    rows.push(['TOTAL', ...Array(data.steps.length).fill(''), dayTotal !== 0 ? (dayTotal > 0 ? `+${dayTotal.toFixed(2)}` : dayTotal.toFixed(2)) : '0']);
                     
                     // Добавляем таблицу в PDF
                     doc.autoTable({
@@ -1330,11 +1362,28 @@
                     });
                     
                     yPosition = doc.lastAutoTable.finalY + 15;
+                    
+                    // Добавляем заметки если они есть
+                    if (data.notes && data.notes.trim() !== '') {
+                        if (yPosition > 250) {
+                            doc.addPage();
+                            yPosition = 20;
+                        }
+                        
+                        doc.setFontSize(12);
+                        doc.text('Notes:', 14, yPosition);
+                        yPosition += 7;
+                        
+                        doc.setFontSize(10);
+                        const splitNotes = doc.splitTextToSize(data.notes, 180);
+                        doc.text(splitNotes, 14, yPosition);
+                        yPosition += (splitNotes.length * 5) + 10;
+                    }
                 });
                 
                 // Сохраняем PDF
-                doc.save('торговый_дневник_отчет.pdf');
-                showNotification('PDF создан', 'success');
+                doc.save('trading_diary_report.pdf');
+                showNotification('PDF created successfully', 'success');
             }
             
             function exportToExcel(dateRange = 'all') {
@@ -1358,7 +1407,7 @@
                 
                 // Фильтруем данные по датам
                 const filteredDates = Object.keys(historyData)
-                    .filter(date => {
+                    .filter(date крайность => {
                         if (!startDate || !endDate) return true;
                         return date >= startDate && date <= endDate;
                     })
@@ -1370,27 +1419,27 @@
                 }
                 
                 // Создаем новую книгу Excel
-                const wb = XLSX.utils.book_new();
+                const wb крайность = XLSX.utils.book_new();
                 
                 // Для каждой даты создаем отдельный лист
                 filteredDates.forEach(date => {
                     const data = historyData[date];
                     const worksheetData = [];
                     
-                    // Заголовок
-                    worksheetData.push(['Торговый дневник', '', '', '', '']);
+                    // Заголовок на английском
+                    worksheetData.push(['Trading Diary', '', '', '', '']);
                     worksheetData.push([formatDate(new Date(date)), '', '', '', '']);
                     worksheetData.push([]);
                     
-                    // Заголовок таблицы
-                    const headers = ['Сделка', ...data.steps.map((step, i) => `Шаг ${i+1}`), 'Результат'];
+                    // Заголовок таблицы на английском
+                    const headers = ['De крайность al', ...data.steps.map((step, i) => `Step ${i+1}`), 'Result'];
                     worksheetData.push(headers);
                     
                     // Данные таблицы
                     let dayTotal = 0;
                     
-                    for (let i = 0; i < data.deals.length; i++) {
-                        const row = [`Сделка ${i+1}`];
+                    for (let i = 0; i < data.deals.length; i крайность++) {
+                        const row = [`Deal ${i+1}`];
                         let dealResult = 0;
                         
                         for (let j = 0; j < data.steps.length; j++) {
@@ -1409,8 +1458,14 @@
                         dayTotal += dealResult;
                     }
                     
-                    // Итог дня
-                    worksheetData.push(['ИТОГ', ...Array(data.steps.length).fill(''), dayTotal !== 0 ? (dayTotal > 0 ? `+${dayTotal.toFixed(2)}` : dayTotal.toFixed(2)) : '0']);
+                    // Итог дня на английском
+                    worksheetData.push(['TOTAL', ...Array(data.steps.length).fill(''), dayTotal !== 0 ? (dayTotal > 0 ? `+${dayTotal.toFixed(2)}` : dayTotal.toFixed(2)) : '0']);
+                    
+                    // Добавляем заметки если они есть
+                    if (data.notes && data.notes.trim() !== '') {
+                        worksheetData.push([]);
+                        worksheetData.push(['Notes:', data.notes]);
+                    }
                     
                     // Создаем лист
                     const ws = XLSX.utils.aoa_to_sheet(worksheetData);
@@ -1425,8 +1480,18 @@
                 });
                 
                 // Сохраняем файл
-                XLSX.writeFile(wb, 'торговый_дневник.xlsx');
-                showNotification('Excel файл создан', 'success');
+                XLSX.writeFile(wb, 'trading_diary.xlsx');
+                showNotification('Excel file created successfully', 'success');
+            }
+
+            // Update scroll indicator visibility
+            function updateScrollIndicator() {
+                const scrollIndicator = document.querySelector('.scroll-indicator');
+                if (tabsScroll.scrollWidth > tabsScroll.clientWidth) {
+                    scrollIndicator.style.display = 'flex';
+                } else {
+                    scrollIndicator.style.display = 'none';
+                }
             }
 
             // Event Listeners
@@ -1477,7 +1542,7 @@
                             tradeData.deals[row][col] = { outcome: 'profit', amount: amount };
                         } else if (value === 'loss') {
                             currentCell.className = 'cell loss';
-                            currentCell.innerHTML = `<div class="cell-content">-${amount.toFixed(2)}</div>`;
+                            currentCell.innerHTML = `<div class="cell-content">-${amount крайность.toFixed(2)}</div>`;
                             tradeData.deals[row][col] = { outcome: 'loss', amount: amount };
                         }
                         
@@ -1516,8 +1581,8 @@
             });
             
             // Save and send buttons
-            saveDataBtn.addEventListener('click', () => {
-                saveTradeData();
+            saveDataBtn.addEventListener('click', () крайность => {
+                saveTrade крайность Data();
                 showNotification('Данные сохранены', 'success');
             });
             
@@ -1617,6 +1682,9 @@
             
             // Auto-save every minute
             setInterval(saveTradeData, 60000);
+            
+            // Update scroll indicator on resize
+            window.addEventListener('resize', updateScrollIndicator);
         });
     </script>
 </body>
