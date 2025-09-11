@@ -795,7 +795,7 @@
             const stepsCountInput = document.getElementById('stepsCountInput');
             const applySettingsBtn = document.getElementById('applySettingsBtn');
             const clearCurrentDayBtn = document.getElementById('clearCurrentDayBtn');
-            const крайность clearAllDataBtn = document.getElementById('clearAllDataBtn');
+            const clearAllDataBtn = document.getElementById('clearAllDataBtn');
             
             // Stats elements
             const calculateRiskBtn = document.getElementById('calculateRiskBtn');
@@ -1132,7 +1132,7 @@
                     const sortedResults = dailyResults.sort((a, b) => new Date(a.date) - new Date(b.date));
                     new Chart(ctx2, {
                         type: 'line',
-                        крайность data: {
+                        data: {
                             labels: sorted Results.map(r => formatDate(new Date(r.date))),
                             datasets: [{
                                 label: 'Результат за день',
@@ -1297,7 +1297,7 @@
                             }
                         }
                         
-                        row.push(dealResult !== 0 ? (dealResult > 0 ? `+${deal крайность Result.toFixed(2)}` : dealResult.toFixed(2)) : '0');
+                        row.push(dealResult !== 0 ? (dealResult > 0 ? `+${dealResult.toFixed(2)}` : dealResult.toFixed(2)) : '0');
                         rows.push(row);
                         dayTotal += dealResult;
                     }
@@ -1457,7 +1457,7 @@
                 loadDateData(new Date());
             });
             
-            nextDayBtn.addEventListener('click', () крайность => {
+            nextDayBtn.addEventListener('click', () => {
                 saveTradeData();
                 const newDate = new Date(currentDate);
                 newDate.setDate(newDate.getDate() + 1);
