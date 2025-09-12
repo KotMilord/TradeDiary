@@ -466,20 +466,29 @@
             background-color: #fadbd8;
         }
         
-        /* Новые стили для баланса и плана */
-        .balance-panel {
+        /* Новые стили для баланса */
+        .balance-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .balance-card {
+            flex: 1;
+            min-width: 150px;
             background: var(--tg-theme-secondary-bg-color, #f8f9fa);
             padding: 15px;
             border-radius: 8px;
-            margin-bottom: 15px;
+            text-align: center;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
         }
         
-        .balance-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
+        .balance-card h3 {
+            margin-bottom: 10px;
+            color: var(--tg-theme-text-color, #2c3e50);
+            font-size: 1rem;
         }
         
         .balance-value {
@@ -491,6 +500,12 @@
         .balance-label {
             font-size: 0.9rem;
             color: var(--tg-theme-hint-color, #7f8c8d);
+        }
+        
+        .balance-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
         }
         
         .risk-goal-panel {
@@ -642,7 +657,7 @@
         }
         
         @media (max-width: 768px) {
-            .plan-grid, .risk-goal-panel {
+            .plan-grid, .risk-goal-panel, .balance-container {
                 grid-template-columns: 1fr;
             }
         }
@@ -666,20 +681,24 @@
         
         <div class="main-content">
             <div class="tab-content active" id="table-tab">
-                <!-- Панель баланса и дня -->
-                <div class="balance-panel">
-    <div class="balance-info">
-        <div>
-            <div class="balance-label">Баланс начала дня</div>
-            <div class="balance-value" id="startingBalanceValue">100000</div>
-        </div>
-        <div>
-            <div class="balance-label">Текущий баланс</div>
-            <div class="balance-value" id="currentBalanceValue">100000</div>
-        </div>
-        <button class="btn btn-success" id="endDayBtn">Завершить день</button>
-    </div>
-</div>
+                <!-- Панель баланса -->
+                <div class="balance-container">
+                    <div class="balance-card">
+                        <h3>Баланс начала дня</h3>
+                        <div class="balance-value" id="startingBalanceValue">100000</div>
+                    </div>
+                    <div class="balance-card">
+                        <h3>Текущий баланс</h3>
+                        <div class="balance-value" id="currentBalanceValue">100000</div>
+                    </div>
+                    <div class="balance-card">
+                        <h3>Итог дня</h3>
+                        <div class="balance-value" id="dayResultValue">0</div>
+                        <div class="balance-actions">
+                            <button class="btn btn-success" id="endDayBtn">Завершить день</button>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Панель риска и цели -->
                 <div class="risk-goal-panel">
@@ -739,16 +758,14 @@
             <div class="tab-content" id="plan-tab">
                 <h2>План торговли</h2>
                 
-                <div class="balance-panel">
-                    <div class="balance-info">
-                        <div>
-                            <div class="balance-label">Текущий баланс</div>
-                            <div class="balance-value" id="planBalanceValue">100000</div>
-                        </div>
-                        <div>
-                            <div class="balance-label">Торговый день</div>
-                            <div class="balance-value" id="planDayNumber">1</div>
-                        </div>
+                <div class="balance-container">
+                    <div class="balance-card">
+                        <h3>Баланс начала дня</h3>
+                        <div class="balance-value" id="planStartingBalanceValue">100000</div>
+                    </div>
+                    <div class="balance-card">
+                        <h3>Текущий баланс</h3>
+                        <div class="balance-value" id="planBalanceValue">100000</div>
                     </div>
                 </div>
                 
@@ -760,12 +777,8 @@
                             <input type="number" id="initialBalanceInput" placeholder="100000">
                         </div>
                         <div class="plan-input-group">
-                            <label>Текущий баланс:</label>
-                            <input type="number" id="currentBalanceInput" placeholder="100000">
-                        </div>
-                        <div class="plan-input-group">
-                            <label>Торговый день:</label>
-                            <input type="number" id="tradingDayInput" placeholder="1" min="1">
+                            <label>Баланс начала дня:</label>
+                            <input type="number" id="startingBalanceInput" placeholder="100000">
                         </div>
                         <button class="btn" id="saveBalanceBtn">Сохранить</button>
                     </div>
@@ -888,7 +901,7 @@
             </div>
             
             <div class="tab-content" id="export-tab">
-                <h2>Экспорт данных в ПК тг</h2>
+                <h2>Экспорт данных</h2>
                 
                 <div class="export-section">
                     <h3>Экспорт в PDF</h3>
@@ -1034,16 +1047,17 @@
             const exportRangeExcel = document.getElementById('exportRangeExcel');
             const exportAllExcel = document.getElementById('exportAllExcel');
 
-            // Новые элементы для баланса и плана
+            // Новые элементы для баланса
+            const startingBalanceValue = document.getElementById('startingBalanceValue');
             const currentBalanceValue = document.getElementById('currentBalanceValue');
-            const tradingDayNumber = document.getElementById('tradingDayNumber');
+            const dayResultValue = document.getElementById('dayResultValue');
+            const endDayBtn = document.getElementById('endDayBtn');
             const planBalanceValue = document.getElementById('planBalanceValue');
-            const planDayNumber = document.getElementById('planDayNumber');
+            const planStartingBalanceValue = document.getElementById('planStartingBalanceValue');
             
             // Элементы плана
             const initialBalanceInput = document.getElementById('initialBalanceInput');
-            const currentBalanceInput = document.getElementById('currentBalanceInput');
-            const tradingDayInput = document.getElementById('tradingDayInput');
+            const startingBalanceInput = document.getElementById('startingBalanceInput');
             const saveBalanceBtn = document.getElementById('saveBalanceBtn');
             const dailyGoalInput = document.getElementById('dailyGoalInput');
             const minDailyGoalInput = document.getElementById('minDailyGoalInput');
@@ -1069,8 +1083,6 @@
             const riskProgressText = document.getElementById('riskProgressText');
 
             // State
-            let startingBalance = 100000;
-            let currentBalance = 100000;
             let currentDate = new Date();
             let stepsCount = 5;
             let dealsCount = 10;
@@ -1081,9 +1093,9 @@
                 stepsCount: 5, 
                 dealsCount: 10,
                 // Новые настройки баланса и плана
-                balance: 100000,
                 initialBalance: 100000,
-                tradingDay: 1,
+                startingBalance: 100000,
+                currentBalance: 100000,
                 dailyGoal: 500,
                 minDailyGoal: 200,
                 dailyRiskPercent: 2,
@@ -1095,11 +1107,6 @@
 
             // Initialize
             function init() {
-                // инициализация баланса
-               if (appSettings.startingBalance) {
-    startingBalance = appSettings.startingBalance;
-    currentBalance = appSettings.currentBalance || startingBalance;
-}
                 // Load settings
                 if (appSettings.stepsCount) stepsCount = appSettings.stepsCount;
                 if (appSettings.dealsCount) dealsCount = appSettings.dealsCount;
@@ -1109,6 +1116,22 @@
                 if (stepsCountInput) stepsCountInput.value = stepsCount;
                 
                 if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
+                
+                // Загружаем настройки баланса
+                if (appSettings.initialBalance && initialBalanceInput) {
+                    initialBalanceInput.value = appSettings.initialBalance;
+                }
+                
+                if (appSettings.startingBalance && startingBalanceValue) {
+                    startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
+                    if (startingBalanceInput) startingBalanceInput.value = appSettings.startingBalance;
+                    if (planStartingBalanceValue) planStartingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
+                }
+                
+                if (appSettings.currentBalance && currentBalanceValue) {
+                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
+                    if (planBalanceValue) planBalanceValue.textContent = formatNumber(appSettings.currentBalance);
+                }
                 
                 const dateKey = formatDateKey(currentDate);
                 if (historyData[dateKey]) {
@@ -1121,23 +1144,6 @@
                 } else {
                     initTradeData();
                     renderTable();
-                }
-                
-                // Загружаем настройки баланса
-                if (appSettings.balance && currentBalanceValue) {
-                    currentBalanceValue.textContent = formatNumber(appSettings.balance);
-                    if (planBalanceValue) planBalanceValue.textContent = formatNumber(appSettings.balance);
-                    if (currentBalanceInput) currentBalanceInput.value = appSettings.balance;
-                }
-                
-                if (appSettings.initialBalance && initialBalanceInput) {
-                    initialBalanceInput.value = appSettings.initialBalance;
-                }
-                
-                if (appSettings.tradingDay && tradingDayNumber) {
-                    tradingDayNumber.textContent = appSettings.tradingDay;
-                    if (planDayNumber) planDayNumber.textContent = appSettings.tradingDay;
-                    if (tradingDayInput) tradingDayInput.value = appSettings.tradingDay;
                 }
                 
                 // Загружаем настройки плана
@@ -1267,101 +1273,38 @@
                 }
             }
             
-        function updateTotal() {
-    let total = 0;
-    
-    for (let i = 0; i < dealsCount; i++) {
-        for (let j = 0; j < tradeData.steps.length; j++) {
-            if (tradeData.deals[i] && tradeData.deals[i][j] !== null) {
-                const deal = tradeData.deals[i][j];
-                total += deal.outcome === 'profit' ? deal.amount : -deal.amount;
-            }
-        }
-    }
-    
-    // Обновляем текущий баланс
-    currentBalance = startingBalance + total;
-    
-    if (currentBalanceValue) {
-        currentBalanceValue.textContent = formatNumber(currentBalance);
-    }
-    
-    if (totalValueEl) {
-        totalValueEl.textContent = total.toFixed(2);
-        
-        if (total > 0) {
-            totalValueEl.className = 'summary-value positive';
-        } else if (total < 0) {
-            totalValueEl.className = 'summary-value negative';
-        } else {
-            totalValueEl.className = 'summary-value';
-        }
-    }
-    
-    updateGoalProgress();
-    updateRiskDisplay();
-}
-
-            // Добавьте обработчик для кнопки завершения дня
-document.getElementById('endDayBtn').addEventListener('click', function() {
-    // Сохраняем текущий баланс как начальный для следующего дня
-    startingBalance = currentBalance;
-    
-    // Сохраняем в настройках
-    appSettings.startingBalance = startingBalance;
-    appSettings.currentBalance = currentBalance;
-    saveSettings();
-    
-    // Обновляем отображение
-    document.getElementById('startingBalanceValue').textContent = formatNumber(startingBalance);
-    document.getElementById('currentBalanceValue').textContent = formatNumber(currentBalance);
-    
-    showNotification('День завершен. Баланс перенесен на следующий день', 'success');
-});
-
-// Обновите функцию loadDateData для правильной загрузки баланса при смене дня
-function loadDateData(date) {
-    // Сохраняем данные текущего дня
-    saveTradeData();
-    
-    currentDate = date;
-    if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
-    
-    const dateKey = formatDateKey(currentDate);
-    if (historyData[dateKey]) {
-        tradeData = historyData[dateKey];
-        if (dailyNotes) dailyNotes.value = tradeData.notes || '';
-        
-        // Пересчитываем баланс для загруженного дня
-        let dayTotal = 0;
-        for (let i = 0; i < tradeData.deals.length; i++) {
-            for (let j = 0; j < tradeData.steps.length; j++) {
-                if (tradeData.deals[i] && tradeData.deals[i][j] !== null) {
-                    const deal = tradeData.deals[i][j];
-                    dayTotal += deal.outcome === 'profit' ? deal.amount : -deal.amount;
+            function updateTotal() {
+                let total = 0;
+                
+                for (let i = 0; i < dealsCount; i++) {
+                    for (let j = 0; j < tradeData.steps.length; j++) {
+                        if (tradeData.deals[i] && tradeData.deals[i][j] !== null) {
+                            const deal = tradeData.deals[i][j];
+                            total += deal.outcome === 'profit' ? deal.amount : -deal.amount;
+                        }
+                    }
                 }
-            }
-        }
-        
-        currentBalance = startingBalance + dayTotal;
-    } else {
-        initTradeData();
-        if (dailyNotes) dailyNotes.value = '';
-        // Для нового дня используем текущий startingBalance
-        currentBalance = startingBalance;
-    }
-    
-    // Обновляем отображение баланса
-    if (currentBalanceValue) currentBalanceValue.textContent = formatNumber(currentBalance);
-    if (document.getElementById('startingBalanceValue')) {
-        document.getElementById('startingBalanceValue').textContent = formatNumber(startingBalance);
-    }
-    
-    renderTable();
-    updateTotal();
-    renderHistory();
-    updateStats();
-}
+                
+                // Обновляем текущий баланс
+                const currentBalance = appSettings.startingBalance + total;
+                appSettings.currentBalance = currentBalance;
+                
+                if (currentBalanceValue) {
+                    currentBalanceValue.textContent = formatNumber(currentBalance);
+                    if (planBalanceValue) planBalanceValue.textContent = formatNumber(currentBalance);
+                }
+                
+                if (dayResultValue) {
+                    dayResultValue.textContent = formatNumber(total);
+                    if (total > 0) {
+                        dayResultValue.className = 'balance-value positive';
+                    } else if (total < 0) {
+                        dayResultValue.className = 'balance-value negative';
+                    } else {
+                        dayResultValue.className = 'balance-value';
+                    }
+                }
+                
                 if (totalValueEl) {
                     totalValueEl.textContent = total.toFixed(2);
                     
@@ -1374,7 +1317,7 @@ function loadDateData(date) {
                     }
                 }
                 
-                // Добавляем обновление прогресса
+                // Обновляем прогресс
                 updateGoalProgress();
                 updateRiskDisplay();
             }
@@ -1435,6 +1378,10 @@ function loadDateData(date) {
                 const dateKey = formatDateKey(currentDate);
                 historyData[dateKey] = {...tradeData};
                 localStorage.setItem('tradeHistory', JSON.stringify(historyData));
+                
+                // Сохраняем настройки
+                saveSettings();
+                
                 showNotification('Данные сохранены', 'success');
             }
             
@@ -2002,6 +1949,10 @@ function loadDateData(date) {
                     
                     if (tabId === 'stats') {
                         updateStats();
+                    } else if (tabId === 'plan') {
+                        // Обновляем значения в плане при переходе на вкладку
+                        if (planBalanceValue) planBalanceValue.textContent = formatNumber(appSettings.currentBalance);
+                        if (planStartingBalanceValue) planStartingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
                     }
                 });
             });
@@ -2125,20 +2076,20 @@ function loadDateData(date) {
             if (saveBalanceBtn) {
                 saveBalanceBtn.addEventListener('click', () => {
                     const initialBalance = parseFloat(initialBalanceInput?.value || '0');
-                    const currentBalance = parseFloat(currentBalanceInput?.value || '0');
-                    const tradingDay = parseInt(tradingDayInput?.value || '1');
+                    const startingBalance = parseFloat(startingBalanceInput?.value || '0');
                     
-                    if (!isNaN(initialBalance) && !isNaN(currentBalance) && !isNaN(tradingDay) && tradingDay > 0) {
+                    if (!isNaN(initialBalance) && !isNaN(startingBalance)) {
                         appSettings.initialBalance = initialBalance;
-                        appSettings.balance = currentBalance;
-                        appSettings.tradingDay = tradingDay;
+                        appSettings.startingBalance = startingBalance;
+                        appSettings.currentBalance = startingBalance;
                         
-                        if (currentBalanceValue) currentBalanceValue.textContent = formatNumber(appSettings.balance);
-                        if (planBalanceValue) planBalanceValue.textContent = formatNumber(appSettings.balance);
-                        if (tradingDayNumber) tradingDayNumber.textContent = appSettings.tradingDay;
-                        if (planDayNumber) planDayNumber.textContent = appSettings.tradingDay;
+                        if (startingBalanceValue) startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
+                        if (currentBalanceValue) currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
+                        if (planStartingBalanceValue) planStartingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
+                        if (planBalanceValue) planBalanceValue.textContent = formatNumber(appSettings.currentBalance);
                         
                         saveSettings();
+                        updateTotal();
                         showNotification('Настройки баланса сохранены', 'success');
                     } else {
                         showNotification('Введите корректные значения', 'error');
@@ -2172,7 +2123,7 @@ function loadDateData(date) {
                     riskSliderValue.textContent = riskPercent + '%';
                     
                     // Автоматически пересчитываем сумму риска
-                    const riskAmount = appSettings.balance * (riskPercent / 100);
+                    const riskAmount = appSettings.startingBalance * (riskPercent / 100);
                     if (dailyRiskInput) dailyRiskInput.value = riskAmount.toFixed(2);
                     if (dailyRiskValue) dailyRiskValue.textContent = riskAmount.toFixed(0);
                 });
@@ -2211,6 +2162,27 @@ function loadDateData(date) {
                     } else {
                         showNotification('Введите корректные значения', 'error');
                     }
+                });
+            }
+
+            // Обработчик для кнопки завершения дня
+            if (endDayBtn) {
+                endDayBtn.addEventListener('click', function() {
+                    // Сохраняем текущий баланс как начальный для следующего дня
+                    appSettings.startingBalance = appSettings.currentBalance;
+                    
+                    // Сохраняем настройки
+                    saveSettings();
+                    
+                    // Обновляем отображение
+                    if (startingBalanceValue) {
+                        startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
+                    }
+                    if (planStartingBalanceValue) {
+                        planStartingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
+                    }
+                    
+                    showNotification('День завершен. Баланс начала дня обновлен', 'success');
                 });
             }
 
