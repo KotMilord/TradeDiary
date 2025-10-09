@@ -21,41 +21,42 @@
             background: var(--tg-theme-bg-color, linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d));
             color: var(--tg-theme-text-color, #333);
             min-height: 100vh;
-            padding: 10px;
+            padding: 5px;
+            font-size: 14px;
         }
         
         .container {
             max-width: 100%;
             margin: 0 auto;
             background: var(--tg-theme-secondary-bg-color, rgba(255, 255, 255, 0.95));
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
         
         header {
             background: var(--tg-theme-bg-color, #2c3e50);
             color: var(--tg-theme-button-text-color, white);
-            padding: 15px;
+            padding: 10px;
             text-align: center;
             position: relative;
         }
         
         .date-display {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1rem;
+            margin-bottom: 5px;
         }
         
         .btn {
             background: var(--tg-theme-button-color, #3498db);
             color: var(--tg-theme-button-text-color, white);
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s;
-            margin: 4px;
+            margin: 2px;
         }
         
         .btn:hover {
@@ -79,29 +80,29 @@
         }
         
         .main-content {
-            padding: 15px;
+            padding: 10px;
         }
         
         .table-container {
             overflow-x: auto;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
-            border-radius: 8px;
+            border-radius: 6px;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
             background: var(--tg-theme-bg-color, white);
+            font-size: 0.75rem;
         }
         
         th, td {
             border: 1px solid var(--tg-theme-hint-color, #ddd);
-            padding: 8px;
+            padding: 4px;
             text-align: center;
-            min-width: 50px;
-            height: 40px;
-            font-size: 0.8rem;
+            min-width: 40px;
+            height: 30px;
         }
         
         th {
@@ -109,6 +110,7 @@
             color: var(--tg-theme-button-text-color, white);
             position: sticky;
             top: 0;
+            font-weight: bold;
         }
         
         .deal-header {
@@ -126,7 +128,7 @@
         }
         
         .cell-content {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             font-weight: bold;
         }
         
@@ -142,21 +144,22 @@
         
         .summary {
             background: var(--tg-theme-secondary-bg-color, #f8f9fa);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 6px;
             text-align: center;
-            font-size: 1rem;
-            margin-top: 15px;
+            font-size: 0.9rem;
+            margin-top: 10px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
         }
         
         .summary h3 {
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             color: var(--tg-theme-text-color, #2c3e50);
+            font-size: 0.9rem;
         }
         
         .summary-value {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
             color: var(--tg-theme-text-color, #2c3e50);
         }
@@ -184,26 +187,27 @@
         
         .modal-content {
             background: var(--tg-theme-bg-color, white);
-            padding: 20px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 8px;
             width: 90%;
-            max-width: 350px;
+            max-width: 300px;
             text-align: center;
         }
         
         .modal-buttons {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 10px;
         }
         
         .modal-btn {
-            padding: 8px 16px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 0.8rem;
         }
         
         .profit-btn {
@@ -223,21 +227,21 @@
         
         .tabs {
             display: flex;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             background: var(--tg-theme-secondary-bg-color, #ecf0f1);
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
             flex-wrap: wrap;
         }
         
         .tab {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.9rem;
-            min-width: 80px;
+            font-size: 0.8rem;
+            min-width: 70px;
         }
         
         .tab.active {
@@ -255,33 +259,34 @@
         
         .history-item {
             background: var(--tg-theme-bg-color, white);
-            padding: 12px;
-            margin-bottom: 8px;
-            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 6px;
+            border-radius: 6px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
+            font-size: 0.8rem;
         }
         
         .history-date {
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             color: var(--tg-theme-text-color, #2c3e50);
         }
         
         .history-total {
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
         
         .notification {
             position: fixed;
-            top: 15px;
-            right: 15px;
-            padding: 12px;
-            border-radius: 5px;
+            top: 10px;
+            right: 10px;
+            padding: 8px;
+            border-radius: 4px;
             color: white;
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         
         .notification.success {
@@ -297,167 +302,174 @@
         .telegram-actions {
             display: flex;
             justify-content: center;
-            margin: 15px 0;
-            gap: 10px;
+            margin: 10px 0;
+            gap: 8px;
             flex-wrap: wrap;
         }
         
         .chart-container {
-            margin: 20px 0;
+            margin: 15px 0;
             position: relative;
-            height: 250px;
+            height: 200px;
             width: 100%;
         }
         
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 10px 0;
         }
         
         .stat-card {
             background: var(--tg-theme-secondary-bg-color, #f8f9fa);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 6px;
             text-align: center;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
         }
         
         .stat-value {
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            margin: 5px 0;
+            margin: 3px 0;
         }
         
         .stat-label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--tg-theme-hint-color, #7f8c8d);
         }
         
         .notes-section {
-            margin: 15px 0;
+            margin: 10px 0;
         }
         
         .notes-textarea {
             width: 100%;
-            min-height: 100px;
-            padding: 10px;
+            min-height: 80px;
+            padding: 8px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
-            border-radius: 8px;
+            border-radius: 6px;
             resize: vertical;
             font-family: inherit;
+            font-size: 0.8rem;
         }
         
         .export-section {
-            margin: 20px 0;
-            padding: 15px;
+            margin: 15px 0;
+            padding: 10px;
             background: var(--tg-theme-secondary-bg-color, #f8f9fa);
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
         }
         
         .export-options {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 10px;
         }
         
         .export-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 12px;
+            gap: 5px;
+            padding: 8px;
+            font-size: 0.8rem;
         }
         
         .date-range {
             display: flex;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 10px 0;
             flex-wrap: wrap;
         }
         
         .date-range input {
-            padding: 8px;
+            padding: 6px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 4px;
             flex: 1;
+            font-size: 0.8rem;
         }
         
         .export-info {
-            margin-top: 15px;
-            padding: 10px;
+            margin-top: 10px;
+            padding: 8px;
             background: var(--tg-theme-bg-color, #e3f2fd);
-            border-radius: 5px;
-            font-size: 0.9rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
         
         .amount-input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 8px;
+            margin: 8px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
         
         .modal-title {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
         
         .date-navigation {
             display: flex;
             justify-content: center;
-            margin: 10px 0;
-            gap: 10px;
+            margin: 8px 0;
+            gap: 8px;
         }
         
         .date-btn {
             background: var(--tg-theme-button-color, #3498db);
             color: var(--tg-theme-button-text-color, white);
             border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 15px;
             cursor: pointer;
+            font-size: 0.8rem;
         }
 
         .settings-panel {
             background: var(--tg-theme-secondary-bg-color, #f8f9fa);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
         }
 
         .settings-panel h3 {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--tg-theme-text-color, #2c3e50);
+            font-size: 0.9rem;
         }
 
         .settings-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .settings-label {
             flex: 1;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         .settings-input {
-            width: 60px;
-            padding: 5px;
+            width: 50px;
+            padding: 4px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 4px;
             text-align: center;
+            font-size: 0.8rem;
         }
 
         .settings-btn {
-            margin-top: 10px;
+            margin-top: 8px;
             width: 100%;
         }
 
@@ -466,34 +478,39 @@
             background-color: #fadbd8;
         }
         
-        /* Новые стили для вкладки Общая */
+        /* Стили для вкладки Общая */
         .general-header {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .month-title {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         
         .current-date {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--tg-theme-hint-color, #7f8c8d);
         }
         
         .general-table-container {
             overflow-x: auto;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
-            border-radius: 8px;
+            border-radius: 6px;
+        }
+        
+        .general-table {
+            font-size: 0.7rem;
         }
         
         .general-table th, .general-table td {
-            padding: 10px;
+            padding: 3px;
             text-align: center;
-            min-width: 80px;
+            min-width: 50px;
+            height: 25px;
         }
         
         .general-table .editable {
@@ -508,29 +525,31 @@
         .general-summary {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 10px;
         }
         
         .summary-field {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .summary-field label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             font-weight: bold;
+            font-size: 0.8rem;
         }
         
         .summary-field input, .summary-field textarea {
             width: 100%;
-            padding: 8px;
+            padding: 6px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 4px;
+            font-size: 0.8rem;
         }
         
         .summary-field textarea {
-            min-height: 60px;
+            min-height: 50px;
             resize: vertical;
         }
         
@@ -549,40 +568,140 @@
         
         .target-modal-content {
             background: var(--tg-theme-bg-color, white);
-            padding: 20px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 8px;
             width: 90%;
-            max-width: 300px;
+            max-width: 280px;
             text-align: center;
         }
         
         .target-modal-buttons {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 10px;
         }
         
         .target-modal-btn {
-            padding: 8px 16px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 0.8rem;
         }
         
         .target-input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            padding: 8px;
+            margin: 8px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Компактные стили для баланса */
+        .balance-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .balance-card {
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+        
+        .balance-card h3 {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .balance-value {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .balance-actions {
+            margin-top: 5px;
+        }
+        
+        /* Компактные стили для прогресс-баров */
+        .risk-goal-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .goal-progress, .risk-progress {
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+        
+        .progress-label {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar-container {
+            height: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            transition: width 0.3s;
+        }
+        
+        .progress-value {
+            font-size: 0.7rem;
         }
         
         @media (max-width: 768px) {
             .general-summary {
                 grid-template-columns: 1fr;
+            }
+            
+            .balance-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .risk-goal-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .export-options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Дополнительные компактные стили для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .general-table th, .general-table td {
+                min-width: 45px;
+                padding: 2px;
+                font-size: 0.65rem;
+            }
+            
+            table th, table td {
+                min-width: 35px;
+                padding: 3px;
+            }
+            
+            .tab {
+                min-width: 60px;
+                padding: 6px;
             }
         }
     </style>
@@ -675,7 +794,7 @@
                 </div>
             </div>
             
-            <!-- Новая вкладка "Общая" -->
+            <!-- Вкладка "Общая" -->
             <div class="tab-content" id="general-tab">
                 <div class="general-header">
                     <div class="month-title" id="currentMonthTitle"></div>
@@ -689,9 +808,9 @@
                                 <th>Day</th>
                                 <th>Profit Target</th>
                                 <th>Loss Target</th>
-                                <th>Actual profit/loss</th>
-                                <th>Number win trades</th>
-                                <th>Number loss trades</th>
+                                <th>Actual P/L</th>
+                                <th>Win Trades</th>
+                                <th>Loss Trades</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -704,21 +823,21 @@
                     <div class="summary-column">
                         <div class="summary-field">
                             <label for="currentBalanceInput">Current balance</label>
-                            <input type="number" id="currentBalanceInput" placeholder="Введите текущий баланс">
+                            <input type="number" id="currentBalanceInput" placeholder="Текущий баланс">
                         </div>
                         <div class="summary-field">
                             <label for="withdrawalInput">Withdrawal</label>
-                            <input type="number" id="withdrawalInput" placeholder="Введите сумму вывода">
+                            <input type="number" id="withdrawalInput" placeholder="Сумма вывода">
                         </div>
                         <div class="summary-field">
                             <label for="blowBalanceInput">Blow balance</label>
-                            <input type="number" id="blowBalanceInput" placeholder="Введите минимальный баланс">
+                            <input type="number" id="blowBalanceInput" placeholder="Мин. баланс">
                         </div>
                     </div>
                     <div class="summary-column">
                         <div class="summary-field">
                             <label for="commentsTextarea">Comments</label>
-                            <textarea id="commentsTextarea" placeholder="Добавьте комментарии"></textarea>
+                            <textarea id="commentsTextarea" placeholder="Комментарии"></textarea>
                         </div>
                         <div class="summary-field">
                             <label for="monthYearInput">MONTH & YEAR</label>
