@@ -30,7 +30,7 @@
             margin: 0 auto;
             background: var(--tg-theme-secondary-bg-color, rgba(255, 255, 255, 0.95));
             border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1));
             overflow: hidden;
         }
         
@@ -1072,7 +1072,7 @@
 
             // Initialize
             function init() {
-                // Load settings
+                // Load settings - ИСПРАВЛЕНИЕ: загружаем настройки из appSettings
                 if (appSettings.stepsCount) stepsCount = appSettings.stepsCount;
                 if (appSettings.dealsCount) dealsCount = appSettings.dealsCount;
                 
@@ -1094,6 +1094,12 @@
                 const dateKey = formatDateKey(currentDate);
                 if (historyData[dateKey]) {
                     tradeData = historyData[dateKey];
+                    // ИСПРАВЛЕНИЕ: проверяем соответствие структуры данных текущим настройкам
+                    if (!tradeData.steps || tradeData.steps.length !== stepsCount || 
+                        !tradeData.deals || tradeData.deals.length !== dealsCount) {
+                        // Если структура не соответствует настройкам, переинициализируем
+                        migrateTradeData(dateKey);
+                    }
                     renderTable();
                     updateTotal();
                     if (tradeData.notes && dailyNotes) {
@@ -1121,6 +1127,33 @@
                 initGeneralTab();
                 
                 renderHistory();
+            }
+
+            // НОВАЯ ФУНКЦИЯ: миграция данных при изменении настроек
+            function migrateTradeData(dateKey) {
+                const oldData = tradeData;
+                initTradeData();
+                
+                // Переносим заметки
+                if (oldData.notes) {
+                    tradeData.notes = oldData.notes;
+                }
+                
+                // Переносим данные сделок (насколько это возможно)
+                const minDeals = Math.min(dealsCount, oldData.deals.length);
+                const minSteps = Math.min(stepsCount, oldData.steps.length);
+                
+                for (let i = 0; i < minDeals; i++) {
+                    for (let j = 0; j < minSteps; j++) {
+                        if (oldData.deals[i] && oldData.deals[i][j] !== null) {
+                            tradeData.deals[i][j] = oldData.deals[i][j];
+                        }
+                    }
+                }
+                
+                // Сохраняем обновленные данные
+                historyData[dateKey] = {...tradeData};
+                localStorage.setItem('tradeHistory', JSON.stringify(historyData));
             }
 
             function formatDate(date) {
@@ -1342,6 +1375,11 @@
                 const dateKey = formatDateKey(currentDate);
                 if (historyData[dateKey]) {
                     tradeData = historyData[dateKey];
+                    // ИСПРАВЛЕНИЕ: проверяем соответствие структуры данных текущим настройкам
+                    if (!tradeData.steps || tradeData.steps.length !== stepsCount || 
+                        !tradeData.deals || tradeData.deals.length !== dealsCount) {
+                        migrateTradeData(dateKey);
+                    }
                     if (dailyNotes) dailyNotes.value = tradeData.notes || '';
                 } else {
                     initTradeData();
@@ -1704,6 +1742,95 @@
                     const newDate = new Date(currentDate);
                     newDate.setDate(newDate.getDate() + 1);
                     loadDateData(newDate);
+                });
+            }
+            
+            // ИСПРАВЛЕННЫЙ ОБРАБОТЧИК для кнопки применения настроек
+            if (applySettingsBtn) {
+                applySettingsBtn.addEventListener('click', function() {
+                    // Получаем новые значения
+                    const newDealsCount = parseInt(dealsCountInput.value);
+                    const newStepsCount = parseInt(stepsCountInput.value);
+                    
+                    // Проверяем валидность
+                    if (isNaN(newDealsCount) || newDealsCount < 1 || newDealsCount > 20) {
+                        showNotification('Количество сделок должно быть от 1 до 20', 'error');
+                        return;
+                    }
+                    
+                    if (isNaN(newStepsCount) || newStepsCount < 1 || newStepsCount > 10) {
+                        showNotification('Количество шагов должно быть от 1 до 10', 'error');
+                        return;
+                    }
+                    
+                    // Сохраняем текущие данные перед изменением настроек
+                    saveTradeData();
+                    
+                    // Обновляем настройки
+                    stepsCount = newStepsCount;
+                    dealsCount = newDealsCount;
+                    
+                    appSettings.stepsCount = stepsCount;
+                    appSettings.dealsCount = dealsCount;
+                    
+                    // Сохраняем настройки
+                    saveSettings();
+                    
+                    // Обновляем данные текущего дня с новой структурой
+                    const dateKey = formatDateKey(currentDate);
+                    if (historyData[dateKey]) {
+                        tradeData = historyData[dateKey];
+                        // Проверяем и мигрируем данные при необходимости
+                        if (!tradeData.steps || tradeData.steps.length !== stepsCount || 
+                            !tradeData.deals || tradeData.deals.length !== dealsCount) {
+                            migrateTradeData(dateKey);
+                        }
+                    } else {
+                        initTradeData();
+                    }
+                    
+                    // Перерисовываем таблицу
+                    renderTable();
+                    updateTotal();
+                    
+                    showNotification('Настройки применены', 'success');
+                });
+            }
+
+            // Обработчики для очистки данных
+            if (clearCurrentDayBtn) {
+                clearCurrentDayBtn.addEventListener('click', function() {
+                    if (confirm('Вы уверены, что хотите очистить данные текущего дня?')) {
+                        const dateKey = formatDateKey(currentDate);
+                        delete historyData[dateKey];
+                        localStorage.setItem('tradeHistory', JSON.stringify(historyData));
+                        
+                        initTradeData();
+                        renderTable();
+                        updateTotal();
+                        
+                        if (dailyNotes) dailyNotes.value = '';
+                        
+                        showNotification('Данные текущего дня очищены', 'success');
+                    }
+                });
+            }
+            
+            if (clearAllDataBtn) {
+                clearAllDataBtn.addEventListener('click', function() {
+                    if (confirm('Вы уверены, что хотите очистить ВСЮ историю? Это действие нельзя отменить.')) {
+                        historyData = {};
+                        localStorage.setItem('tradeHistory', JSON.stringify(historyData));
+                        
+                        initTradeData();
+                        renderTable();
+                        updateTotal();
+                        renderHistory();
+                        
+                        if (dailyNotes) dailyNotes.value = '';
+                        
+                        showNotification('Вся история очищена', 'success');
+                    }
                 });
             }
             
