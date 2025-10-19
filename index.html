@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Торговый дневник</title>
+    <title>Trading Diary</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -83,14 +83,16 @@
             padding: 10px;
             border-radius: 8px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            overflow-x: auto;
         }
         
         .balance-item {
             text-align: center;
             flex: 1;
             min-width: 120px;
-            margin: 5px 0;
+            margin: 0 5px;
+            white-space: nowrap;
         }
         
         .balance-label {
@@ -406,7 +408,7 @@
             opacity: 1;
         }
         
-        /* Стили для вкладки Общая */
+        /* Styles for General tab */
         .general-header {
             text-align: center;
             margin-bottom: 10px;
@@ -611,7 +613,7 @@
         
         @media (max-width: 768px) {
             .balance-container {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 10px;
             }
             
@@ -645,38 +647,38 @@
 <body>
     <div class="container">
         <header>
-            <h1>Торговый дневник</h1>
+            <h1>Trading Diary</h1>
             <div class="date-display" id="currentDate"></div>
         </header>
         
         <div class="tabs">
-            <div class="tab active" data-tab="table">Таблица</div>
-            <div class="tab" data-tab="general">Общая</div>
-            <div class="tab" data-tab="history">История</div>
-            <div class="tab" data-tab="export">Экспорт</div>
-            <div class="tab" data-tab="settings">Настройки</div>
+            <div class="tab active" data-tab="table">Table</div>
+            <div class="tab" data-tab="general">General</div>
+            <div class="tab" data-tab="history">History</div>
+            <div class="tab" data-tab="export">Export</div>
+            <div class="tab" data-tab="settings">Settings</div>
         </div>
         
         <div class="main-content">
             <div class="tab-content active" id="table-tab">
                 <div class="balance-container">
                     <div class="balance-item">
-                        <div class="balance-label">Баланс начала дня</div>
+                        <div class="balance-label">Starting Balance</div>
                         <div class="balance-value" id="startingBalanceValue">100000</div>
                     </div>
                     <div class="balance-item">
-                        <div class="balance-label">Текущий баланс</div>
+                        <div class="balance-label">Current Balance</div>
                         <div class="balance-value" id="currentBalanceValue">100000</div>
                     </div>
                     <div class="balance-item">
-                        <div class="balance-label">Итог дня</div>
+                        <div class="balance-label">Day Result</div>
                         <div class="balance-value" id="dayResultValue">0</div>
                     </div>
                 </div>
                 
                 <div class="date-navigation">
                     <button class="date-btn" id="prevDayBtn">←</button>
-                    <button class="date-btn" id="todayBtn">Сегодня</button>
+                    <button class="date-btn" id="todayBtn">Today</button>
                     <button class="date-btn" id="nextDayBtn">→</button>
                 </div>
                 
@@ -684,11 +686,11 @@
                     <table id="tradingTable">
                         <thead>
                             <tr>
-                                <th class="trade-header">Сделка</th>
-                                <th>Сумма сделки</th>
-                                <th>Прибыль/Убыток/Возврат</th>
-                                <th>Эмоциональное состояние</th>
-                                <th>Комментарии</th>
+                                <th class="trade-header">Trade</th>
+                                <th>Trade Amount</th>
+                                <th>Profit/Loss/Refund</th>
+                                <th>Emotional State</th>
+                                <th>Comments</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -697,16 +699,16 @@
                     </table>
                 </div>
                 
-                <button class="btn add-trade-btn" id="addTradeBtn">+ Добавить сделку</button>
+                <button class="btn add-trade-btn" id="addTradeBtn">+ Add Trade</button>
 
                 <div class="telegram-actions">
-                    <button class="btn btn-success" id="saveDataBtn">Сохранить</button>
-                    <button class="btn" id="sendToBotBtn">Отправить в бот</button>
-                    <button class="btn btn-success" id="endDayBtn">Завершить день</button>
+                    <button class="btn btn-success" id="saveDataBtn">Save</button>
+                    <button class="btn" id="sendToBotBtn">Send to Bot</button>
+                    <button class="btn btn-success" id="endDayBtn">End Day</button>
                 </div>
             </div>
             
-            <!-- Вкладка "Общая" -->
+            <!-- General Tab -->
             <div class="tab-content" id="general-tab">
                 <div class="general-header">
                     <div class="month-title" id="currentMonthTitle"></div>
@@ -717,12 +719,12 @@
                     <table class="general-table" id="generalTable">
                         <thead>
                             <tr>
-                                <th>День</th>
-                                <th>Цель прибыли %</th>
-                                <th>Цель убытка %</th>
-                                <th>Факт П/У %</th>
-                                <th>Выигрышные сделки</th>
-                                <th>Проигрышные сделки</th>
+                                <th>Day</th>
+                                <th>Profit Target %</th>
+                                <th>Loss Target %</th>
+                                <th>Actual P/L %</th>
+                                <th>Winning Trades</th>
+                                <th>Losing Trades</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -735,8 +737,8 @@
                     <table class="withdrawal-table" id="withdrawalTable">
                         <thead>
                             <tr>
-                                <th>Дата</th>
-                                <th>Вывод средств</th>
+                                <th>Date</th>
+                                <th>Withdrawal</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -745,146 +747,146 @@
                     </table>
                 </div>
                 
-                <button class="btn add-withdrawal-btn" id="addWithdrawalBtn">+ Добавить вывод</button>
+                <button class="btn add-withdrawal-btn" id="addWithdrawalBtn">+ Add Withdrawal</button>
                 
                 <div class="month-comments">
-                    <h3>Комментарии к месяцу</h3>
-                    <textarea id="monthCommentsInput" placeholder="Введите комментарии к текущему месяцу..."></textarea>
+                    <h3>Month Comments</h3>
+                    <textarea id="monthCommentsInput" placeholder="Enter comments for the current month..."></textarea>
                 </div>
             </div>
             
             <div class="tab-content" id="history-tab">
-                <h2>История торговых дней</h2>
+                <h2>Trading Days History</h2>
                 <div id="historyList">
                     <!-- History items will be generated here -->
                 </div>
             </div>
             
             <div class="tab-content" id="export-tab">
-                <h2>Экспорт данных</h2>
+                <h2>Data Export</h2>
                 
                 <div class="export-section">
-                    <h3>Экспорт в PDF</h3>
-                    <p>Создайте подробный отчет в PDF формате с вашей торговой историей.</p>
+                    <h3>Export to PDF</h3>
+                    <p>Create a detailed report in PDF format with your trading history.</p>
                     
                     <div class="date-range">
-                        <input type="date" id="pdfStartDate" placeholder="Начальная дата">
-                        <input type="date" id="pdfEndDate" placeholder="Конечная дата">
+                        <input type="date" id="pdfStartDate" placeholder="Start date">
+                        <input type="date" id="pdfEndDate" placeholder="End date">
                     </div>
                     
                     <div class="export-options">
                         <button class="btn export-btn" id="exportCurrentPdf">
-                            <span>📊</span> Текущий день
+                            <span>📊</span> Current Day
                         </button>
                         <button class="btn export-btn" id="exportRangePdf">
-                            <span>📅</span> По диапазону
+                            <span>📅</span> By Range
                         </button>
                         <button class="btn export-btn" id="exportAllPdf">
-                            <span>📋</span> Вся история
+                            <span>📋</span> All History
                         </button>
                     </div>
                 </div>
                 
                 <div class="export-section">
-                    <h3>Экспорт в Excel</h3>
-                    <p>Экспортируйте данные в формате Excel для дальнейшего анализа.</p>
+                    <h3>Export to Excel</h3>
+                    <p>Export data to Excel format for further analysis.</p>
                     
                     <div class="date-range">
-                        <input type="date" id="excelStartDate" placeholder="Начальная дата">
-                        <input type="date" id="excelEndDate" placeholder="Конечная дата">
+                        <input type="date" id="excelStartDate" placeholder="Start date">
+                        <input type="date" id="excelEndDate" placeholder="End date">
                     </div>
                     
                     <div class="export-options">
                         <button class="btn export-btn" id="exportCurrentExcel">
-                            <span>📊</span> Текущий день
+                            <span>📊</span> Current Day
                         </button>
                         <button class="btn export-btn" id="exportRangeExcel">
-                            <span>📅</span> По диапазону
+                            <span>📅</span> By Range
                         </button>
                         <button class="btn export-btn" id="exportAllExcel">
-                            <span>📋</span> Вся история
+                            <span>📋</span> All History
                         </button>
                     </div>
                 </div>
                 
                 <div class="export-info">
-                    <strong>💡 Совет:</strong> Для экспорта данных за определенный период укажите даты в полях выше. 
-                    Если даты не указаны, будут экспортированы все доступные данные.
+                    <strong>💡 Tip:</strong> To export data for a specific period, specify dates in the fields above. 
+                    If dates are not specified, all available data will be exported.
                 </div>
             </div>
 
             <div class="tab-content" id="settings-tab">
-                <h2>Настройки приложения</h2>
+                <h2>Application Settings</h2>
                 
                 <div class="settings-panel">
-                    <h3>Управление данными</h3>
-                    <button class="btn btn-warning settings-btn" id="clearCurrentDayBtn">Очистить текущий день</button>
-                    <button class="btn btn-danger settings-btn" id="clearAllDataBtn">Очистить всю историю</button>
+                    <h3>Data Management</h3>
+                    <button class="btn btn-warning settings-btn" id="clearCurrentDayBtn">Clear Current Day</button>
+                    <button class="btn btn-danger settings-btn" id="clearAllDataBtn">Clear All History</button>
                 </div>
 
                 <div class="settings-panel">
-                    <h3>О приложении</h3>
-                    <p>Торговый дневник PRO v2.0</p>
-                    <p>Разработано для удобного отслеживания торговых результатов</p>
+                    <h3>About</h3>
+                    <p>Trading Diary PRO v2.0</p>
+                    <p>Developed for convenient tracking of trading results</p>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Модальное окно для результата сделки -->
+    <!-- Modal for trade result -->
     <div class="modal" id="resultModal">
         <div class="modal-content">
-            <h2 class="modal-title">Выберите результат сделки</h2>
-            <input type="number" class="amount-input" id="amountInput" placeholder="Введите сумму" step="0.01">
+            <h2 class="modal-title">Select Trade Result</h2>
+            <input type="number" class="amount-input" id="amountInput" placeholder="Enter amount" step="0.01">
             <div class="modal-buttons">
-                <button class="modal-btn profit-btn" data-value="profit">Прибыль</button>
-                <button class="modal-btn loss-btn" data-value="loss">Убыток</button>
-                <button class="modal-btn refund-btn" data-value="refund">Возврат</button>
-                <button class="modal-btn reset-btn" data-value="reset">Сброс</button>
+                <button class="modal-btn profit-btn" data-value="profit">Profit</button>
+                <button class="modal-btn loss-btn" data-value="loss">Loss</button>
+                <button class="modal-btn refund-btn" data-value="refund">Refund</button>
+                <button class="modal-btn reset-btn" data-value="reset">Reset</button>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для суммы сделки -->
+    <!-- Modal for trade amount -->
     <div class="modal" id="tradeAmountModal">
         <div class="modal-content">
-            <h2 class="modal-title">Введите сумму сделки</h2>
-            <input type="number" class="amount-input" id="tradeAmountInput" placeholder="Введите сумму" step="0.01">
+            <h2 class="modal-title">Enter Trade Amount</h2>
+            <input type="number" class="amount-input" id="tradeAmountInput" placeholder="Enter amount" step="0.01">
             <div class="modal-buttons">
-                <button class="modal-btn profit-btn" id="saveTradeAmountBtn">Сохранить</button>
-                <button class="modal-btn reset-btn" id="cancelTradeAmountBtn">Отмена</button>
+                <button class="modal-btn profit-btn" id="saveTradeAmountBtn">Save</button>
+                <button class="modal-btn reset-btn" id="cancelTradeAmountBtn">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для вывода средств -->
+    <!-- Modal for withdrawal -->
     <div class="modal" id="withdrawalModal">
         <div class="modal-content">
-            <h2 class="modal-title">Введите сумму вывода</h2>
-            <input type="number" class="amount-input" id="withdrawalAmountInput" placeholder="Введите сумму" step="0.01">
+            <h2 class="modal-title">Enter Withdrawal Amount</h2>
+            <input type="number" class="amount-input" id="withdrawalAmountInput" placeholder="Enter amount" step="0.01">
             <div class="modal-buttons">
-                <button class="modal-btn profit-btn" id="saveWithdrawalBtn">Сохранить</button>
-                <button class="modal-btn reset-btn" id="cancelWithdrawalBtn">Отмена</button>
+                <button class="modal-btn profit-btn" id="saveWithdrawalBtn">Save</button>
+                <button class="modal-btn reset-btn" id="cancelWithdrawalBtn">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для действий с выводом -->
+    <!-- Modal for withdrawal actions -->
     <div class="withdrawal-action-modal" id="withdrawalActionModal">
         <div class="withdrawal-action-content">
-            <h2 class="modal-title">Действие с выводом</h2>
+            <h2 class="modal-title">Withdrawal Action</h2>
             <div class="withdrawal-action-buttons">
-                <button class="withdrawal-action-btn edit-btn" id="editWithdrawalBtn">Редактировать</button>
-                <button class="withdrawal-action-btn delete-btn" id="deleteWithdrawalBtn">Удалить</button>
-                <button class="withdrawal-action-btn reset-btn" id="cancelWithdrawalActionBtn">Отмена</button>
+                <button class="withdrawal-action-btn edit-btn" id="editWithdrawalBtn">Edit</button>
+                <button class="withdrawal-action-btn delete-btn" id="deleteWithdrawalBtn">Delete</button>
+                <button class="withdrawal-action-btn reset-btn" id="cancelWithdrawalActionBtn">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для эмоций -->
+    <!-- Modal for emotions -->
     <div class="modal" id="emotionModal">
         <div class="modal-content emotion-modal-content">
-            <h2 class="modal-title">Выберите эмоциональное состояние</h2>
+            <h2 class="modal-title">Select Emotional State</h2>
             <div class="emotion-options">
                 <div class="emotion-option" data-emotion="😨 fear">
                     <div class="emotion-emoji">😨</div>
@@ -920,44 +922,44 @@
                 </div>
             </div>
             <div class="modal-buttons">
-                <button class="modal-btn reset-btn" id="clearEmotionBtn">Очистить</button>
+                <button class="modal-btn reset-btn" id="clearEmotionBtn">Clear</button>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для комментариев -->
+    <!-- Modal for comments -->
     <div class="modal" id="commentsModal">
         <div class="modal-content comments-modal-content">
-            <h2 class="modal-title">Добавьте комментарий</h2>
-            <textarea class="comments-textarea" id="commentsInput" placeholder="Введите комментарий..."></textarea>
+            <h2 class="modal-title">Add Comment</h2>
+            <textarea class="comments-textarea" id="commentsInput" placeholder="Enter comment..."></textarea>
             <div class="modal-buttons">
-                <button class="modal-btn profit-btn" id="saveCommentBtn">Сохранить</button>
-                <button class="modal-btn reset-btn" id="cancelCommentBtn">Отмена</button>
+                <button class="modal-btn profit-btn" id="saveCommentBtn">Save</button>
+                <button class="modal-btn reset-btn" id="cancelCommentBtn">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для установки баланса -->
+    <!-- Modal for setting balance -->
     <div class="modal" id="balanceModal">
         <div class="modal-content">
-            <h2 class="modal-title">Установите баланс начала дня</h2>
-            <input type="number" class="balance-input" id="balanceInput" placeholder="Введите баланс" step="0.01">
+            <h2 class="modal-title">Set Starting Balance</h2>
+            <input type="number" class="balance-input" id="balanceInput" placeholder="Enter balance" step="0.01">
             <div class="modal-buttons">
-                <button class="modal-btn profit-btn" id="saveBalanceBtn">Сохранить</button>
-                <button class="modal-btn reset-btn" id="cancelBalanceBtn">Отмена</button>
+                <button class="modal-btn profit-btn" id="saveBalanceBtn">Save</button>
+                <button class="modal-btn reset-btn" id="cancelBalanceBtn">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для установки целей -->
+    <!-- Modal for setting targets -->
     <div class="target-modal" id="targetModal">
         <div class="target-modal-content">
-            <h2 class="modal-title" id="targetModalTitle">Установите цель (%)</h2>
-            <input type="number" class="target-input" id="targetInput" placeholder="Введите значение в %" step="0.01">
+            <h2 class="modal-title" id="targetModalTitle">Set Target (%)</h2>
+            <input type="number" class="target-input" id="targetInput" placeholder="Enter value in %" step="0.01">
             <div class="target-modal-buttons">
-                <button class="target-modal-btn" id="applyToDayBtn">Только день</button>
-                <button class="target-modal-btn" id="applyToAllBtn">Все дни</button>
-                <button class="target-modal-btn" id="cancelTargetBtn">Отмена</button>
+                <button class="target-modal-btn" id="applyToDayBtn">Day Only</button>
+                <button class="target-modal-btn" id="applyToAllBtn">All Days</button>
+                <button class="target-modal-btn" id="cancelTargetBtn">Cancel</button>
             </div>
         </div>
     </div>
@@ -965,7 +967,7 @@
     <div id="notification" class="notification"></div>
 
     <script>
-        // Инициализация Telegram Web App
+        // Initialize Telegram Web App
         let tg = window.Telegram?.WebApp;
         
         document.addEventListener('DOMContentLoaded', function() {
@@ -1013,7 +1015,7 @@
             const clearCurrentDayBtn = document.getElementById('clearCurrentDayBtn');
             const clearAllDataBtn = document.getElementById('clearAllDataBtn');
             
-            // Элементы для вкладки "Общая"
+            // Elements for General tab
             const currentMonthTitle = document.getElementById('currentMonthTitle');
             const currentGeneralDate = document.getElementById('currentGeneralDate');
             const generalTable = document.getElementById('generalTable');
@@ -1027,24 +1029,24 @@
             const applyToAllBtn = document.getElementById('applyToAllBtn');
             const cancelTargetBtn = document.getElementById('cancelTargetBtn');
 
-            // Элементы для модальных окон эмоций и комментариев
+            // Elements for emotion and comment modals
             const clearEmotionBtn = document.getElementById('clearEmotionBtn');
             const commentsInput = document.getElementById('commentsInput');
             const saveCommentBtn = document.getElementById('saveCommentBtn');
             const cancelCommentBtn = document.getElementById('cancelCommentBtn');
 
-            // Элементы для модального окна суммы сделки
+            // Elements for trade amount modal
             const saveTradeAmountBtn = document.getElementById('saveTradeAmountBtn');
             const cancelTradeAmountBtn = document.getElementById('cancelTradeAmountBtn');
 
-            // Элементы для модального окна действий с выводом
+            // Elements for withdrawal action modal
             const editWithdrawalBtn = document.getElementById('editWithdrawalBtn');
             const deleteWithdrawalBtn = document.getElementById('deleteWithdrawalBtn');
             const cancelWithdrawalActionBtn = document.getElementById('cancelWithdrawalActionBtn');
 
             // State
             let currentDate = new Date();
-            let trades = []; // Массив сделок
+            let trades = []; // Trades array
             let currentCell = null;
             let currentTradeIndex = null;
             let currentColumnType = null; // 'amount', 'result', 'emotion', 'comments'
@@ -1059,22 +1061,22 @@
                 currentBalance: 100000
             };
 
-            // Переменные для управления целями
+            // Variables for target management
             let currentTargetDay = null;
-            let currentTargetType = null; // 'profit' или 'loss'
+            let currentTargetType = null; // 'profit' or 'loss'
 
-            // Переменные для управления выводами
+            // Variables for withdrawal management
             let currentWithdrawalDate = null;
             let currentWithdrawalIndex = null;
 
-            // Глобальные переменные для текущего месяца и года
+            // Global variables for current month and year
             let currentYear, currentMonth;
 
             // Initialize
             function init() {
                 if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
                 
-                // Загружаем настройки баланса
+                // Load balance settings
                 if (appSettings.startingBalance && startingBalanceValue) {
                     startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
                 }
@@ -1094,35 +1096,35 @@
                     renderTable();
                 }
                 
-                // Инициализируем вкладку "Общая"
+                // Initialize General tab
                 initGeneralTab();
                 
                 renderHistory();
                 
-                // Инициализируем таблицу выводов
+                // Initialize withdrawal table
                 renderWithdrawalTable();
                 
-                // Загружаем комментарии к месяцу
+                // Load month comments
                 loadMonthComments();
             }
 
             function formatDate(date) {
                 const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-                return date.toLocaleDateString('ru-RU', options);
+                return date.toLocaleDateString('en-US', options);
             }
             
             function formatDateKey(date) {
                 return date.toISOString().split('T')[0];
             }
             
-            // Функция для форматирования чисел
+            // Function for formatting numbers
             function formatNumber(amount) {
-                return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(amount);
+                return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(amount);
             }
             
             function initTrades() {
                 trades = [];
-                // Начинаем с 5 сделок по умолчанию
+                // Start with 5 default trades
                 for (let i = 0; i < 5; i++) {
                     trades.push({
                         tradeAmount: null,
@@ -1149,20 +1151,20 @@
                     const row = document.createElement('tr');
                     const trade = trades[i];
                     
-                    // Колонка Trade (номер сделки)
+                    // Trade column (trade number)
                     const tradeCell = document.createElement('td');
                     tradeCell.textContent = i + 1;
                     tradeCell.className = 'trade-header';
                     row.appendChild(tradeCell);
                     
-                    // Колонка Trade Amount
+                    // Trade Amount column
                     const tradeAmountCell = document.createElement('td');
                     tradeAmountCell.className = 'cell';
                     
                     if (trade.tradeAmount !== null) {
                         tradeAmountCell.textContent = formatNumber(trade.tradeAmount);
                     } else {
-                        tradeAmountCell.textContent = 'Нажмите для ввода суммы';
+                        tradeAmountCell.textContent = 'Click to enter amount';
                         tradeAmountCell.style.color = '#7f8c8d';
                         tradeAmountCell.style.fontStyle = 'italic';
                     }
@@ -1177,7 +1179,7 @@
                     
                     row.appendChild(tradeAmountCell);
                     
-                    // Колонка Profit/Lose/Refund
+                    // Profit/Loss/Refund column
                     const resultCell = document.createElement('td');
                     resultCell.className = 'cell';
                     
@@ -1194,9 +1196,9 @@
                         } else if (type === 'refund') {
                             resultCell.className += ' refund';
                             if (amount > 0) {
-                                resultCell.innerHTML = `<div class="cell-content">Возврат: ${formatNumber(amount)}</div>`;
+                                resultCell.innerHTML = `<div class="cell-content">Refund: ${formatNumber(amount)}</div>`;
                             } else {
-                                resultCell.innerHTML = `<div class="cell-content">Возврат</div>`;
+                                resultCell.innerHTML = `<div class="cell-content">Refund</div>`;
                             }
                         }
                     }
@@ -1211,7 +1213,7 @@
                     
                     row.appendChild(resultCell);
                     
-                    // Колонка Emotional State
+                    // Emotional State column
                     const emotionCell = document.createElement('td');
                     emotionCell.className = 'cell emotion-cell';
                     
@@ -1228,14 +1230,14 @@
                     
                     row.appendChild(emotionCell);
                     
-                    // Колонка Comments
+                    // Comments column
                     const commentsCell = document.createElement('td');
                     commentsCell.className = 'cell comments-cell';
                     
                     if (trade.comment !== '') {
                         commentsCell.textContent = trade.comment;
                     } else {
-                        commentsCell.textContent = 'Нажмите для добавления комментария';
+                        commentsCell.textContent = 'Click to add comment';
                         commentsCell.style.color = '#7f8c8d';
                         commentsCell.style.fontStyle = 'italic';
                     }
@@ -1272,11 +1274,11 @@
                             total -= amount;
                             lossTrades++;
                         }
-                        // Refund теперь не влияет на баланс
+                        // Refund no longer affects balance
                     }
                 }
                 
-                // Обновляем текущий баланс (без учета refund)
+                // Update current balance (without refund)
                 const currentBalance = appSettings.startingBalance + total;
                 appSettings.currentBalance = currentBalance;
                 
@@ -1295,13 +1297,13 @@
                     }
                 }
                 
-                // Сохраняем данные для вкладки "Общая"
+                // Save data for General tab
                 const dateKey = formatDateKey(currentDate);
                 if (!generalData[dateKey]) {
                     generalData[dateKey] = {};
                 }
                 
-                // Расчет в процентах
+                // Calculation in percentages
                 const startingBalance = appSettings.startingBalance;
                 const profitLossPercent = startingBalance > 0 ? (total / startingBalance) * 100 : 0;
                 
@@ -1309,10 +1311,10 @@
                 generalData[dateKey].winTrades = winTrades;
                 generalData[dateKey].lossTrades = lossTrades;
                 
-                // Сохраняем общие данные
+                // Save general data
                 localStorage.setItem('generalData', JSON.stringify(generalData));
                 
-                // Обновляем таблицу на вкладке "Общая"
+                // Update table on General tab
                 updateGeneralTable();
             }
             
@@ -1322,13 +1324,13 @@
                 historyData[dateKey] = {...tradeData};
                 localStorage.setItem('tradeHistory', JSON.stringify(historyData));
                 
-                // Сохраняем настройки
+                // Save settings
                 saveSettings();
                 
-                showNotification('Данные сохранены', 'success');
+                showNotification('Data saved', 'success');
             }
             
-            // Сохранение настроек
+            // Save settings
             function saveSettings() {
                 localStorage.setItem('appSettings', JSON.stringify(appSettings));
             }
@@ -1349,7 +1351,7 @@
                 updateTotal();
                 renderHistory();
                 
-                // Обновляем вкладку "Общая"
+                // Update General tab
                 updateGeneralTable();
             }
             
@@ -1360,7 +1362,7 @@
                 const dates = Object.keys(historyData).sort().reverse();
                 
                 if (dates.length === 0) {
-                    historyList.innerHTML = '<p>Нет записей в истории</p>';
+                    historyList.innerHTML = '<p>No records in history</p>';
                     return;
                 }
                 
@@ -1380,7 +1382,7 @@
                                 } else if (type === 'loss') {
                                     dayTotal -= amount;
                                 }
-                                // Refund теперь не влияет на баланс
+                                // Refund no longer affects balance
                             }
                         }
                     }
@@ -1397,7 +1399,7 @@
                     totalEl.className = 'history-total';
                     if (dayTotal > 0) totalEl.classList.add('positive');
                     else if (dayTotal < 0) totalEl.classList.add('negative');
-                    totalEl.textContent = `Итог: ${formatNumber(dayTotal)}`;
+                    totalEl.textContent = `Total: ${formatNumber(dayTotal)}`;
                     historyItem.appendChild(totalEl);
                     
                     historyList.appendChild(historyItem);
@@ -1417,7 +1419,7 @@
             
             function sendDataToBot() {
                 if (!tg || !tg.sendData) {
-                    showNotification('Функция отправки недоступна', 'error');
+                    showNotification('Send function unavailable', 'error');
                     return;
                 }
                 
@@ -1428,7 +1430,7 @@
                 };
                 
                 tg.sendData(JSON.stringify(dataToSend));
-                showNotification('Данные отправлены боту', 'success');
+                showNotification('Data sent to bot', 'success');
                 
                 setTimeout(() => {
                     if (tg && tg.close) {
@@ -1437,16 +1439,16 @@
                 }, 1500);
             }
             
-            // Функции для вкладки "Общая"
+            // Functions for General tab
             function initGeneralTab() {
-                // Устанавливаем текущую дату и месяц
+                // Set current date and month
                 const now = new Date();
                 currentYear = now.getFullYear();
                 currentMonth = now.getMonth();
                 
                 const monthNames = [
-                    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-                    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
                 ];
                 
                 if (currentMonthTitle) {
@@ -1457,7 +1459,7 @@
                     currentGeneralDate.textContent = formatDate(now);
                 }
                 
-                // Создаем таблицу для текущего месяца
+                // Create table for current month
                 updateGeneralTable();
             }
             
@@ -1469,30 +1471,30 @@
                 
                 tbody.innerHTML = '';
                 
-                // Получаем количество дней в текущем месяце
+                // Get number of days in current month
                 const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
                 
-                // Получаем текущий день
+                // Get current day
                 const today = new Date();
                 const currentDay = today.getDate();
                 const currentMonthIndex = today.getMonth();
                 const currentYearValue = today.getFullYear();
                 
-                // Создаем строки для каждого дня месяца
+                // Create rows for each day of the month
                 for (let day = 1; day <= daysInMonth; day++) {
                     const row = document.createElement('tr');
                     
-                    // Проверяем, является ли этот день текущим
+                    // Check if this day is current
                     if (day === currentDay && currentMonth === currentMonthIndex && currentYear === currentYearValue) {
                         row.classList.add('current-day');
                     }
                     
-                    // Колонка Day
+                    // Day column
                     const dayCell = document.createElement('td');
                     dayCell.textContent = day;
                     row.appendChild(dayCell);
                     
-                    // Колонка Profit Target %
+                    // Profit Target % column
                     const profitTargetCell = document.createElement('td');
                     profitTargetCell.className = 'editable';
                     const profitTargetValue = getGeneralData(day, 'profitTarget') || '-';
@@ -1502,7 +1504,7 @@
                     profitTargetCell.addEventListener('click', handleTargetCellClick);
                     row.appendChild(profitTargetCell);
                     
-                    // Колонка Loss Target %
+                    // Loss Target % column
                     const lossTargetCell = document.createElement('td');
                     lossTargetCell.className = 'editable';
                     const lossTargetValue = getGeneralData(day, 'lossTarget') || '-';
@@ -1512,7 +1514,7 @@
                     lossTargetCell.addEventListener('click', handleTargetCellClick);
                     row.appendChild(lossTargetCell);
                     
-                    // Колонка Actual profit/loss %
+                    // Actual profit/loss % column
                     const actualCell = document.createElement('td');
                     const actualValue = getGeneralData(day, 'actualProfitLoss') || 0;
                     actualCell.textContent = actualValue !== 0 ? actualValue.toFixed(2) + '%' : '-';
@@ -1523,13 +1525,13 @@
                     }
                     row.appendChild(actualCell);
                     
-                    // Колонка Number win trades
+                    // Number win trades column
                     const winTradesCell = document.createElement('td');
                     const winTrades = getGeneralData(day, 'winTrades') || 0;
                     winTradesCell.textContent = winTrades > 0 ? winTrades : '-';
                     row.appendChild(winTradesCell);
                     
-                    // Колонка Number loss trades
+                    // Number loss trades column
                     const lossTradesCell = document.createElement('td');
                     const lossTrades = getGeneralData(day, 'lossTrades') || 0;
                     lossTradesCell.textContent = lossTrades > 0 ? lossTrades : '-';
@@ -1553,11 +1555,11 @@
                 currentTargetType = type;
                 
                 if (targetModalTitle) {
-                    targetModalTitle.textContent = `Установите ${type === 'profit' ? 'цель прибыли' : 'цель убытка'} для дня ${day} (%)`;
+                    targetModalTitle.textContent = `Set ${type === 'profit' ? 'profit target' : 'loss target'} for day ${day} (%)`;
                 }
                 
                 if (targetInput) {
-                    // Убираем символ % при загрузке значения
+                    // Remove % symbol when loading value
                     const cellText = cell.textContent;
                     targetInput.value = cellText !== '-' ? cellText.replace('%', '') : '';
                 }
@@ -1578,22 +1580,22 @@
                     amount: amount
                 });
                 
-                // Вычитаем сумму вывода из текущего баланса
+                // Subtract withdrawal amount from current balance
                 appSettings.currentBalance -= amount;
                 if (currentBalanceValue) {
                     currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
                 }
                 
-                // Сохраняем данные выводов
+                // Save withdrawal data
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
                 
-                // Сохраняем настройки
+                // Save settings
                 saveSettings();
                 
-                // Обновляем таблицу выводов
+                // Update withdrawal table
                 renderWithdrawalTable();
                 
-                showNotification(`Вывод ${formatNumber(amount)} успешно сохранен`, 'success');
+                showNotification(`Withdrawal ${formatNumber(amount)} saved successfully`, 'success');
             }
             
             function editWithdrawal(dateKey, index, newAmount) {
@@ -1602,22 +1604,22 @@
                 const oldAmount = withdrawalData[dateKey][index].amount;
                 withdrawalData[dateKey][index].amount = newAmount;
                 
-                // Обновляем баланс: добавляем старую сумму и вычитаем новую
+                // Update balance: add old amount and subtract new amount
                 appSettings.currentBalance += oldAmount - newAmount;
                 if (currentBalanceValue) {
                     currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
                 }
                 
-                // Сохраняем данные выводов
+                // Save withdrawal data
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
                 
-                // Сохраняем настройки
+                // Save settings
                 saveSettings();
                 
-                // Обновляем таблицу выводов
+                // Update withdrawal table
                 renderWithdrawalTable();
                 
-                showNotification(`Вывод обновлен на ${formatNumber(newAmount)}`, 'success');
+                showNotification(`Withdrawal updated to ${formatNumber(newAmount)}`, 'success');
             }
             
             function deleteWithdrawal(dateKey, index) {
@@ -1625,30 +1627,30 @@
                 
                 const amount = withdrawalData[dateKey][index].amount;
                 
-                // Удаляем вывод из массива
+                // Remove withdrawal from array
                 withdrawalData[dateKey].splice(index, 1);
                 
-                // Если массив пуст, удаляем запись
+                // If array is empty, delete record
                 if (withdrawalData[dateKey].length === 0) {
                     delete withdrawalData[dateKey];
                 }
                 
-                // Добавляем сумму вывода обратно к текущему балансу
+                // Add withdrawal amount back to current balance
                 appSettings.currentBalance += amount;
                 if (currentBalanceValue) {
                     currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
                 }
                 
-                // Сохраняем данные выводов
+                // Save withdrawal data
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
                 
-                // Сохраняем настройки
+                // Save settings
                 saveSettings();
                 
-                // Обновляем таблицу выводов
+                // Update withdrawal table
                 renderWithdrawalTable();
                 
-                showNotification(`Вывод ${formatNumber(amount)} удален`, 'success');
+                showNotification(`Withdrawal ${formatNumber(amount)} deleted`, 'success');
             }
             
             function renderWithdrawalTable() {
@@ -1659,7 +1661,7 @@
                 
                 tbody.innerHTML = '';
                 
-                // Получаем все выводы за текущий месяц
+                // Get all withdrawals for current month
                 const currentMonthKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
                 let totalWithdrawal = 0;
                 
@@ -1671,17 +1673,17 @@
                             row.dataset.date = dateKey;
                             row.dataset.index = index;
                             
-                            // Колонка Дата
+                            // Date column
                             const dateCell = document.createElement('td');
                             dateCell.textContent = formatDate(new Date(withdrawal.date));
                             row.appendChild(dateCell);
                             
-                            // Колонка Withdrawal
+                            // Withdrawal column
                             const amountCell = document.createElement('td');
                             amountCell.textContent = formatNumber(withdrawal.amount);
                             row.appendChild(amountCell);
                             
-                            // Обработчик клика для редактирования/удаления
+                            // Click handler for editing/deleting
                             row.addEventListener('click', (e) => {
                                 currentWithdrawalDate = e.currentTarget.dataset.date;
                                 currentWithdrawalIndex = parseInt(e.currentTarget.dataset.index);
@@ -1698,13 +1700,13 @@
                     }
                 });
                 
-                // Добавляем строку с итогом
+                // Add total row
                 if (totalWithdrawal > 0) {
                     const totalRow = document.createElement('tr');
                     totalRow.style.fontWeight = 'bold';
                     
                     const totalLabelCell = document.createElement('td');
-                    totalLabelCell.textContent = 'Итого:';
+                    totalLabelCell.textContent = 'Total:';
                     totalRow.appendChild(totalLabelCell);
                     
                     const totalAmountCell = document.createElement('td');
@@ -1726,18 +1728,18 @@
                 
                 generalData[dateKey][currentTargetType + 'Target'] = parseFloat(value);
                 
-                // Сохраняем общие данные
+                // Save general data
                 localStorage.setItem('generalData', JSON.stringify(generalData));
                 
-                // Обновляем таблицу
+                // Update table
                 updateGeneralTable();
                 
-                // Закрываем модальное окно
+                // Close modal
                 if (targetModal) {
                     targetModal.style.display = 'none';
                 }
                 
-                showNotification(`Цель для дня ${currentTargetDay} установлена`, 'success');
+                showNotification(`Target for day ${currentTargetDay} set`, 'success');
             }
             
             function applyTargetToAll(value) {
@@ -1755,18 +1757,18 @@
                     generalData[dateKey][currentTargetType + 'Target'] = parseFloat(value);
                 }
                 
-                // Сохраняем общие данные
+                // Save general data
                 localStorage.setItem('generalData', JSON.stringify(generalData));
                 
-                // Обновляем таблицу
+                // Update table
                 updateGeneralTable();
                 
-                // Закрываем модальное окно
+                // Close modal
                 if (targetModal) {
                     targetModal.style.display = 'none';
                 }
                 
-                showNotification(`Цели для всех дней установлены (${value}%)`, 'success');
+                showNotification(`Targets for all days set (${value}%)`, 'success');
             }
             
             function loadMonthComments() {
@@ -1810,7 +1812,7 @@
                 });
             }
             
-            // Добавление новой сделки
+            // Adding new trade
             if (addTradeBtn) {
                 addTradeBtn.addEventListener('click', () => {
                     trades.push({
@@ -1824,7 +1826,7 @@
                 });
             }
             
-            // Добавление вывода средств
+            // Adding withdrawal
             if (addWithdrawalBtn) {
                 addWithdrawalBtn.addEventListener('click', () => {
                     if (withdrawalAmountInput) withdrawalAmountInput.value = '';
@@ -1832,16 +1834,16 @@
                 });
             }
             
-            // Сохранение комментариев месяца
+            // Save month comments
             if (monthCommentsInput) {
                 monthCommentsInput.addEventListener('change', saveMonthComments);
                 monthCommentsInput.addEventListener('blur', saveMonthComments);
             }
 
-            // Обработчики для очистки данных
+            // Handlers for clearing data
             if (clearCurrentDayBtn) {
                 clearCurrentDayBtn.addEventListener('click', function() {
-                    if (confirm('Вы уверены, что хотите очистить данные текущего дня?')) {
+                    if (confirm('Are you sure you want to clear current day data?')) {
                         const dateKey = formatDateKey(currentDate);
                         delete historyData[dateKey];
                         localStorage.setItem('tradeHistory', JSON.stringify(historyData));
@@ -1850,14 +1852,14 @@
                         renderTable();
                         updateTotal();
                         
-                        showNotification('Данные текущего дня очищены', 'success');
+                        showNotification('Current day data cleared', 'success');
                     }
                 });
             }
             
             if (clearAllDataBtn) {
                 clearAllDataBtn.addEventListener('click', function() {
-                    if (confirm('Вы уверены, что хотите очистить ВСЮ историю? Это действие нельзя отменить.')) {
+                    if (confirm('Are you sure you want to clear ALL history? This action cannot be undone.')) {
                         historyData = {};
                         generalData = {};
                         withdrawalData = {};
@@ -1872,12 +1874,12 @@
                         renderWithdrawalTable();
                         updateGeneralTable();
                         
-                        showNotification('Вся история очищена', 'success');
+                        showNotification('All history cleared', 'success');
                     }
                 });
             }
             
-            // Modal event listeners для результата сделки
+            // Modal event listeners for trade result
             const resultModalButtons = resultModal?.querySelectorAll('.modal-btn');
             if (resultModalButtons) {
                 resultModalButtons.forEach(button => {
@@ -1896,10 +1898,10 @@
                         } else if (currentTradeIndex !== null && value === 'refund') {
                             currentCell.className = 'cell refund';
                             if (!isNaN(amount) && amount > 0) {
-                                currentCell.innerHTML = `<div class="cell-content">Возврат: ${formatNumber(amount)}</div>`;
+                                currentCell.innerHTML = `<div class="cell-content">Refund: ${formatNumber(amount)}</div>`;
                                 trades[currentTradeIndex].result = { type: 'refund', amount: amount };
                             } else {
-                                currentCell.innerHTML = `<div class="cell-content">Возврат</div>`;
+                                currentCell.innerHTML = `<div class="cell-content">Refund</div>`;
                                 trades[currentTradeIndex].result = { type: 'refund', amount: 0 };
                             }
                             
@@ -1921,7 +1923,7 @@
                             saveTradeData();
                             if (resultModal) resultModal.style.display = 'none';
                         } else {
-                            showNotification('Введите корректную положительную сумму', 'error');
+                            showNotification('Enter a valid positive amount', 'error');
                             if (amountInput) {
                                 amountInput.classList.add('error-input');
                                 setTimeout(() => amountInput.classList.remove('error-input'), 1000);
@@ -1939,7 +1941,7 @@
                 });
             }
             
-            // Обработчики для модального окна суммы сделки
+            // Handlers for trade amount modal
             if (saveTradeAmountBtn) {
                 saveTradeAmountBtn.addEventListener('click', () => {
                     const amount = parseFloat(tradeAmountInput?.value.replace(',', '.'));
@@ -1951,7 +1953,7 @@
                         saveTradeData();
                         if (tradeAmountModal) tradeAmountModal.style.display = 'none';
                     } else {
-                        showNotification('Введите корректную положительную сумму', 'error');
+                        showNotification('Enter a valid positive amount', 'error');
                         if (tradeAmountInput) {
                             tradeAmountInput.classList.add('error-input');
                             setTimeout(() => tradeAmountInput.classList.remove('error-input'), 1000);
@@ -1974,7 +1976,7 @@
                 });
             }
             
-            // Обработчики для модального окна вывода средств
+            // Handlers for withdrawal modal
             if (saveWithdrawalBtn) {
                 saveWithdrawalBtn.addEventListener('click', () => {
                     const amount = parseFloat(withdrawalAmountInput?.value.replace(',', '.'));
@@ -1982,7 +1984,7 @@
                         saveWithdrawal(amount);
                         if (withdrawalModal) withdrawalModal.style.display = 'none';
                     } else {
-                        showNotification('Введите корректную положительную сумму', 'error');
+                        showNotification('Enter a valid positive amount', 'error');
                         if (withdrawalAmountInput) {
                             withdrawalAmountInput.classList.add('error-input');
                             setTimeout(() => withdrawalAmountInput.classList.remove('error-input'), 1000);
@@ -2005,7 +2007,7 @@
                 });
             }
             
-            // Обработчики для модального окна действий с выводом
+            // Handlers for withdrawal action modal
             if (editWithdrawalBtn) {
                 editWithdrawalBtn.addEventListener('click', () => {
                     if (currentWithdrawalDate !== null && currentWithdrawalIndex !== null) {
@@ -2040,7 +2042,7 @@
                 });
             }
             
-            // Обработчики для модального окна эмоций
+            // Handlers for emotion modal
             const emotionOptions = emotionModal?.querySelectorAll('.emotion-option');
             if (emotionOptions) {
                 emotionOptions.forEach(option => {
@@ -2071,7 +2073,7 @@
                 });
             }
             
-            // Обработчики для модального окна комментариев
+            // Handlers for comments modal
             if (saveCommentBtn) {
                 saveCommentBtn.addEventListener('click', () => {
                     trades[currentTradeIndex].comment = commentsInput.value;
@@ -2097,7 +2099,7 @@
                 });
             }
             
-            // Обработчики для модального окна баланса
+            // Handlers for balance modal
             if (startingBalanceValue) {
                 startingBalanceValue.addEventListener('click', () => {
                     if (balanceInput) balanceInput.value = appSettings.startingBalance;
@@ -2125,9 +2127,9 @@
                         
                         if (balanceModal) balanceModal.style.display = 'none';
                         
-                        showNotification('Баланс обновлен', 'success');
+                        showNotification('Balance updated', 'success');
                     } else {
-                        showNotification('Введите корректное число', 'error');
+                        showNotification('Enter a valid number', 'error');
                     }
                 });
             }
@@ -2159,7 +2161,7 @@
                     if (tabContent) tabContent.classList.add('active');
                     
                     if (tabId === 'general') {
-                        // Обновляем вкладку "Общая" при переходе на нее
+                        // Update General tab when switching to it
                         updateGeneralTable();
                         renderWithdrawalTable();
                         loadMonthComments();
@@ -2171,7 +2173,7 @@
             if (saveDataBtn) {
                 saveDataBtn.addEventListener('click', () => {
                     saveTradeData();
-                    showNotification('Данные сохранены', 'success');
+                    showNotification('Data saved', 'success');
                 });
             }
             
@@ -2179,21 +2181,21 @@
                 sendToBotBtn.addEventListener('click', sendDataToBot);
             }
             
-            // Обработчик для кнопки завершения дня
+            // Handler for end day button
             if (endDayBtn) {
                 endDayBtn.addEventListener('click', function() {
-                    // Сохраняем текущий баланс как начальный для следующего дня
+                    // Save current balance as starting balance for next day
                     appSettings.startingBalance = appSettings.currentBalance;
                     
-                    // Сохраняем настройки
+                    // Save settings
                     saveSettings();
                     
-                    // Обновляем отображение
+                    // Update display
                     if (startingBalanceValue) {
                         startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
                     }
                     
-                    showNotification('День завершен. Баланс начала дня обновлен', 'success');
+                    showNotification('Day completed. Starting balance updated', 'success');
                 });
             }
             
@@ -2202,7 +2204,7 @@
                     if (targetInput && targetInput.value) {
                         applyTargetToDay(targetInput.value);
                     } else {
-                        showNotification('Введите значение', 'error');
+                        showNotification('Enter value', 'error');
                     }
                 });
             }
@@ -2212,7 +2214,7 @@
                     if (targetInput && targetInput.value) {
                         applyTargetToAll(targetInput.value);
                     } else {
-                        showNotification('Введите значение', 'error');
+                        showNotification('Enter value', 'error');
                     }
                 });
             }
