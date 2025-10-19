@@ -110,17 +110,20 @@
             cursor: pointer;
             line-height: 1.2;
             transition: all 0.2s;
+            color: var(--tg-theme-text-color, #333);
         }
         
         .starting-balance {
-            background-color: #e8f4fd;
+            background-color: var(--tg-theme-secondary-bg-color, #e8f4fd);
+            color: var(--tg-theme-text-color, #333);
             border-radius: 4px;
             padding: 2px 4px;
-            border: 1px dashed #3498db;
+            border: 1px dashed var(--tg-theme-button-color, #3498db);
         }
         
         .starting-balance:hover {
-            background-color: #d4edfa;
+            background-color: var(--tg-theme-hint-color, #d4edfa);
+            opacity: 0.9;
         }
         
         .positive {
@@ -145,6 +148,7 @@
             background: var(--tg-theme-bg-color, white);
             font-size: 0.75rem;
             table-layout: fixed;
+            color: var(--tg-theme-text-color, #333);
         }
         
         th, td {
@@ -156,6 +160,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: var(--tg-theme-text-color, #333);
         }
         
         th {
@@ -246,6 +251,7 @@
         
         .modal-content {
             background: var(--tg-theme-bg-color, white);
+            color: var(--tg-theme-text-color, #333);
             padding: 15px;
             border-radius: 8px;
             width: 90%;
@@ -305,15 +311,16 @@
         
         .emotion-option {
             padding: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 4px;
             cursor: pointer;
             text-align: center;
             transition: all 0.2s;
+            color: var(--tg-theme-text-color, #333);
         }
         
         .emotion-option:hover {
-            background: #f0f0f0;
+            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
         }
         
         .emotion-emoji {
@@ -333,12 +340,18 @@
             width: 100%;
             min-height: 100px;
             padding: 8px;
-            border: 1px solid #ddd;
+            background: var(--tg-theme-bg-color, white);
+            color: var(--tg-theme-text-color, #333);
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 4px;
             resize: vertical;
             font-family: inherit;
             font-size: 0.8rem;
             margin-top: 10px;
+        }
+        
+        .comments-textarea::placeholder {
+            color: var(--tg-theme-hint-color, #7f8c8d);
         }
         
         .tabs {
@@ -358,6 +371,8 @@
             transition: all 0.3s;
             font-size: 0.8rem;
             min-width: 70px;
+            color: var(--tg-theme-text-color, #333);
+            background: var(--tg-theme-secondary-bg-color, #ecf0f1);
         }
         
         .tab.active {
@@ -377,9 +392,15 @@
             width: 100%;
             padding: 8px;
             margin: 8px 0;
-            border: 1px solid #ddd;
+            background: var(--tg-theme-bg-color, white);
+            color: var(--tg-theme-text-color, #333);
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 4px;
             font-size: 0.9rem;
+        }
+        
+        .amount-input::placeholder {
+            color: var(--tg-theme-hint-color, #7f8c8d);
         }
         
         .date-navigation {
@@ -463,13 +484,14 @@
         }
         
         .general-table .editable:hover {
-            background-color: #f0f0f0;
+            background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
         }
         
         .general-table .current-day {
-            background-color: #f5f9ff;
+            background-color: var(--tg-theme-button-color, #3498db);
+            color: var(--tg-theme-button-text-color, white);
             font-weight: bold;
-            border: 1px solid #cce0ff;
+            border: 1px solid var(--tg-theme-button-color, #cce0ff);
         }
         
         .withdrawal-table-container {
@@ -497,7 +519,7 @@
         }
         
         .withdrawal-table .editable:hover {
-            background-color: #f0f0f0;
+            background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
         }
         
         .add-withdrawal-btn {
@@ -513,11 +535,17 @@
             width: 100%;
             min-height: 80px;
             padding: 8px;
-            border: 1px solid #ddd;
+            background: var(--tg-theme-bg-color, white);
+            color: var(--tg-theme-text-color, #333);
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 4px;
             resize: vertical;
             font-family: inherit;
             font-size: 0.8rem;
+        }
+        
+        .month-comments textarea::placeholder {
+            color: var(--tg-theme-hint-color, #7f8c8d);
         }
         
         .target-modal {
@@ -535,6 +563,7 @@
         
         .target-modal-content {
             background: var(--tg-theme-bg-color, white);
+            color: var(--tg-theme-text-color, #333);
             padding: 15px;
             border-radius: 8px;
             width: 90%;
@@ -562,19 +591,31 @@
             width: 100%;
             padding: 8px;
             margin: 8px 0;
-            border: 1px solid #ddd;
+            background: var(--tg-theme-bg-color, white);
+            color: var(--tg-theme-text-color, #333);
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 4px;
             font-size: 0.9rem;
+        }
+        
+        .target-input::placeholder {
+            color: var(--tg-theme-hint-color, #7f8c8d);
         }
         
         .balance-input {
             width: 100%;
             padding: 8px;
             margin: 8px 0;
-            border: 1px solid #ddd;
+            background: var(--tg-theme-bg-color, white);
+            color: var(--tg-theme-text-color, #333);
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 4px;
             font-size: 0.9rem;
             text-align: center;
+        }
+        
+        .balance-input::placeholder {
+            color: var(--tg-theme-hint-color, #7f8c8d);
         }
         
         .withdrawal-action-modal {
@@ -592,6 +633,7 @@
         
         .withdrawal-action-content {
             background: var(--tg-theme-bg-color, white);
+            color: var(--tg-theme-text-color, #333);
             padding: 15px;
             border-radius: 8px;
             width: 90%;
@@ -1190,7 +1232,7 @@
                         tradeAmountCell.textContent = formatNumber(trade.tradeAmount);
                     } else {
                         tradeAmountCell.textContent = 'Click to enter amount';
-                        tradeAmountCell.style.color = '#7f8c8d';
+                        tradeAmountCell.style.color = 'var(--tg-theme-hint-color, #7f8c8d)';
                         tradeAmountCell.style.fontStyle = 'italic';
                     }
                     
@@ -1263,7 +1305,7 @@
                         commentsCell.textContent = trade.comment;
                     } else {
                         commentsCell.textContent = 'Click to add comment';
-                        commentsCell.style.color = '#7f8c8d';
+                        commentsCell.style.color = 'var(--tg-theme-hint-color, #7f8c8d)';
                         commentsCell.style.fontStyle = 'italic';
                     }
                     
