@@ -63,10 +63,6 @@
             opacity: 0.9;
         }
         
-        .btn-secondary {
-            background: var(--tg-theme-secondary-bg-color, #95a5a6);
-        }
-        
         .btn-success {
             background: var(--tg-theme-button-color, #27ae60);
         }
@@ -75,12 +71,43 @@
             background: var(--tg-theme-button-color, #e74c3c);
         }
         
-        .btn-warning {
-            background: var(--tg-theme-button-color, #f39c12);
-        }
-        
         .main-content {
             padding: 10px;
+        }
+        
+        .balance-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+        
+        .balance-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .balance-label {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            color: var(--tg-theme-hint-color, #7f8c8d);
+        }
+        
+        .balance-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .positive {
+            color: #2ecc71;
+        }
+        
+        .negative {
+            color: #e74c3c;
         }
         
         .table-container {
@@ -88,6 +115,7 @@
             margin-bottom: 10px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 6px;
+            width: 100%;
         }
         
         table {
@@ -95,6 +123,7 @@
             border-collapse: collapse;
             background: var(--tg-theme-bg-color, white);
             font-size: 0.75rem;
+            table-layout: fixed;
         }
         
         th, td {
@@ -103,6 +132,9 @@
             text-align: center;
             min-width: 40px;
             height: 30px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
         th {
@@ -113,8 +145,9 @@
             font-weight: bold;
         }
         
-        .deal-header {
+        .trade-header {
             background: var(--tg-theme-bg-color, #34495e);
+            width: 50px;
         }
         
         .cell {
@@ -142,34 +175,35 @@
             color: #e74c3c;
         }
         
-        .summary {
-            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
-            padding: 8px;
-            border-radius: 6px;
-            text-align: center;
+        .refund {
+            background: #d6eaf8;
+            color: #3498db;
+        }
+        
+        .emotion-cell {
             font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .comments-cell {
+            text-align: left;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .add-trade-btn {
             margin-top: 10px;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            width: 100%;
         }
         
-        .summary h3 {
-            margin-bottom: 5px;
-            color: var(--tg-theme-text-color, #2c3e50);
-            font-size: 0.9rem;
-        }
-        
-        .summary-value {
-            font-size: 1rem;
-            font-weight: bold;
-            color: var(--tg-theme-text-color, #2c3e50);
-        }
-        
-        .positive {
-            color: #2ecc71;
-        }
-        
-        .negative {
-            color: #e74c3c;
+        .telegram-actions {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
         .modal {
@@ -194,6 +228,1752 @@
             text-align: center;
         }
         
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .modal-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            flex: 1;
+            min-width: 80px;
+        }
+        
+        .profit-btn {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .loss-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .refund-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .reset-btn {
+            background: #7f8c8d;
+            color: white;
+        }
+        
+        .emotion-modal-content {
+            max-width: 250px;
+        }
+        
+        .emotion-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .emotion-option {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .emotion-option:hover {
+            background: #f0f0f0;
+        }
+        
+        .emotion-emoji {
+            font-size: 1.5rem;
+            margin-bottom: 3px;
+        }
+        
+        .emotion-label {
+            font-size: 0.7rem;
+        }
+        
+        .comments-modal-content {
+            max-width: 300px;
+        }
+        
+        .comments-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+            background: var(--tg-theme-secondary-bg-color, #ecf0f1);
+            border-radius: 6px;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            min-width: 70px;
+        }
+        
+        .tab.active {
+            background: var(--tg-theme-button-color, #3498db);
+            color: var(--tg-theme-button-text-color, white);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .amount-input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .date-navigation {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0;
+            gap: 8px;
+        }
+        
+        .date-btn {
+            background: var(--tg-theme-button-color, #3498db);
+            color: var(--tg-theme-button-text-color, white);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            color: white;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+        
+        .notification.success {
+            background: #27ae60;
+            opacity: 1;
+        }
+        
+        .notification.error {
+            background: #e74c3c;
+            opacity: 1;
+        }
+        
+        /* Стили для вкладки Общая */
+        .general-header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .month-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .current-date {
+            font-size: 0.9rem;
+            color: var(--tg-theme-hint-color, #7f8c8d);
+        }
+        
+        .general-table-container {
+            overflow-x: auto;
+            margin-bottom: 10px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 6px;
+        }
+        
+        .general-table {
+            font-size: 0.7rem;
+        }
+        
+        .general-table th, .general-table td {
+            padding: 3px;
+            text-align: center;
+            min-width: 50px;
+            height: 25px;
+        }
+        
+        .general-table .editable {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .general-table .editable:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .general-table .current-day {
+            background-color: #e3f2fd;
+            font-weight: bold;
+        }
+        
+        .withdrawal-table-container {
+            margin-top: 15px;
+            overflow-x: auto;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 6px;
+        }
+        
+        .withdrawal-table {
+            font-size: 0.7rem;
+            width: 100%;
+        }
+        
+        .withdrawal-table th, .withdrawal-table td {
+            padding: 3px;
+            text-align: center;
+            min-width: 60px;
+            height: 25px;
+        }
+        
+        .withdrawal-table .editable {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .withdrawal-table .editable:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .add-withdrawal-btn {
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .target-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .target-modal-content {
+            background: var(--tg-theme-bg-color, white);
+            padding: 15px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 280px;
+            text-align: center;
+        }
+        
+        .target-modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .target-modal-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        .target-input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .balance-input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .balance-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .balance-value {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            table th, table td {
+                min-width: 35px;
+                padding: 3px;
+                font-size: 0.65rem;
+            }
+            
+            .tab {
+                min-width: 60px;
+                padding: 6px;
+            }
+            
+            .trade-header {
+                width: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Торговый дневник</h1>
+            <div class="date-display" id="currentDate"></div>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="table">Таблица</div>
+            <div class="tab" data-tab="general">Общая</div>
+            <div class="tab" data-tab="history">История</div>
+            <div class="tab" data-tab="export">Экспорт</div>
+            <div class="tab" data-tab="settings">Настройки</div>
+        </div>
+        
+        <div class="main-content">
+            <div class="tab-content active" id="table-tab">
+                <div class="balance-container">
+                    <div class="balance-item">
+                        <div class="balance-label">Баланс начала дня</div>
+                        <div class="balance-value" id="startingBalanceValue">100000</div>
+                    </div>
+                    <div class="balance-item">
+                        <div class="balance-label">Текущий баланс</div>
+                        <div class="balance-value" id="currentBalanceValue">100000</div>
+                    </div>
+                    <div class="balance-item">
+                        <div class="balance-label">Итог дня</div>
+                        <div class="balance-value" id="dayResultValue">0</div>
+                    </div>
+                </div>
+                
+                <div class="date-navigation">
+                    <button class="date-btn" id="prevDayBtn">←</button>
+                    <button class="date-btn" id="todayBtn">Сегодня</button>
+                    <button class="date-btn" id="nextDayBtn">→</button>
+                </div>
+                
+                <div class="table-container">
+                    <table id="tradingTable">
+                        <thead>
+                            <tr>
+                                <th class="trade-header">Trade</th>
+                                <th>Trade Amount</th>
+                                <th>Profit/Lose/Refund</th>
+                                <th>Emotional State</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table rows will be generated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <button class="btn add-trade-btn" id="addTradeBtn">+ Add Trade</button>
+
+                <div class="telegram-actions">
+                    <button class="btn btn-success" id="saveDataBtn">Сохранить</button>
+                    <button class="btn" id="sendToBotBtn">Отправить в бот</button>
+                    <button class="btn btn-success" id="endDayBtn">Завершить день</button>
+                </div>
+            </div>
+            
+            <!-- Вкладка "Общая" -->
+            <div class="tab-content" id="general-tab">
+                <div class="general-header">
+                    <div class="month-title" id="currentMonthTitle"></div>
+                    <div class="current-date" id="currentGeneralDate"></div>
+                </div>
+                
+                <div class="general-table-container">
+                    <table class="general-table" id="generalTable">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Profit Target %</th>
+                                <th>Loss Target %</th>
+                                <th>Actual P/L %</th>
+                                <th>Win Trades</th>
+                                <th>Loss Trades</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table rows will be generated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="withdrawal-table-container">
+                    <table class="withdrawal-table" id="withdrawalTable">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Withdrawal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Withdrawal rows will be generated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <button class="btn add-withdrawal-btn" id="addWithdrawalBtn">+ Add Withdrawal</button>
+            </div>
+            
+            <div class="tab-content" id="history-tab">
+                <h2>История торговых дней</h2>
+                <div id="historyList">
+                    <!-- History items will be generated here -->
+                </div>
+            </div>
+            
+            <div class="tab-content" id="export-tab">
+                <h2>Экспорт данных</h2>
+                
+                <div class="export-section">
+                    <h3>Экспорт в PDF</h3>
+                    <p>Создайте подробный отчет в PDF формате с вашей торговой историей.</p>
+                    
+                    <div class="date-range">
+                        <input type="date" id="pdfStartDate" placeholder="Начальная дата">
+                        <input type="date" id="pdfEndDate" placeholder="Конечная дата">
+                    </div>
+                    
+                    <div class="export-options">
+                        <button class="btn export-btn" id="exportCurrentPdf">
+                            <span>📊</span> Текущий день
+                        </button>
+                        <button class="btn export-btn" id="exportRangePdf">
+                            <span>📅</span> По диапазону
+                        </button>
+                        <button class="btn export-btn" id="exportAllPdf">
+                            <span>📋</span> Вся история
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="export-section">
+                    <h3>Экспорт в Excel</h3>
+                    <p>Экспортируйте данные в формате Excel для дальнейшего анализа.</p>
+                    
+                    <div class="date-range">
+                        <input type="date" id="excelStartDate" placeholder="Начальная дата">
+                        <input type="date" id="excelEndDate" placeholder="Конечная дата">
+                    </div>
+                    
+                    <div class="export-options">
+                        <button class="btn export-btn" id="exportCurrentExcel">
+                            <span>📊</span> Текущий день
+                        </button>
+                        <button class="btn export-btn" id="exportRangeExcel">
+                            <span>📅</span> По диапазону
+                        </button>
+                        <button class="btn export-btn" id="exportAllExcel">
+                            <span>📋</span> Вся история
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="export-info">
+                    <strong>💡 Совет:</strong> Для экспорта данных за определенный период укажите даты в полях выше. 
+                    Если даты не указаны, будут экспортированы все доступные данные.
+                </div>
+            </div>
+
+            <div class="tab-content" id="settings-tab">
+                <h2>Настройки приложения</h2>
+                
+                <div class="settings-panel">
+                    <h3>Управление данными</h3>
+                    <button class="btn btn-warning settings-btn" id="clearCurrentDayBtn">Очистить текущий день</button>
+                    <button class="btn btn-danger settings-btn" id="clearAllDataBtn">Очистить всю историю</button>
+                </div>
+
+                <div class="settings-panel">
+                    <h3>О приложении</h3>
+                    <p>Торговый дневник PRO v2.0</p>
+                    <p>Разработано для удобного отслеживания торговых результатов</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для результата сделки -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Выберите результат сделки</h2>
+            <input type="number" class="amount-input" id="amountInput" placeholder="Введите сумму" step="0.01">
+            <div class="modal-buttons">
+                <button class="modal-btn profit-btn" data-value="profit">Прибыль</button>
+                <button class="modal-btn loss-btn" data-value="loss">Убыток</button>
+                <button class="modal-btn refund-btn" data-value="refund">Возврат</button>
+                <button class="modal-btn reset-btn" data-value="reset">Сброс</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для суммы сделки -->
+    <div class="modal" id="tradeAmountModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Введите сумму сделки</h2>
+            <input type="number" class="amount-input" id="tradeAmountInput" placeholder="Введите сумму" step="0.01">
+            <div class="modal-buttons">
+                <button class="modal-btn profit-btn" id="saveTradeAmountBtn">Сохранить</button>
+                <button class="modal-btn reset-btn" id="cancelTradeAmountBtn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для вывода средств -->
+    <div class="modal" id="withdrawalModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Введите сумму вывода</h2>
+            <input type="number" class="amount-input" id="withdrawalAmountInput" placeholder="Введите сумму" step="0.01">
+            <div class="modal-buttons">
+                <button class="modal-btn profit-btn" id="saveWithdrawalBtn">Сохранить</button>
+                <button class="modal-btn reset-btn" id="cancelWithdrawalBtn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для эмоций -->
+    <div class="modal" id="emotionModal">
+        <div class="modal-content emotion-modal-content">
+            <h2 class="modal-title">Выберите эмоциональное состояние</h2>
+            <div class="emotion-options">
+                <div class="emotion-option" data-emotion="😨 fear">
+                    <div class="emotion-emoji">😨</div>
+                    <div class="emotion-label">Fear</div>
+                </div>
+                <div class="emotion-option" data-emotion="🤑 greed">
+                    <div class="emotion-emoji">🤑</div>
+                    <div class="emotion-label">Greed</div>
+                </div>
+                <div class="emotion-option" data-emotion="😁 joy">
+                    <div class="emotion-emoji">😁</div>
+                    <div class="emotion-label">Joy</div>
+                </div>
+                <div class="emotion-option" data-emotion="😕 uncertainty">
+                    <div class="emotion-emoji">😕</div>
+                    <div class="emotion-label">Uncertainty</div>
+                </div>
+                <div class="emotion-option" data-emotion="😐 neutral">
+                    <div class="emotion-emoji">😐</div>
+                    <div class="emotion-label">Neutral</div>
+                </div>
+                <div class="emotion-option" data-emotion="😤 frustration">
+                    <div class="emotion-emoji">😤</div>
+                    <div class="emotion-label">Frustration</div>
+                </div>
+                <div class="emotion-option" data-emotion="🤔 contemplation">
+                    <div class="emotion-emoji">🤔</div>
+                    <div class="emotion-label">Contemplation</div>
+                </div>
+                <div class="emotion-option" data-emotion="😴 boredom">
+                    <div class="emotion-emoji">😴</div>
+                    <div class="emotion-label">Boredom</div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn reset-btn" id="clearEmotionBtn">Очистить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для комментариев -->
+    <div class="modal" id="commentsModal">
+        <div class="modal-content comments-modal-content">
+            <h2 class="modal-title">Добавьте комментарий</h2>
+            <textarea class="comments-textarea" id="commentsInput" placeholder="Введите комментарий..."></textarea>
+            <div class="modal-buttons">
+                <button class="modal-btn profit-btn" id="saveCommentBtn">Сохранить</button>
+                <button class="modal-btn reset-btn" id="cancelCommentBtn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для установки баланса -->
+    <div class="modal" id="balanceModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Установите баланс начала дня</h2>
+            <input type="number" class="balance-input" id="balanceInput" placeholder="Введите баланс" step="0.01">
+            <div class="modal-buttons">
+                <button class="modal-btn profit-btn" id="saveBalanceBtn">Сохранить</button>
+                <button class="modal-btn reset-btn" id="cancelBalanceBtn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для установки целей -->
+    <div class="target-modal" id="targetModal">
+        <div class="target-modal-content">
+            <h2 class="modal-title" id="targetModalTitle">Установите цель (%)</h2>
+            <input type="number" class="target-input" id="targetInput" placeholder="Введите значение в %" step="0.01">
+            <div class="target-modal-buttons">
+                <button class="target-modal-btn" id="applyToDayBtn">Только день</button>
+                <button class="target-modal-btn" id="applyToAllBtn">Все дни</button>
+                <button class="target-modal-btn" id="cancelTargetBtn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Инициализация Telegram Web App
+        let tg = window.Telegram?.WebApp;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Expand the app to full screen
+            if (tg && tg.expand) {
+                tg.expand();
+            }
+            
+            // Elements
+            const currentDateEl = document.getElementById('currentDate');
+            const tradingTable = document.getElementById('tradingTable');
+            const resultModal = document.getElementById('resultModal');
+            const tradeAmountModal = document.getElementById('tradeAmountModal');
+            const withdrawalModal = document.getElementById('withdrawalModal');
+            const emotionModal = document.getElementById('emotionModal');
+            const commentsModal = document.getElementById('commentsModal');
+            const balanceModal = document.getElementById('balanceModal');
+            const historyList = document.getElementById('historyList');
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const saveDataBtn = document.getElementById('saveDataBtn');
+            const sendToBotBtn = document.getElementById('sendToBotBtn');
+            const notification = document.getElementById('notification');
+            const amountInput = document.getElementById('amountInput');
+            const tradeAmountInput = document.getElementById('tradeAmountInput');
+            const withdrawalAmountInput = document.getElementById('withdrawalAmountInput');
+            const balanceInput = document.getElementById('balanceInput');
+            const prevDayBtn = document.getElementById('prevDayBtn');
+            const todayBtn = document.getElementById('todayBtn');
+            const nextDayBtn = document.getElementById('nextDayBtn');
+            const addTradeBtn = document.getElementById('addTradeBtn');
+            const addWithdrawalBtn = document.getElementById('addWithdrawalBtn');
+            
+            // Balance elements
+            const startingBalanceValue = document.getElementById('startingBalanceValue');
+            const currentBalanceValue = document.getElementById('currentBalanceValue');
+            const dayResultValue = document.getElementById('dayResultValue');
+            const endDayBtn = document.getElementById('endDayBtn');
+            const saveBalanceBtn = document.getElementById('saveBalanceBtn');
+            const cancelBalanceBtn = document.getElementById('cancelBalanceBtn');
+            
+            // Clear buttons
+            const clearCurrentDayBtn = document.getElementById('clearCurrentDayBtn');
+            const clearAllDataBtn = document.getElementById('clearAllDataBtn');
+            
+            // Элементы для вкладки "Общая"
+            const currentMonthTitle = document.getElementById('currentMonthTitle');
+            const currentGeneralDate = document.getElementById('currentGeneralDate');
+            const generalTable = document.getElementById('generalTable');
+            const saveWithdrawalBtn = document.getElementById('saveWithdrawalBtn');
+            const cancelWithdrawalBtn = document.getElementById('cancelWithdrawalBtn');
+            const withdrawalTable = document.getElementById('withdrawalTable');
+            const targetModal = document.getElementById('targetModal');
+            const targetModalTitle = document.getElementById('targetModalTitle');
+            const targetInput = document.getElementById('targetInput');
+            const applyToDayBtn = document.getElementById('applyToDayBtn');
+            const applyToAllBtn = document.getElementById('applyToAllBtn');
+            const cancelTargetBtn = document.getElementById('cancelTargetBtn');
+
+            // Элементы для модальных окон эмоций и комментариев
+            const clearEmotionBtn = document.getElementById('clearEmotionBtn');
+            const commentsInput = document.getElementById('commentsInput');
+            const saveCommentBtn = document.getElementById('saveCommentBtn');
+            const cancelCommentBtn = document.getElementById('cancelCommentBtn');
+
+            // Элементы для модального окна суммы сделки
+            const saveTradeAmountBtn = document.getElementById('saveTradeAmountBtn');
+            const cancelTradeAmountBtn = document.getElementById('cancelTradeAmountBtn');
+
+            // State
+            let currentDate = new Date();
+            let trades = []; // Массив сделок
+            let currentCell = null;
+            let currentTradeIndex = null;
+            let currentColumnType = null; // 'amount', 'result', 'emotion', 'comments'
+            let tradeData = {};
+            let historyData = JSON.parse(localStorage.getItem('tradeHistory')) || {};
+            let generalData = JSON.parse(localStorage.getItem('generalData')) || {};
+            let withdrawalData = JSON.parse(localStorage.getItem('withdrawalData')) || {};
+            let appSettings = JSON.parse(localStorage.getItem('appSettings')) || { 
+                initialBalance: 100000,
+                startingBalance: 100000,
+                currentBalance: 100000
+            };
+
+            // Переменные для управления целями
+            let currentTargetDay = null;
+            let currentTargetType = null; // 'profit' или 'loss'
+
+            // Глобальные переменные для текущего месяца и года
+            let currentYear, currentMonth;
+
+            // Initialize
+            function init() {
+                if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
+                
+                // Загружаем настройки баланса
+                if (appSettings.startingBalance && startingBalanceValue) {
+                    startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
+                }
+                
+                if (appSettings.currentBalance && currentBalanceValue) {
+                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
+                }
+                
+                const dateKey = formatDateKey(currentDate);
+                if (historyData[dateKey]) {
+                    tradeData = historyData[dateKey];
+                    trades = tradeData.trades || [];
+                    renderTable();
+                    updateTotal();
+                } else {
+                    initTrades();
+                    renderTable();
+                }
+                
+                // Инициализируем вкладку "Общая"
+                initGeneralTab();
+                
+                renderHistory();
+                
+                // Инициализируем таблицу выводов
+                renderWithdrawalTable();
+            }
+
+            function formatDate(date) {
+                const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                return date.toLocaleDateString('ru-RU', options);
+            }
+            
+            function formatDateKey(date) {
+                return date.toISOString().split('T')[0];
+            }
+            
+            // Функция для форматирования чисел
+            function formatNumber(amount) {
+                return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(amount);
+            }
+            
+            function initTrades() {
+                trades = [];
+                // Начинаем с 5 сделок по умолчанию
+                for (let i = 0; i < 5; i++) {
+                    trades.push({
+                        tradeAmount: null,
+                        result: null,
+                        emotion: null,
+                        comment: ''
+                    });
+                }
+                tradeData.trades = trades;
+            }
+            
+            function renderTable() {
+                if (!tradingTable) return;
+                
+                const tbody = tradingTable.querySelector('tbody');
+                
+                if (!tbody) return;
+                
+                // Clear table body
+                tbody.innerHTML = '';
+                
+                // Add rows with trades
+                for (let i = 0; i < trades.length; i++) {
+                    const row = document.createElement('tr');
+                    const trade = trades[i];
+                    
+                    // Колонка Trade (номер сделки)
+                    const tradeCell = document.createElement('td');
+                    tradeCell.textContent = i + 1;
+                    tradeCell.className = 'trade-header';
+                    row.appendChild(tradeCell);
+                    
+                    // Колонка Trade Amount
+                    const tradeAmountCell = document.createElement('td');
+                    tradeAmountCell.className = 'cell';
+                    
+                    if (trade.tradeAmount !== null) {
+                        tradeAmountCell.textContent = formatNumber(trade.tradeAmount);
+                    } else {
+                        tradeAmountCell.textContent = 'Нажмите для ввода суммы';
+                        tradeAmountCell.style.color = '#7f8c8d';
+                        tradeAmountCell.style.fontStyle = 'italic';
+                    }
+                    
+                    tradeAmountCell.addEventListener('click', () => {
+                        currentCell = tradeAmountCell;
+                        currentTradeIndex = i;
+                        currentColumnType = 'amount';
+                        if (tradeAmountInput) tradeAmountInput.value = trade.tradeAmount || '';
+                        if (tradeAmountModal) tradeAmountModal.style.display = 'flex';
+                    });
+                    
+                    row.appendChild(tradeAmountCell);
+                    
+                    // Колонка Profit/Lose/Refund
+                    const resultCell = document.createElement('td');
+                    resultCell.className = 'cell';
+                    
+                    if (trade.result !== null) {
+                        const amount = trade.result.amount;
+                        const type = trade.result.type;
+                        
+                        if (type === 'profit') {
+                            resultCell.className += ' profit';
+                            resultCell.innerHTML = `<div class="cell-content">+${amount}</div>`;
+                        } else if (type === 'loss') {
+                            resultCell.className += ' loss';
+                            resultCell.innerHTML = `<div class="cell-content">-${amount}</div>`;
+                        } else if (type === 'refund') {
+                            resultCell.className += ' refund';
+                            resultCell.innerHTML = `<div class="cell-content">Refund: ${amount}</div>`;
+                        }
+                    }
+                    
+                    resultCell.addEventListener('click', () => {
+                        currentCell = resultCell;
+                        currentTradeIndex = i;
+                        currentColumnType = 'result';
+                        if (amountInput) amountInput.value = '';
+                        if (resultModal) resultModal.style.display = 'flex';
+                    });
+                    
+                    row.appendChild(resultCell);
+                    
+                    // Колонка Emotional State
+                    const emotionCell = document.createElement('td');
+                    emotionCell.className = 'cell emotion-cell';
+                    
+                    if (trade.emotion !== null) {
+                        emotionCell.textContent = trade.emotion;
+                    }
+                    
+                    emotionCell.addEventListener('click', () => {
+                        currentCell = emotionCell;
+                        currentTradeIndex = i;
+                        currentColumnType = 'emotion';
+                        if (emotionModal) emotionModal.style.display = 'flex';
+                    });
+                    
+                    row.appendChild(emotionCell);
+                    
+                    // Колонка Comments
+                    const commentsCell = document.createElement('td');
+                    commentsCell.className = 'cell comments-cell';
+                    
+                    if (trade.comment !== '') {
+                        commentsCell.textContent = trade.comment;
+                    } else {
+                        commentsCell.textContent = 'Нажмите для добавления комментария';
+                        commentsCell.style.color = '#7f8c8d';
+                        commentsCell.style.fontStyle = 'italic';
+                    }
+                    
+                    commentsCell.addEventListener('click', () => {
+                        currentCell = commentsCell;
+                        currentTradeIndex = i;
+                        currentColumnType = 'comments';
+                        if (commentsInput) commentsInput.value = trade.comment || '';
+                        if (commentsModal) commentsModal.style.display = 'flex';
+                    });
+                    
+                    row.appendChild(commentsCell);
+                    
+                    tbody.appendChild(row);
+                }
+            }
+            
+            function updateTotal() {
+                let total = 0;
+                let winTrades = 0;
+                let lossTrades = 0;
+                
+                for (let i = 0; i < trades.length; i++) {
+                    const trade = trades[i];
+                    if (trade.result !== null) {
+                        const amount = trade.result.amount;
+                        const type = trade.result.type;
+                        
+                        if (type === 'profit') {
+                            total += amount;
+                            winTrades++;
+                        } else if (type === 'loss') {
+                            total -= amount;
+                            lossTrades++;
+                        }
+                        // Refund теперь не влияет на баланс
+                    }
+                }
+                
+                // Обновляем текущий баланс (без учета refund)
+                const currentBalance = appSettings.startingBalance + total;
+                appSettings.currentBalance = currentBalance;
+                
+                if (currentBalanceValue) {
+                    currentBalanceValue.textContent = formatNumber(currentBalance);
+                }
+                
+                if (dayResultValue) {
+                    dayResultValue.textContent = formatNumber(total);
+                    if (total > 0) {
+                        dayResultValue.className = 'balance-value positive';
+                    } else if (total < 0) {
+                        dayResultValue.className = 'balance-value negative';
+                    } else {
+                        dayResultValue.className = 'balance-value';
+                    }
+                }
+                
+                // Сохраняем данные для вкладки "Общая"
+                const dateKey = formatDateKey(currentDate);
+                if (!generalData[dateKey]) {
+                    generalData[dateKey] = {};
+                }
+                
+                // Расчет в процентах
+                const startingBalance = appSettings.startingBalance;
+                const profitLossPercent = startingBalance > 0 ? (total / startingBalance) * 100 : 0;
+                
+                generalData[dateKey].actualProfitLoss = profitLossPercent;
+                generalData[dateKey].winTrades = winTrades;
+                generalData[dateKey].lossTrades = lossTrades;
+                
+                // Обновляем таблицу на вкладке "Общая"
+                updateGeneralTable();
+            }
+            
+            function saveTradeData() {
+                tradeData.trades = trades;
+                const dateKey = formatDateKey(currentDate);
+                historyData[dateKey] = {...tradeData};
+                localStorage.setItem('tradeHistory', JSON.stringify(historyData));
+                
+                // Сохраняем настройки
+                saveSettings();
+                
+                showNotification('Данные сохранены', 'success');
+            }
+            
+            // Сохранение настроек
+            function saveSettings() {
+                localStorage.setItem('appSettings', JSON.stringify(appSettings));
+            }
+            
+            function loadDateData(date) {
+                currentDate = date;
+                if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
+                
+                const dateKey = formatDateKey(currentDate);
+                if (historyData[dateKey]) {
+                    tradeData = historyData[dateKey];
+                    trades = tradeData.trades || [];
+                } else {
+                    initTrades();
+                }
+                
+                renderTable();
+                updateTotal();
+                renderHistory();
+                
+                // Обновляем вкладку "Общая"
+                updateGeneralTable();
+            }
+            
+            function renderHistory() {
+                if (!historyList) return;
+                
+                historyList.innerHTML = '';
+                const dates = Object.keys(historyData).sort().reverse();
+                
+                if (dates.length === 0) {
+                    historyList.innerHTML = '<p>Нет записей в истории</p>';
+                    return;
+                }
+                
+                dates.forEach(date => {
+                    const data = historyData[date];
+                    let dayTotal = 0;
+                    
+                    if (data.trades) {
+                        for (let i = 0; i < data.trades.length; i++) {
+                            const trade = data.trades[i];
+                            if (trade.result !== null) {
+                                const amount = trade.result.amount;
+                                const type = trade.result.type;
+                                
+                                if (type === 'profit') {
+                                    dayTotal += amount;
+                                } else if (type === 'loss') {
+                                    dayTotal -= amount;
+                                }
+                                // Refund теперь не влияет на баланс
+                            }
+                        }
+                    }
+                    
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    const dateEl = document.createElement('div');
+                    dateEl.className = 'history-date';
+                    dateEl.textContent = formatDate(new Date(date));
+                    historyItem.appendChild(dateEl);
+                    
+                    const totalEl = document.createElement('div');
+                    totalEl.className = 'history-total';
+                    if (dayTotal > 0) totalEl.classList.add('positive');
+                    else if (dayTotal < 0) totalEl.classList.add('negative');
+                    totalEl.textContent = `Итог: ${dayTotal.toFixed(2)}`;
+                    historyItem.appendChild(totalEl);
+                    
+                    historyList.appendChild(historyItem);
+                });
+            }
+            
+            function showNotification(message, type) {
+                if (!notification) return;
+                
+                notification.textContent = message;
+                notification.className = `notification ${type}`;
+                
+                setTimeout(() => {
+                    notification.className = 'notification';
+                }, 3000);
+            }
+            
+            function sendDataToBot() {
+                if (!tg || !tg.sendData) {
+                    showNotification('Функция отправки недоступна', 'error');
+                    return;
+                }
+                
+                const dataToSend = {
+                    date: formatDate(currentDate),
+                    total: parseFloat(dayResultValue?.textContent || '0'),
+                    details: tradeData
+                };
+                
+                tg.sendData(JSON.stringify(dataToSend));
+                showNotification('Данные отправлены боту', 'success');
+                
+                setTimeout(() => {
+                    if (tg && tg.close) {
+                        tg.close();
+                    }
+                }, 1500);
+            }
+            
+            // Функции для вкладки "Общая"
+            function initGeneralTab() {
+                // Устанавливаем текущую дату и месяц
+                const now = new Date();
+                currentYear = now.getFullYear();
+                currentMonth = now.getMonth();
+                
+                const monthNames = [
+                    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+                    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+                ];
+                
+                if (currentMonthTitle) {
+                    currentMonthTitle.textContent = monthNames[currentMonth] + " " + currentYear;
+                }
+                
+                if (currentGeneralDate) {
+                    currentGeneralDate.textContent = formatDate(now);
+                }
+                
+                // Создаем таблицу для текущего месяца
+                updateGeneralTable();
+            }
+            
+            function updateGeneralTable() {
+                if (!generalTable) return;
+                
+                const tbody = generalTable.querySelector('tbody');
+                if (!tbody) return;
+                
+                tbody.innerHTML = '';
+                
+                // Получаем количество дней в текущем месяце
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                
+                // Получаем текущий день
+                const today = new Date();
+                const currentDay = today.getDate();
+                const currentMonthIndex = today.getMonth();
+                const currentYearValue = today.getFullYear();
+                
+                // Создаем строки для каждого дня месяца
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const row = document.createElement('tr');
+                    
+                    // Проверяем, является ли этот день текущим
+                    if (day === currentDay && currentMonth === currentMonthIndex && currentYear === currentYearValue) {
+                        row.classList.add('current-day');
+                    }
+                    
+                    // Колонка Day
+                    const dayCell = document.createElement('td');
+                    dayCell.textContent = day;
+                    row.appendChild(dayCell);
+                    
+                    // Колонка Profit Target %
+                    const profitTargetCell = document.createElement('td');
+                    profitTargetCell.className = 'editable';
+                    const profitTargetValue = getGeneralData(day, 'profitTarget') || '-';
+                    profitTargetCell.textContent = profitTargetValue !== '-' ? profitTargetValue + '%' : '-';
+                    profitTargetCell.dataset.day = day;
+                    profitTargetCell.dataset.type = 'profit';
+                    profitTargetCell.addEventListener('click', handleTargetCellClick);
+                    row.appendChild(profitTargetCell);
+                    
+                    // Колонка Loss Target %
+                    const lossTargetCell = document.createElement('td');
+                    lossTargetCell.className = 'editable';
+                    const lossTargetValue = getGeneralData(day, 'lossTarget') || '-';
+                    lossTargetCell.textContent = lossTargetValue !== '-' ? lossTargetValue + '%' : '-';
+                    lossTargetCell.dataset.day = day;
+                    lossTargetCell.dataset.type = 'loss';
+                    lossTargetCell.addEventListener('click', handleTargetCellClick);
+                    row.appendChild(lossTargetCell);
+                    
+                    // Колонка Actual profit/loss %
+                    const actualCell = document.createElement('td');
+                    const actualValue = getGeneralData(day, 'actualProfitLoss') || 0;
+                    actualCell.textContent = actualValue !== 0 ? actualValue.toFixed(2) + '%' : '-';
+                    if (actualValue > 0) {
+                        actualCell.classList.add('positive');
+                    } else if (actualValue < 0) {
+                        actualCell.classList.add('negative');
+                    }
+                    row.appendChild(actualCell);
+                    
+                    // Колонка Number win trades
+                    const winTradesCell = document.createElement('td');
+                    const winTrades = getGeneralData(day, 'winTrades') || 0;
+                    winTradesCell.textContent = winTrades > 0 ? winTrades : '-';
+                    row.appendChild(winTradesCell);
+                    
+                    // Колонка Number loss trades
+                    const lossTradesCell = document.createElement('td');
+                    const lossTrades = getGeneralData(day, 'lossTrades') || 0;
+                    lossTradesCell.textContent = lossTrades > 0 ? lossTrades : '-';
+                    row.appendChild(lossTradesCell);
+                    
+                    tbody.appendChild(row);
+                }
+            }
+            
+            function getGeneralData(day, field) {
+                const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                return generalData[dateKey] ? generalData[dateKey][field] : null;
+            }
+            
+            function handleTargetCellClick(event) {
+                const cell = event.target;
+                const day = parseInt(cell.dataset.day);
+                const type = cell.dataset.type;
+                
+                currentTargetDay = day;
+                currentTargetType = type;
+                
+                if (targetModalTitle) {
+                    targetModalTitle.textContent = `Установите ${type === 'profit' ? 'цель прибыли' : 'цель убытка'} для дня ${day} (%)`;
+                }
+                
+                if (targetInput) {
+                    // Убираем символ % при загрузке значения
+                    const cellText = cell.textContent;
+                    targetInput.value = cellText !== '-' ? cellText.replace('%', '') : '';
+                }
+                
+                if (targetModal) {
+                    targetModal.style.display = 'flex';
+                }
+            }
+            
+            function saveWithdrawal(amount) {
+                const dateKey = formatDateKey(new Date());
+                if (!withdrawalData[dateKey]) {
+                    withdrawalData[dateKey] = [];
+                }
+                
+                withdrawalData[dateKey].push({
+                    date: dateKey,
+                    amount: amount
+                });
+                
+                // Вычитаем сумму вывода из текущего баланса
+                appSettings.currentBalance -= amount;
+                if (currentBalanceValue) {
+                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
+                }
+                
+                // Сохраняем данные выводов
+                localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
+                
+                // Обновляем таблицу выводов
+                renderWithdrawalTable();
+                
+                showNotification(`Вывод ${amount} успешно сохранен`, 'success');
+            }
+            
+            function renderWithdrawalTable() {
+                if (!withdrawalTable) return;
+                
+                const tbody = withdrawalTable.querySelector('tbody');
+                if (!tbody) return;
+                
+                tbody.innerHTML = '';
+                
+                // Получаем все выводы за текущий месяц
+                const currentMonthKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+                let totalWithdrawal = 0;
+                
+                Object.keys(withdrawalData).forEach(dateKey => {
+                    if (dateKey.startsWith(currentMonthKey)) {
+                        withdrawalData[dateKey].forEach(withdrawal => {
+                            const row = document.createElement('tr');
+                            
+                            // Колонка Дата
+                            const dateCell = document.createElement('td');
+                            dateCell.textContent = formatDate(new Date(withdrawal.date));
+                            row.appendChild(dateCell);
+                            
+                            // Колонка Withdrawal
+                            const amountCell = document.createElement('td');
+                            amountCell.textContent = formatNumber(withdrawal.amount);
+                            row.appendChild(amountCell);
+                            
+                            tbody.appendChild(row);
+                            
+                            totalWithdrawal += withdrawal.amount;
+                        });
+                    }
+                });
+                
+                // Добавляем строку с итогом
+                if (totalWithdrawal > 0) {
+                    const totalRow = document.createElement('tr');
+                    totalRow.style.fontWeight = 'bold';
+                    
+                    const totalLabelCell = document.createElement('td');
+                    totalLabelCell.textContent = 'Итого:';
+                    totalRow.appendChild(totalLabelCell);
+                    
+                    const totalAmountCell = document.createElement('td');
+                    totalAmountCell.textContent = formatNumber(totalWithdrawal);
+                    totalRow.appendChild(totalAmountCell);
+                    
+                    tbody.appendChild(totalRow);
+                }
+            }
+            
+            function applyTargetToDay(value) {
+                if (!currentTargetDay || !currentTargetType) return;
+                
+                const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(currentTargetDay).padStart(2, '0')}`;
+                
+                if (!generalData[dateKey]) {
+                    generalData[dateKey] = {};
+                }
+                
+                generalData[dateKey][currentTargetType + 'Target'] = parseFloat(value);
+                
+                // Обновляем таблицу
+                updateGeneralTable();
+                
+                // Закрываем модальное окно
+                if (targetModal) {
+                    targetModal.style.display = 'none';
+                }
+                
+                showNotification(`Цель для дня ${currentTargetDay} установлена`, 'success');
+            }
+            
+            function applyTargetToAll(value) {
+                if (!currentTargetType) return;
+                
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    
+                    if (!generalData[dateKey]) {
+                        generalData[dateKey] = {};
+                    }
+                    
+                    generalData[dateKey][currentTargetType + 'Target'] = parseFloat(value);
+                }
+                
+                // Обновляем таблицу
+                updateGeneralTable();
+                
+                // Закрываем модальное окно
+                if (targetModal) {
+                    targetModal.style.display = 'none';
+                }
+                
+                showNotification(`Цели для всех дней установлены (${value}%)`, 'success');
+            }
+
+            // Event Listeners
+            if (prevDayBtn) {
+                prevDayBtn.addEventListener('click', () => {
+                    saveTradeData();
+                    const newDate = new Date(currentDate);
+                    newDate.setDate(newDate.getDate() - 1);
+                    loadDateData(newDate);
+                });
+            }
+            
+            if (todayBtn) {
+                todayBtn.addEventListener('click', () => {
+                    saveTradeData();
+                    loadDateData(new Date());
+                });
+            }
+            
+            if (nextDayBtn) {
+                nextDayBtn.addEventListener('click', () => {
+                    saveTradeData();
+                    const newDate = new Date(currentDate);
+                    newDate.setDate(newDate.getDate() + 1);
+                    loadDateData(newDate);
+                });
+            }
+            
+            // Добавление новой сделки
+            if (addTradeBtn) {
+                addTradeBtn.addEventListener('click', () => {
+                    trades.push({
+                        tradeAmount: null,
+                        result: null,
+                        emotion: null,
+                        comment: ''
+                    });
+                    renderTable();
+                    saveTradeData();
+                });
+            }
+            
+            // Добавление вывода средств
+            if (addWithdrawalBtn) {
+                addWithdrawalBtn.addEventListener('click', () => {
+                    if (withdrawalAmountInput) withdrawalAmountInput.value = '';
+                    if (withdrawalModal) withdrawalModal.style.display = 'flex';
+                });
+            }
+
+            // Обработчики для очистки данных
+            if (clearCurrentDayBtn) {
+                clearCurrentDayBtn.addEventListener('click', function() {
+                    if (confirm('Вы уверены, что хотите очистить данные текущего дня?')) {
+                        const dateKey = formatDateKey(currentDate);
+                        delete historyData[dateKey];
+                        localStorage.setItem('tradeHistory', JSON.stringify(historyData));
+                        
+                        initTrades();
+                        renderTable();
+                        updateTotal();
+                        
+                        showNotification('Данные текущего дня очищены', 'success');
+                    }
+                });
+            }
+            
+            if (clearAllDataBtn) {
+                clearAllDataBtn.addEventListener('click', function() {
+                    if (confirm('Вы уверены, что хотите очистить ВСЮ историю? Это действие нельзя отменить.')) {
+                        historyData = {};
+                        localStorage.setItem('tradeHistory', JSON.stringify(historyData));
+                        
+                        initTrades();
+                        renderTable();
+                        updateTotal();
+                        renderHistory();
+                        
+                        showNotification('Вся история очищена', 'success');
+                    }
+                });
+            }
+            
+            // Modal event listeners для результата сделки
+            const resultModalButtons = resultModal?.querySelectorAll('.modal-btn');
+            if (resultModalButtons) {
+                resultModalButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const value = button.dataset.value;
+                        const amount = parseFloat(amountInput?.value.replace(',', '.'));
+                        
+                        if (currentTradeIndex !== null && value === 'reset') {
+                            trades[currentTradeIndex].result = null;
+                            currentCell.className = 'cell';
+                            currentCell.innerHTML = '';
+                            
+                            updateTotal();
+                            saveTradeData();
+                            if (resultModal) resultModal.style.display = 'none';
+                        } else if (currentTradeIndex !== null && !isNaN(amount) && amount > 0) {
+                            if (value === 'profit') {
+                                currentCell.className = 'cell profit';
+                                currentCell.innerHTML = `<div class="cell-content">+${amount.toFixed(2)}</div>`;
+                                trades[currentTradeIndex].result = { type: 'profit', amount: amount };
+                            } else if (value === 'loss') {
+                                currentCell.className = 'cell loss';
+                                currentCell.innerHTML = `<div class="cell-content">-${amount.toFixed(2)}</div>`;
+                                trades[currentTradeIndex].result = { type: 'loss', amount: amount };
+                            } else if (value === 'refund') {
+                                currentCell.className = 'cell refund';
+                                currentCell.innerHTML = `<div class="cell-content">Refund: ${amount.toFixed(2)}</div>`;
+                                trades[currentTradeIndex].result = { type: 'refund', amount: amount };
+                            }
+                            
+                            updateTotal();
+                            saveTradeData();
+                            if (resultModal) resultModal.style.display = 'none';
+                        } else {
+                            showNotification('Введите корректную положительную сумму', 'error');
+                            if (amountInput) {
+                                amountInput.classList.add('error-input');
+                                setTimeout(() => amountInput.classList.remove('error-input'), 1000);
+                            }
+                        }
+                    });
+                });
+            }
+            
+            if (resultModal) {
+                resultModal.addEventListener('click', (e) => {
+                    if (e.target === resultModal) {
+                        resultModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Обработчики для модального окна суммы сделки
+            if (saveTradeAmountBtn) {
+                saveTradeAmountBtn.addEventListener('click', () => {
+                    const amount = parseFloat(tradeAmountInput?.value.replace(',', '.'));
+                    if (!isNaN(amount) && amount > 0) {
+                        trades[currentTradeIndex].tradeAmount = amount;
+                        currentCell.textContent = formatNumber(amount);
+                        currentCell.style.color = '';
+                        currentCell.style.fontStyle = '';
+                        saveTradeData();
+                        if (tradeAmountModal) tradeAmountModal.style.display = 'none';
+                    } else {
+                        showNotification('Введите корректную положительную сумму', 'error');
+                        if (tradeAmountInput) {
+                            tradeAmountInput.classList.add('error-input');
+                            setTimeout(() => tradeAmountInput.classList.remove('error-input'), 1000);
+                        }
+                    }
+                });
+            }
+            
+            if (cancelTradeAmountBtn) {
+                cancelTradeAmountBtn.addEventListener('click', () => {
+                    if (tradeAmountModal) tradeAmountModal.style.display = 'none';
+                });
+            }
+            
+            if (tradeAmountModal) {
+                tradeAmountModal.addEventListener('click', (e) => {
+                    if (e.target === tradeAmountModal) {
+                        tradeAmountModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Обработчики для модального окна вывода средств
+            if (saveWithdrawalBtn) {
+                saveWithdrawalBtn.addEventListener('click', () => {
+                    const amount = parseFloat(withdrawalAmountInput?.value.replace(',', '.'));
+                    if (!isNaN(amount) && amount > 0) {
+                        saveWithdrawal(amount);
+                        if (withdrawalModal) withdrawalModal.style.display = 'none';
+                    } else {
+                        showNotification('Введите корректную положительную сумму', 'error');
+                        if (withdrawalAmountInput) {
+                            withdrawalAmountInput.classList.add('error-input');
+                            setTimeout(() => withdrawalAmountInput.classList.remove('error-input'), 1000);
+                        }
+                    }
+                });
+            }
+            
+            if (cancelWithdrawalBtn) {
+                cancelWithdrawalBtn.addEventListener('click', () => {
+                    if (withdrawalModal) withdrawalModal.style.display = 'none';
+                });
+            }
+            
+            if (withdrawalModal) {
+                withdrawalModal.addEventListener('click', (e) => {
+                    if (e.target === withdrawalModal) {
+                        withdrawalModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Обработчики для модального окна эмоций
+            const emotionOptions = emotionModal?.querySelectorAll('.emotion-option');
+            if (emotionOptions) {
+                emotionOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        const emotion = option.dataset.emotion;
+                        trades[currentTradeIndex].emotion = emotion;
+                        currentCell.textContent = emotion;
+                        saveTradeData();
+                        if (emotionModal) emotionModal.style.display = 'none';
+                    });
+                });
+            }
+            
+            if (clearEmotionBtn) {
+                clearEmotionBtn.addEventListener('click', () => {
+                    trades[currentTradeIndex].emotion = null;
+                    currentCell.textContent = '';
+                    saveTradeData();
+                    if (emotionModal) emotionModal.style.display = 'none';
+                });
+            }
+            
+            if (emotionModal) {
+                emotionModal.addEventListener('click', (e) => {
+                    if (e.target === emotionModal) {
+                        emotionModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Обработчики для модального окна комментариев
+            if (saveCommentBtn) {
+                saveCommentBtn.addEventListener('click', () => {
+                    trades[currentTradeIndex].comment = commentsInput.value;
+                    currentCell.textContent = commentsInput.value;
+                    currentCell.style.color = '';
+                    currentCell.style.fontStyle = '';
+                    saveTradeData();
+                    if (commentsModal) commentsModal.style.display = 'none';
+                });
+            }
+            
+            if (cancelCommentBtn) {
+                cancelCommentBtn.addEventListener('click', () => {
+                    if (commentsModal) commentsModal.style.display = 'none';
+                });
+            }
+            
+            if (commentsModal) {
+                commentsModal.addEventListener('click', (e) => {
+                    if (e.target === commentsModal) {
+                        commentsModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Обработчики для модального окна баланса
+            if (startingBalanceValue) {
+                startingBalanceValue.addEventListener('click', () => {
+                    if (balanceInput) balanceInput.value = appSettings.startingBalance;
+                    if (balanceModal) balanceModal.style.display = 'flex';
+                });
+            }
+            
+            if (saveBalanceBtn) {
+                saveBalanceBtn.addEventListener('click', () => {
+                    const newBalance = parseFloat(balanceInput.value);
+                    if (!isNaN(newBalance)) {
+                        appSettings.startingBalance = newBalance;
+                        appSettings.currentBalance = newBalance;
+                        
+                        if (startingBalanceValue) {
+                            startingBalanceValue.textContent = formatNumber(newBalance);
+                        }
+                        
+                        if (currentBalanceValue) {
+                            currentBalanceValue.textContent = formatNumber(newBalance);
+                        }
+                        
+                        updateTotal();
+                        saveSettings();
+                        
+                        if (balanceModal) balanceModal.style.display = 'none';
+                        
+                        showNotification('Баланс обновлен', 'success');
+                    } else {
+                        showNotification('Введите корректное число', 'error');
+                    }
+                });
+            }
+            
+            if (cancelBalanceBtn) {
+                cancelBalanceBtn.addEventListener('click', () => {
+                    if (balanceModal) balanceModal.style.display = 'none';
+                });
+            }
+            
+            if (balanceModal) {
+                balanceModal.addEventListener('click', (e) => {
+                    if (e.target === balanceModal) {
+                        balanceModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(tc => tc.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    const tabContent = document.getElementById(`${tabId}-tab`);
+                    if (tabContent) tabContent.classList.add('active');
+                    
+                    if (tabId === 'general') {
+                        // Обновляем вкладку "Общая" при переходе на нее
+                        updateGeneralTable();
+                        renderWithdrawalTable();
+                    }
+                });
+            });
+            
+            // Save and send buttons
+            if (saveDataBtn) {
+                saveDataBtn.addEventListener('click', () => {
+                    saveTradeData();
+                    showNotification('Данные сохранены', 'success');
+                });
+            }
+            
+            if (sendToBotBtn) {
+                sendToBotBtn.addEventListener('click', sendDataToBot);
+            }
+            
+            // Обработчик для кнопки завершения дня
+            if (endDayBtn) {
+                endDayBtn.addEventListener('click', function() {
+                    // Сохраняем текущий баланс как начальный для следующего дня
+                    appSettings.startingBalance = appSettings.currentBalance;
+                    
+                    // Сохраняем настройки
+                    saveSettings();
+                    
+                    // Обновляем отображение
+                    if (startingBalanceValue) {
+                        startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
+                    }
+                    
+                    showNotification('День завершен. Баланс начала дня обновлен', 'success');
+                });
+            }
+            
+            if (applyToDayBtn) {
+                applyToDayBtn.addEventListener('click', () => {
+                    if (targetInput && targetInput.value) {
+                        applyTargetToDay(targetInput.value);
+                    } else {
+                        showNotification('Введите значение', 'error');
+                    }
+                });
+            }
+            
+            if (applyToAllBtn) {
+                applyToAllBtn.addEventListener('click', () => {
+                    if (targetInput && targetInput.value) {
+                        applyTargetToAll(targetInput.value);
+                    } else {
+                        showNotification('Введите значение', 'error');
+                    }
+                });
+            }
+            
+            if (cancelTargetBtn) {
+                cancelTargetBtn.addEventListener('click', () => {
+                    if (targetModal) {
+                        targetModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            if (targetModal) {
+                targetModal.addEventListener('click', (e) => {
+                    if (e.target === targetModal) {
+                        targetModal.style.display = 'none';
+                    }
+                });
+            }
+
+            // Initialize the app
+            init();
+        });
+    </script>
+</body>
+</html>        
         .modal-buttons {
             display: flex;
             justify-content: center;
