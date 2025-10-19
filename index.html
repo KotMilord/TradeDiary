@@ -83,23 +83,28 @@
             padding: 10px;
             border-radius: 8px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
+            flex-wrap: wrap;
         }
         
         .balance-item {
             text-align: center;
             flex: 1;
+            min-width: 120px;
+            margin: 5px 0;
         }
         
         .balance-label {
-            font-size: 0.8rem;
-            margin-bottom: 5px;
+            font-size: 0.75rem;
+            margin-bottom: 3px;
             color: var(--tg-theme-hint-color, #7f8c8d);
+            line-height: 1.2;
         }
         
         .balance-value {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
+            line-height: 1.2;
         }
         
         .positive {
@@ -130,7 +135,7 @@
             border: 1px solid var(--tg-theme-hint-color, #ddd);
             padding: 4px;
             text-align: center;
-            min-width: 40px;
+            min-width: 50px;
             height: 30px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -143,6 +148,10 @@
             position: sticky;
             top: 0;
             font-weight: bold;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.2;
+            padding: 6px 4px;
         }
         
         .trade-header {
@@ -428,7 +437,7 @@
         .general-table th, .general-table td {
             padding: 3px;
             text-align: center;
-            min-width: 50px;
+            min-width: 60px;
             height: 25px;
         }
         
@@ -461,7 +470,7 @@
         .withdrawal-table th, .withdrawal-table td {
             padding: 3px;
             text-align: center;
-            min-width: 60px;
+            min-width: 70px;
             height: 25px;
         }
         
@@ -477,6 +486,21 @@
         .add-withdrawal-btn {
             margin-top: 10px;
             width: 100%;
+        }
+        
+        .month-comments {
+            margin-top: 15px;
+        }
+        
+        .month-comments textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 0.8rem;
         }
         
         .target-modal {
@@ -536,6 +560,55 @@
             text-align: center;
         }
         
+        .withdrawal-action-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .withdrawal-action-content {
+            background: var(--tg-theme-bg-color, white);
+            padding: 15px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 250px;
+            text-align: center;
+        }
+        
+        .withdrawal-action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .withdrawal-action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            flex: 1;
+        }
+        
+        .edit-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
         @media (max-width: 768px) {
             .balance-container {
                 flex-direction: column;
@@ -549,7 +622,7 @@
         
         @media (max-width: 360px) {
             table th, table td {
-                min-width: 35px;
+                min-width: 45px;
                 padding: 3px;
                 font-size: 0.65rem;
             }
@@ -561,6 +634,10 @@
             
             .trade-header {
                 width: 40px;
+            }
+            
+            .balance-item {
+                min-width: 100px;
             }
         }
     </style>
@@ -607,11 +684,11 @@
                     <table id="tradingTable">
                         <thead>
                             <tr>
-                                <th class="trade-header">Trade</th>
-                                <th>Trade Amount</th>
-                                <th>Profit/Lose/Refund</th>
-                                <th>Emotional State</th>
-                                <th>Comments</th>
+                                <th class="trade-header">Сделка</th>
+                                <th>Сумма сделки</th>
+                                <th>Прибыль/Убыток/Возврат</th>
+                                <th>Эмоциональное состояние</th>
+                                <th>Комментарии</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -620,7 +697,7 @@
                     </table>
                 </div>
                 
-                <button class="btn add-trade-btn" id="addTradeBtn">+ Add Trade</button>
+                <button class="btn add-trade-btn" id="addTradeBtn">+ Добавить сделку</button>
 
                 <div class="telegram-actions">
                     <button class="btn btn-success" id="saveDataBtn">Сохранить</button>
@@ -640,12 +717,12 @@
                     <table class="general-table" id="generalTable">
                         <thead>
                             <tr>
-                                <th>Day</th>
-                                <th>Profit Target %</th>
-                                <th>Loss Target %</th>
-                                <th>Actual P/L %</th>
-                                <th>Win Trades</th>
-                                <th>Loss Trades</th>
+                                <th>День</th>
+                                <th>Цель прибыли %</th>
+                                <th>Цель убытка %</th>
+                                <th>Факт П/У %</th>
+                                <th>Выигрышные сделки</th>
+                                <th>Проигрышные сделки</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -659,7 +736,7 @@
                         <thead>
                             <tr>
                                 <th>Дата</th>
-                                <th>Withdrawal</th>
+                                <th>Вывод средств</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -668,7 +745,12 @@
                     </table>
                 </div>
                 
-                <button class="btn add-withdrawal-btn" id="addWithdrawalBtn">+ Add Withdrawal</button>
+                <button class="btn add-withdrawal-btn" id="addWithdrawalBtn">+ Добавить вывод</button>
+                
+                <div class="month-comments">
+                    <h3>Комментарии к месяцу</h3>
+                    <textarea id="monthCommentsInput" placeholder="Введите комментарии к текущему месяцу..."></textarea>
+                </div>
             </div>
             
             <div class="tab-content" id="history-tab">
@@ -787,6 +869,18 @@
         </div>
     </div>
 
+    <!-- Модальное окно для действий с выводом -->
+    <div class="withdrawal-action-modal" id="withdrawalActionModal">
+        <div class="withdrawal-action-content">
+            <h2 class="modal-title">Действие с выводом</h2>
+            <div class="withdrawal-action-buttons">
+                <button class="withdrawal-action-btn edit-btn" id="editWithdrawalBtn">Редактировать</button>
+                <button class="withdrawal-action-btn delete-btn" id="deleteWithdrawalBtn">Удалить</button>
+                <button class="withdrawal-action-btn reset-btn" id="cancelWithdrawalActionBtn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Модальное окно для эмоций -->
     <div class="modal" id="emotionModal">
         <div class="modal-content emotion-modal-content">
@@ -886,6 +980,7 @@
             const resultModal = document.getElementById('resultModal');
             const tradeAmountModal = document.getElementById('tradeAmountModal');
             const withdrawalModal = document.getElementById('withdrawalModal');
+            const withdrawalActionModal = document.getElementById('withdrawalActionModal');
             const emotionModal = document.getElementById('emotionModal');
             const commentsModal = document.getElementById('commentsModal');
             const balanceModal = document.getElementById('balanceModal');
@@ -904,6 +999,7 @@
             const nextDayBtn = document.getElementById('nextDayBtn');
             const addTradeBtn = document.getElementById('addTradeBtn');
             const addWithdrawalBtn = document.getElementById('addWithdrawalBtn');
+            const monthCommentsInput = document.getElementById('monthCommentsInput');
             
             // Balance elements
             const startingBalanceValue = document.getElementById('startingBalanceValue');
@@ -941,6 +1037,11 @@
             const saveTradeAmountBtn = document.getElementById('saveTradeAmountBtn');
             const cancelTradeAmountBtn = document.getElementById('cancelTradeAmountBtn');
 
+            // Элементы для модального окна действий с выводом
+            const editWithdrawalBtn = document.getElementById('editWithdrawalBtn');
+            const deleteWithdrawalBtn = document.getElementById('deleteWithdrawalBtn');
+            const cancelWithdrawalActionBtn = document.getElementById('cancelWithdrawalActionBtn');
+
             // State
             let currentDate = new Date();
             let trades = []; // Массив сделок
@@ -951,6 +1052,7 @@
             let historyData = JSON.parse(localStorage.getItem('tradeHistory')) || {};
             let generalData = JSON.parse(localStorage.getItem('generalData')) || {};
             let withdrawalData = JSON.parse(localStorage.getItem('withdrawalData')) || {};
+            let monthCommentsData = JSON.parse(localStorage.getItem('monthCommentsData')) || {};
             let appSettings = JSON.parse(localStorage.getItem('appSettings')) || { 
                 initialBalance: 100000,
                 startingBalance: 100000,
@@ -960,6 +1062,10 @@
             // Переменные для управления целями
             let currentTargetDay = null;
             let currentTargetType = null; // 'profit' или 'loss'
+
+            // Переменные для управления выводами
+            let currentWithdrawalDate = null;
+            let currentWithdrawalIndex = null;
 
             // Глобальные переменные для текущего месяца и года
             let currentYear, currentMonth;
@@ -995,6 +1101,9 @@
                 
                 // Инициализируем таблицу выводов
                 renderWithdrawalTable();
+                
+                // Загружаем комментарии к месяцу
+                loadMonthComments();
             }
 
             function formatDate(date) {
@@ -1078,13 +1187,17 @@
                         
                         if (type === 'profit') {
                             resultCell.className += ' profit';
-                            resultCell.innerHTML = `<div class="cell-content">+${amount}</div>`;
+                            resultCell.innerHTML = `<div class="cell-content">+${formatNumber(amount)}</div>`;
                         } else if (type === 'loss') {
                             resultCell.className += ' loss';
-                            resultCell.innerHTML = `<div class="cell-content">-${amount}</div>`;
+                            resultCell.innerHTML = `<div class="cell-content">-${formatNumber(amount)}</div>`;
                         } else if (type === 'refund') {
                             resultCell.className += ' refund';
-                            resultCell.innerHTML = `<div class="cell-content">Refund: ${amount}</div>`;
+                            if (amount > 0) {
+                                resultCell.innerHTML = `<div class="cell-content">Возврат: ${formatNumber(amount)}</div>`;
+                            } else {
+                                resultCell.innerHTML = `<div class="cell-content">Возврат</div>`;
+                            }
                         }
                     }
                     
@@ -1196,6 +1309,9 @@
                 generalData[dateKey].winTrades = winTrades;
                 generalData[dateKey].lossTrades = lossTrades;
                 
+                // Сохраняем общие данные
+                localStorage.setItem('generalData', JSON.stringify(generalData));
+                
                 // Обновляем таблицу на вкладке "Общая"
                 updateGeneralTable();
             }
@@ -1281,7 +1397,7 @@
                     totalEl.className = 'history-total';
                     if (dayTotal > 0) totalEl.classList.add('positive');
                     else if (dayTotal < 0) totalEl.classList.add('negative');
-                    totalEl.textContent = `Итог: ${dayTotal.toFixed(2)}`;
+                    totalEl.textContent = `Итог: ${formatNumber(dayTotal)}`;
                     historyItem.appendChild(totalEl);
                     
                     historyList.appendChild(historyItem);
@@ -1471,10 +1587,68 @@
                 // Сохраняем данные выводов
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
                 
+                // Сохраняем настройки
+                saveSettings();
+                
                 // Обновляем таблицу выводов
                 renderWithdrawalTable();
                 
-                showNotification(`Вывод ${amount} успешно сохранен`, 'success');
+                showNotification(`Вывод ${formatNumber(amount)} успешно сохранен`, 'success');
+            }
+            
+            function editWithdrawal(dateKey, index, newAmount) {
+                if (!withdrawalData[dateKey] || !withdrawalData[dateKey][index]) return;
+                
+                const oldAmount = withdrawalData[dateKey][index].amount;
+                withdrawalData[dateKey][index].amount = newAmount;
+                
+                // Обновляем баланс: добавляем старую сумму и вычитаем новую
+                appSettings.currentBalance += oldAmount - newAmount;
+                if (currentBalanceValue) {
+                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
+                }
+                
+                // Сохраняем данные выводов
+                localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
+                
+                // Сохраняем настройки
+                saveSettings();
+                
+                // Обновляем таблицу выводов
+                renderWithdrawalTable();
+                
+                showNotification(`Вывод обновлен на ${formatNumber(newAmount)}`, 'success');
+            }
+            
+            function deleteWithdrawal(dateKey, index) {
+                if (!withdrawalData[dateKey] || !withdrawalData[dateKey][index]) return;
+                
+                const amount = withdrawalData[dateKey][index].amount;
+                
+                // Удаляем вывод из массива
+                withdrawalData[dateKey].splice(index, 1);
+                
+                // Если массив пуст, удаляем запись
+                if (withdrawalData[dateKey].length === 0) {
+                    delete withdrawalData[dateKey];
+                }
+                
+                // Добавляем сумму вывода обратно к текущему балансу
+                appSettings.currentBalance += amount;
+                if (currentBalanceValue) {
+                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
+                }
+                
+                // Сохраняем данные выводов
+                localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
+                
+                // Сохраняем настройки
+                saveSettings();
+                
+                // Обновляем таблицу выводов
+                renderWithdrawalTable();
+                
+                showNotification(`Вывод ${formatNumber(amount)} удален`, 'success');
             }
             
             function renderWithdrawalTable() {
@@ -1491,8 +1665,11 @@
                 
                 Object.keys(withdrawalData).forEach(dateKey => {
                     if (dateKey.startsWith(currentMonthKey)) {
-                        withdrawalData[dateKey].forEach(withdrawal => {
+                        withdrawalData[dateKey].forEach((withdrawal, index) => {
                             const row = document.createElement('tr');
+                            row.className = 'editable';
+                            row.dataset.date = dateKey;
+                            row.dataset.index = index;
                             
                             // Колонка Дата
                             const dateCell = document.createElement('td');
@@ -1503,6 +1680,16 @@
                             const amountCell = document.createElement('td');
                             amountCell.textContent = formatNumber(withdrawal.amount);
                             row.appendChild(amountCell);
+                            
+                            // Обработчик клика для редактирования/удаления
+                            row.addEventListener('click', (e) => {
+                                currentWithdrawalDate = e.currentTarget.dataset.date;
+                                currentWithdrawalIndex = parseInt(e.currentTarget.dataset.index);
+                                
+                                if (withdrawalActionModal) {
+                                    withdrawalActionModal.style.display = 'flex';
+                                }
+                            });
                             
                             tbody.appendChild(row);
                             
@@ -1539,6 +1726,9 @@
                 
                 generalData[dateKey][currentTargetType + 'Target'] = parseFloat(value);
                 
+                // Сохраняем общие данные
+                localStorage.setItem('generalData', JSON.stringify(generalData));
+                
                 // Обновляем таблицу
                 updateGeneralTable();
                 
@@ -1565,6 +1755,9 @@
                     generalData[dateKey][currentTargetType + 'Target'] = parseFloat(value);
                 }
                 
+                // Сохраняем общие данные
+                localStorage.setItem('generalData', JSON.stringify(generalData));
+                
                 // Обновляем таблицу
                 updateGeneralTable();
                 
@@ -1574,6 +1767,21 @@
                 }
                 
                 showNotification(`Цели для всех дней установлены (${value}%)`, 'success');
+            }
+            
+            function loadMonthComments() {
+                if (!monthCommentsInput) return;
+                
+                const monthKey = `${currentYear}-${currentMonth + 1}`;
+                monthCommentsInput.value = monthCommentsData[monthKey] || '';
+            }
+            
+            function saveMonthComments() {
+                if (!monthCommentsInput) return;
+                
+                const monthKey = `${currentYear}-${currentMonth + 1}`;
+                monthCommentsData[monthKey] = monthCommentsInput.value;
+                localStorage.setItem('monthCommentsData', JSON.stringify(monthCommentsData));
             }
 
             // Event Listeners
@@ -1623,6 +1831,12 @@
                     if (withdrawalModal) withdrawalModal.style.display = 'flex';
                 });
             }
+            
+            // Сохранение комментариев месяца
+            if (monthCommentsInput) {
+                monthCommentsInput.addEventListener('change', saveMonthComments);
+                monthCommentsInput.addEventListener('blur', saveMonthComments);
+            }
 
             // Обработчики для очистки данных
             if (clearCurrentDayBtn) {
@@ -1645,12 +1859,18 @@
                 clearAllDataBtn.addEventListener('click', function() {
                     if (confirm('Вы уверены, что хотите очистить ВСЮ историю? Это действие нельзя отменить.')) {
                         historyData = {};
+                        generalData = {};
+                        withdrawalData = {};
                         localStorage.setItem('tradeHistory', JSON.stringify(historyData));
+                        localStorage.setItem('generalData', JSON.stringify(generalData));
+                        localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
                         
                         initTrades();
                         renderTable();
                         updateTotal();
                         renderHistory();
+                        renderWithdrawalTable();
+                        updateGeneralTable();
                         
                         showNotification('Вся история очищена', 'success');
                     }
@@ -1673,19 +1893,28 @@
                             updateTotal();
                             saveTradeData();
                             if (resultModal) resultModal.style.display = 'none';
+                        } else if (currentTradeIndex !== null && value === 'refund') {
+                            currentCell.className = 'cell refund';
+                            if (!isNaN(amount) && amount > 0) {
+                                currentCell.innerHTML = `<div class="cell-content">Возврат: ${formatNumber(amount)}</div>`;
+                                trades[currentTradeIndex].result = { type: 'refund', amount: amount };
+                            } else {
+                                currentCell.innerHTML = `<div class="cell-content">Возврат</div>`;
+                                trades[currentTradeIndex].result = { type: 'refund', amount: 0 };
+                            }
+                            
+                            updateTotal();
+                            saveTradeData();
+                            if (resultModal) resultModal.style.display = 'none';
                         } else if (currentTradeIndex !== null && !isNaN(amount) && amount > 0) {
                             if (value === 'profit') {
                                 currentCell.className = 'cell profit';
-                                currentCell.innerHTML = `<div class="cell-content">+${amount.toFixed(2)}</div>`;
+                                currentCell.innerHTML = `<div class="cell-content">+${formatNumber(amount)}</div>`;
                                 trades[currentTradeIndex].result = { type: 'profit', amount: amount };
                             } else if (value === 'loss') {
                                 currentCell.className = 'cell loss';
-                                currentCell.innerHTML = `<div class="cell-content">-${amount.toFixed(2)}</div>`;
+                                currentCell.innerHTML = `<div class="cell-content">-${formatNumber(amount)}</div>`;
                                 trades[currentTradeIndex].result = { type: 'loss', amount: amount };
-                            } else if (value === 'refund') {
-                                currentCell.className = 'cell refund';
-                                currentCell.innerHTML = `<div class="cell-content">Refund: ${amount.toFixed(2)}</div>`;
-                                trades[currentTradeIndex].result = { type: 'refund', amount: amount };
                             }
                             
                             updateTotal();
@@ -1772,6 +2001,41 @@
                 withdrawalModal.addEventListener('click', (e) => {
                     if (e.target === withdrawalModal) {
                         withdrawalModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Обработчики для модального окна действий с выводом
+            if (editWithdrawalBtn) {
+                editWithdrawalBtn.addEventListener('click', () => {
+                    if (currentWithdrawalDate !== null && currentWithdrawalIndex !== null) {
+                        const withdrawal = withdrawalData[currentWithdrawalDate][currentWithdrawalIndex];
+                        if (withdrawalAmountInput) withdrawalAmountInput.value = withdrawal.amount;
+                        if (withdrawalModal) withdrawalModal.style.display = 'flex';
+                        if (withdrawalActionModal) withdrawalActionModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            if (deleteWithdrawalBtn) {
+                deleteWithdrawalBtn.addEventListener('click', () => {
+                    if (currentWithdrawalDate !== null && currentWithdrawalIndex !== null) {
+                        deleteWithdrawal(currentWithdrawalDate, currentWithdrawalIndex);
+                        if (withdrawalActionModal) withdrawalActionModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            if (cancelWithdrawalActionBtn) {
+                cancelWithdrawalActionBtn.addEventListener('click', () => {
+                    if (withdrawalActionModal) withdrawalActionModal.style.display = 'none';
+                });
+            }
+            
+            if (withdrawalActionModal) {
+                withdrawalActionModal.addEventListener('click', (e) => {
+                    if (e.target === withdrawalActionModal) {
+                        withdrawalActionModal.style.display = 'none';
                     }
                 });
             }
@@ -1898,6 +2162,7 @@
                         // Обновляем вкладку "Общая" при переходе на нее
                         updateGeneralTable();
                         renderWithdrawalTable();
+                        loadMonthComments();
                     }
                 });
             });
