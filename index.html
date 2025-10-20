@@ -194,6 +194,12 @@
             opacity: 0.8;
         }
         
+        .cell.disabled {
+            opacity: 0.6;
+            cursor: not-allowed !important;
+            pointer-events: none;
+        }
+        
         .cell-content {
             font-size: 0.75rem;
             font-weight: bold;
@@ -230,6 +236,11 @@
         .add-trade-btn {
             margin-top: 10px;
             width: 100%;
+        }
+        
+        .add-trade-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         /* Убраны кнопки действий */
@@ -424,6 +435,17 @@
         .date-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+        
+        .date-label {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            text-align: center;
+            font-weight: bold;
         }
         
         .notification {
@@ -837,7 +859,7 @@
                 
                 <div class="date-navigation">
                     <button class="date-btn" id="prevDayBtn">←</button>
-                    <button class="date-btn" id="todayBtn">Today</button>
+                    <div class="date-label" id="currentDayLabel">Today</div>
                     <button class="date-btn" id="nextDayBtn" disabled>→</button>
                 </div>
                 
@@ -1158,7 +1180,7 @@
             const withdrawalAmountInput = document.getElementById('withdrawalAmountInput');
             const balanceInput = document.getElementById('balanceInput');
             const prevDayBtn = document.getElementById('prevDayBtn');
-            const todayBtn = document.getElementById('todayBtn');
+            const currentDayLabel = document.getElementById('currentDayLabel');
             const nextDayBtn = document.getElementById('nextDayBtn');
             const addTradeBtn = document.getElementById('addTradeBtn');
             const addWithdrawalBtn = document.getElementById('addWithdrawalBtn');
@@ -1241,16 +1263,15 @@
                     startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
                 }
                 
-                if (appSettings.currentBalance && currentBalanceValue) {
-                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
-                }
+                // Пересчитываем текущий баланс с учетом всех сделок и выводов
+                recalculateCurrentBalance();
                 
                 const dateKey = formatDateKey(currentDate);
                 if (historyData[dateKey]) {
                     tradeData = historyData[dateKey];
                     trades = tradeData.trades || [];
                     renderTable();
-                    updateTotal();
+                    updateDayResultForCurrentDate();
                 } else {
                     initTrades();
                     renderTable();
@@ -1269,6 +1290,93 @@
                 
                 // Update navigation buttons
                 updateNavigationButtons();
+                
+                // Update current day label
+                updateCurrentDayLabel();
+                
+                // Проверяем, можно ли редактировать текущую дату
+                updateEditPermissions();
+            }
+
+            // Функция для пересчета текущего баланса с учетом всех сделок и выводов
+            function recalculateCurrentBalance() {
+                let totalProfitLoss = 0;
+                let totalWithdrawals = 0;
+                
+                // Суммируем все прибыли/убытки из истории
+                Object.keys(historyData).forEach(dateKey => {
+                    const dayData = historyData[dateKey];
+                    if (dayData.trades) {
+                        dayData.trades.forEach(trade => {
+                            if (trade.result) {
+                                if (trade.result.type === 'profit') {
+                                    totalProfitLoss += trade.result.amount;
+                                } else if (trade.result.type === 'loss') {
+                                    totalProfitLoss -= trade.result.amount;
+                                }
+                            }
+                        });
+                    }
+                });
+                
+                // Суммируем все выводы
+                Object.keys(withdrawalData).forEach(dateKey => {
+                    withdrawalData[dateKey].forEach(withdrawal => {
+                        totalWithdrawals += withdrawal.amount;
+                    });
+                });
+                
+                // Обновляем текущий баланс
+                appSettings.currentBalance = appSettings.startingBalance + totalProfitLoss - totalWithdrawals;
+                
+                if (currentBalanceValue) {
+                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
+                }
+                
+                saveSettings();
+            }
+
+            // Функция для обновления результата дня только для текущей (сегодняшней) даты
+            function updateDayResultForCurrentDate() {
+                const today = new Date();
+                const todayKey = formatDateKey(today);
+                
+                // Если мы просматриваем сегодняшний день, обновляем результат дня
+                if (formatDateKey(currentDate) === todayKey) {
+                    let total = 0;
+                    
+                    for (let i = 0; i < trades.length; i++) {
+                        const trade = trades[i];
+                        if (trade.result !== null) {
+                            const amount = trade.result.amount;
+                            const type = trade.result.type;
+                            
+                            if (type === 'profit') {
+                                total += amount;
+                            } else if (type === 'loss') {
+                                total -= amount;
+                            }
+                        }
+                    }
+                    
+                    // Обновляем результат дня
+                    if (dayResultValue) {
+                        dayResultValue.textContent = formatNumber(total);
+                        if (total > 0) {
+                            dayResultValue.className = 'balance-value positive';
+                        } else if (total < 0) {
+                            dayResultValue.className = 'balance-value negative';
+                        } else {
+                            dayResultValue.className = 'balance-value';
+                        }
+                    }
+                } else {
+                    // Если просматриваем другой день, показываем 0
+                    if (dayResultValue) {
+                        dayResultValue.textContent = '0';
+                        dayResultValue.className = 'balance-value';
+                    }
+                }
             }
 
             function formatDate(date) {
@@ -1327,6 +1435,9 @@
                     }
                     
                     tradeAmountCell.addEventListener('click', () => {
+                        // Проверяем, можно ли редактировать эту дату
+                        if (!canEditCurrentDate()) return;
+                        
                         currentCell = tradeAmountCell;
                         currentTradeIndex = i;
                         currentColumnType = 'amount';
@@ -1360,6 +1471,9 @@
                     }
                     
                     resultCell.addEventListener('click', () => {
+                        // Проверяем, можно ли редактировать эту дату
+                        if (!canEditCurrentDate()) return;
+                        
                         currentCell = resultCell;
                         currentTradeIndex = i;
                         currentColumnType = 'result';
@@ -1377,6 +1491,9 @@
                     }
                     
                     emotionCell.addEventListener('click', () => {
+                        // Проверяем, можно ли редактировать эту дату
+                        if (!canEditCurrentDate()) return;
+                        
                         currentCell = emotionCell;
                         currentTradeIndex = i;
                         currentColumnType = 'emotion';
@@ -1397,6 +1514,9 @@
                     }
                     
                     commentsCell.addEventListener('click', () => {
+                        // Проверяем, можно ли редактировать эту дату
+                        if (!canEditCurrentDate()) return;
+                        
                         currentCell = commentsCell;
                         currentTradeIndex = i;
                         currentColumnType = 'comments';
@@ -1408,6 +1528,9 @@
                     
                     tbody.appendChild(row);
                 }
+                
+                // Обновляем права доступа для ячеек
+                updateEditPermissions();
             }
             
             function updateTotal() {
@@ -1431,33 +1554,16 @@
                     }
                 }
                 
-                // Update current balance only for current day
-                const dateKey = formatDateKey(currentDate);
-                const todayKey = formatDateKey(new Date());
+                // Обновляем результат дня только если это сегодняшний день
+                updateDayResultForCurrentDate();
                 
-                if (dateKey === todayKey) {
-                    const currentBalance = appSettings.startingBalance + total;
-                    appSettings.currentBalance = currentBalance;
-                    
-                    if (currentBalanceValue) {
-                        currentBalanceValue.textContent = formatNumber(currentBalance);
-                    }
-                }
-                
-                if (dayResultValue) {
-                    dayResultValue.textContent = formatNumber(total);
-                    if (total > 0) {
-                        dayResultValue.className = 'balance-value positive';
-                    } else if (total < 0) {
-                        dayResultValue.className = 'balance-value negative';
-                    } else {
-                        dayResultValue.className = 'balance-value';
-                    }
-                }
+                // Пересчитываем общий баланс с учетом всех сделок и выводов
+                recalculateCurrentBalance();
                 
                 const startingBalance = appSettings.startingBalance;
                 const profitLossPercent = startingBalance > 0 ? (total / startingBalance) * 100 : 0;
                 
+                const dateKey = formatDateKey(currentDate);
                 if (!generalData[dateKey]) {
                     generalData[dateKey] = {};
                 }
@@ -1513,6 +1619,9 @@
                 
                 renderTable();
                 
+                // Update current day label
+                updateCurrentDayLabel();
+                
                 // Calculate balance for the selected day only (don't update the displayed balances)
                 let total = 0;
                 for (let i = 0; i < trades.length; i++) {
@@ -1529,12 +1638,66 @@
                     }
                 }
                 
-                // Don't update the balance display when navigating through dates
-                // The balance display should always show today's data
+                // Обновляем результат дня только если это сегодняшний день
+                updateDayResultForCurrentDate();
                 
                 renderHistory();
                 updateGeneralTable();
                 updateNavigationButtons();
+                updateEditPermissions();
+            }
+            
+            // Функция для обновления метки текущего дня
+            function updateCurrentDayLabel() {
+                if (!currentDayLabel) return;
+                
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                const current = new Date(currentDate);
+                current.setHours(0,0,0,0);
+                
+                if (current.getTime() === today.getTime()) {
+                    currentDayLabel.textContent = 'Today';
+                } else {
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    
+                    if (current.getTime() === yesterday.getTime()) {
+                        currentDayLabel.textContent = 'Yesterday';
+                    } else {
+                        currentDayLabel.textContent = formatDate(currentDate);
+                    }
+                }
+            }
+            
+            // Функция для проверки, можно ли редактировать текущую дату
+            function canEditCurrentDate() {
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                const current = new Date(currentDate);
+                current.setHours(0,0,0,0);
+                
+                return current.getTime() === today.getTime();
+            }
+            
+            // Функция для обновления прав доступа к редактированию
+            function updateEditPermissions() {
+                const canEdit = canEditCurrentDate();
+                
+                // Блокируем/разблокируем ячейки таблицы
+                const cells = document.querySelectorAll('#tradingTable td.cell');
+                cells.forEach(cell => {
+                    if (canEdit) {
+                        cell.classList.remove('disabled');
+                    } else {
+                        cell.classList.add('disabled');
+                    }
+                });
+                
+                // Блокируем/разблокируем кнопку добавления сделки
+                if (addTradeBtn) {
+                    addTradeBtn.disabled = !canEdit;
+                }
             }
             
             function updateNavigationButtons() {
@@ -1745,10 +1908,8 @@
                     amount: amount
                 });
                 
-                appSettings.currentBalance -= amount;
-                if (currentBalanceValue) {
-                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
-                }
+                // Вместо прямого изменения баланса, пересчитываем его полностью
+                recalculateCurrentBalance();
                 
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
                 saveSettings();
@@ -1763,10 +1924,8 @@
                 const oldAmount = withdrawalData[dateKey][index].amount;
                 withdrawalData[dateKey][index].amount = newAmount;
                 
-                appSettings.currentBalance += oldAmount - newAmount;
-                if (currentBalanceValue) {
-                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
-                }
+                // Вместо прямого изменения баланса, пересчитываем его полностью
+                recalculateCurrentBalance();
                 
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
                 saveSettings();
@@ -1786,10 +1945,8 @@
                     delete withdrawalData[dateKey];
                 }
                 
-                appSettings.currentBalance += amount;
-                if (currentBalanceValue) {
-                    currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
-                }
+                // Вместо прямого изменения баланса, пересчитываем его полностью
+                recalculateCurrentBalance();
                 
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
                 saveSettings();
@@ -1927,8 +2084,8 @@
                 });
             }
             
-            if (todayBtn) {
-                todayBtn.addEventListener('click', () => {
+            if (currentDayLabel) {
+                currentDayLabel.addEventListener('click', () => {
                     loadDateData(new Date());
                 });
             }
@@ -1943,6 +2100,9 @@
             
             if (addTradeBtn) {
                 addTradeBtn.addEventListener('click', () => {
+                    // Проверяем, можно ли редактировать эту дату
+                    if (!canEditCurrentDate()) return;
+                    
                     trades.push({
                         tradeAmount: null,
                         result: null,
