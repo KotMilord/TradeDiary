@@ -71,6 +71,10 @@
             background: var(--tg-theme-button-color, #e74c3c);
         }
         
+        .btn-warning {
+            background: var(--tg-theme-button-color, #f39c12);
+        }
+        
         .main-content {
             padding: 10px;
         }
@@ -228,12 +232,9 @@
             width: 100%;
         }
         
+        /* Убраны кнопки действий */
         .telegram-actions {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0;
-            gap: 8px;
-            flex-wrap: wrap;
+            display: none;
         }
         
         .modal {
@@ -418,6 +419,11 @@
             border-radius: 15px;
             cursor: pointer;
             font-size: 0.8rem;
+        }
+        
+        .date-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         .notification {
@@ -668,6 +674,23 @@
             color: white;
         }
         
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .history-table th, .history-table td {
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .history-table th {
+            background: var(--tg-theme-secondary-bg-color, #2c3e50);
+            color: var(--tg-theme-button-text-color, white);
+        }
+        
         @media (max-width: 768px) {
             .balance-container {
                 flex-direction: row;
@@ -709,6 +732,75 @@
                 font-size: 1rem;
             }
         }
+
+        /* Добавленные стили для кнопок настроек */
+        .settings-btn {
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        .settings-panel {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            border-radius: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+
+        .settings-panel h3 {
+            margin-bottom: 10px;
+            color: var(--tg-theme-text-color, #333);
+        }
+
+        .export-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            border-radius: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+
+        .export-section h3 {
+            margin-bottom: 10px;
+            color: var(--tg-theme-text-color, #333);
+        }
+
+        .date-range {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .date-range input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 4px;
+            background: var(--tg-theme-bg-color, white);
+            color: var(--tg-theme-text-color, #333);
+        }
+
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .export-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .export-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: var(--tg-theme-secondary-bg-color, #e8f4fd);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            border: 1px dashed var(--tg-theme-button-color, #3498db);
+        }
     </style>
 </head>
 <body>
@@ -731,11 +823,11 @@
                 <div class="balance-container">
                     <div class="balance-item">
                         <div class="balance-label">Starting Balance</div>
-                        <div class="balance-value starting-balance" id="startingBalanceValue">100000</div>
+                        <div class="balance-value starting-balance" id="startingBalanceValue">10000</div>
                     </div>
                     <div class="balance-item">
                         <div class="balance-label">Current Balance</div>
-                        <div class="balance-value" id="currentBalanceValue">100000</div>
+                        <div class="balance-value" id="currentBalanceValue">10000</div>
                     </div>
                     <div class="balance-item">
                         <div class="balance-label">Day Result</div>
@@ -746,7 +838,7 @@
                 <div class="date-navigation">
                     <button class="date-btn" id="prevDayBtn">←</button>
                     <button class="date-btn" id="todayBtn">Today</button>
-                    <button class="date-btn" id="nextDayBtn">→</button>
+                    <button class="date-btn" id="nextDayBtn" disabled>→</button>
                 </div>
                 
                 <div class="table-container">
@@ -767,12 +859,6 @@
                 </div>
                 
                 <button class="btn add-trade-btn" id="addTradeBtn">+ Add Trade</button>
-
-                <div class="telegram-actions">
-                    <button class="btn btn-success" id="saveDataBtn">Save</button>
-                    <button class="btn" id="sendToBotBtn">Send to Bot</button>
-                    <button class="btn btn-success" id="endDayBtn">End Day</button>
-                </div>
             </div>
             
             <!-- General Tab -->
@@ -824,8 +910,18 @@
             
             <div class="tab-content" id="history-tab">
                 <h2>Trading Days History</h2>
-                <div id="historyList">
-                    <!-- History items will be generated here -->
+                <div class="table-container">
+                    <table class="history-table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- History rows will be generated here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
             
@@ -1053,11 +1149,9 @@
             const emotionModal = document.getElementById('emotionModal');
             const commentsModal = document.getElementById('commentsModal');
             const balanceModal = document.getElementById('balanceModal');
-            const historyList = document.getElementById('historyList');
+            const historyTable = document.getElementById('historyTable');
             const tabs = document.querySelectorAll('.tab');
             const tabContents = document.querySelectorAll('.tab-content');
-            const saveDataBtn = document.getElementById('saveDataBtn');
-            const sendToBotBtn = document.getElementById('sendToBotBtn');
             const notification = document.getElementById('notification');
             const amountInput = document.getElementById('amountInput');
             const tradeAmountInput = document.getElementById('tradeAmountInput');
@@ -1074,7 +1168,6 @@
             const startingBalanceValue = document.getElementById('startingBalanceValue');
             const currentBalanceValue = document.getElementById('currentBalanceValue');
             const dayResultValue = document.getElementById('dayResultValue');
-            const endDayBtn = document.getElementById('endDayBtn');
             const saveBalanceBtn = document.getElementById('saveBalanceBtn');
             const cancelBalanceBtn = document.getElementById('cancelBalanceBtn');
             
@@ -1113,24 +1206,24 @@
 
             // State
             let currentDate = new Date();
-            let trades = []; // Trades array
+            let trades = [];
             let currentCell = null;
             let currentTradeIndex = null;
-            let currentColumnType = null; // 'amount', 'result', 'emotion', 'comments'
+            let currentColumnType = null;
             let tradeData = {};
             let historyData = JSON.parse(localStorage.getItem('tradeHistory')) || {};
             let generalData = JSON.parse(localStorage.getItem('generalData')) || {};
             let withdrawalData = JSON.parse(localStorage.getItem('withdrawalData')) || {};
             let monthCommentsData = JSON.parse(localStorage.getItem('monthCommentsData')) || {};
             let appSettings = JSON.parse(localStorage.getItem('appSettings')) || { 
-                initialBalance: 100000,
-                startingBalance: 100000,
-                currentBalance: 100000
+                initialBalance: 10000,
+                startingBalance: 10000,
+                currentBalance: 10000
             };
 
             // Variables for target management
             let currentTargetDay = null;
-            let currentTargetType = null; // 'profit' or 'loss'
+            let currentTargetType = null;
 
             // Variables for withdrawal management
             let currentWithdrawalDate = null;
@@ -1173,6 +1266,9 @@
                 
                 // Load month comments
                 loadMonthComments();
+                
+                // Update navigation buttons
+                updateNavigationButtons();
             }
 
             function formatDate(date) {
@@ -1184,14 +1280,12 @@
                 return date.toISOString().split('T')[0];
             }
             
-            // Function for formatting numbers
             function formatNumber(amount) {
                 return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(amount);
             }
             
             function initTrades() {
                 trades = [];
-                // Start with 5 default trades
                 for (let i = 0; i < 5; i++) {
                     trades.push({
                         tradeAmount: null,
@@ -1210,21 +1304,17 @@
                 
                 if (!tbody) return;
                 
-                // Clear table body
                 tbody.innerHTML = '';
                 
-                // Add rows with trades
                 for (let i = 0; i < trades.length; i++) {
                     const row = document.createElement('tr');
                     const trade = trades[i];
                     
-                    // Trade column (trade number)
                     const tradeCell = document.createElement('td');
                     tradeCell.textContent = i + 1;
                     tradeCell.className = 'trade-header';
                     row.appendChild(tradeCell);
                     
-                    // Trade Amount column
                     const tradeAmountCell = document.createElement('td');
                     tradeAmountCell.className = 'cell';
                     
@@ -1246,7 +1336,6 @@
                     
                     row.appendChild(tradeAmountCell);
                     
-                    // Profit/Loss/Refund column
                     const resultCell = document.createElement('td');
                     resultCell.className = 'cell';
                     
@@ -1280,7 +1369,6 @@
                     
                     row.appendChild(resultCell);
                     
-                    // Emotional State column
                     const emotionCell = document.createElement('td');
                     emotionCell.className = 'cell emotion-cell';
                     
@@ -1297,7 +1385,6 @@
                     
                     row.appendChild(emotionCell);
                     
-                    // Comments column
                     const commentsCell = document.createElement('td');
                     commentsCell.className = 'cell comments-cell';
                     
@@ -1341,16 +1428,20 @@
                             total -= amount;
                             lossTrades++;
                         }
-                        // Refund no longer affects balance
                     }
                 }
                 
-                // Update current balance (without refund)
-                const currentBalance = appSettings.startingBalance + total;
-                appSettings.currentBalance = currentBalance;
+                // Update current balance only for current day
+                const dateKey = formatDateKey(currentDate);
+                const todayKey = formatDateKey(new Date());
                 
-                if (currentBalanceValue) {
-                    currentBalanceValue.textContent = formatNumber(currentBalance);
+                if (dateKey === todayKey) {
+                    const currentBalance = appSettings.startingBalance + total;
+                    appSettings.currentBalance = currentBalance;
+                    
+                    if (currentBalanceValue) {
+                        currentBalanceValue.textContent = formatNumber(currentBalance);
+                    }
                 }
                 
                 if (dayResultValue) {
@@ -1364,24 +1455,22 @@
                     }
                 }
                 
-                // Save data for General tab
-                const dateKey = formatDateKey(currentDate);
+                const startingBalance = appSettings.startingBalance;
+                const profitLossPercent = startingBalance > 0 ? (total / startingBalance) * 100 : 0;
+                
                 if (!generalData[dateKey]) {
                     generalData[dateKey] = {};
                 }
-                
-                // Calculation in percentages
-                const startingBalance = appSettings.startingBalance;
-                const profitLossPercent = startingBalance > 0 ? (total / startingBalance) * 100 : 0;
                 
                 generalData[dateKey].actualProfitLoss = profitLossPercent;
                 generalData[dateKey].winTrades = winTrades;
                 generalData[dateKey].lossTrades = lossTrades;
                 
-                // Save general data
                 localStorage.setItem('generalData', JSON.stringify(generalData));
                 
-                // Update table on General tab
+                // Auto save data
+                saveTradeData();
+                
                 updateGeneralTable();
             }
             
@@ -1391,22 +1480,30 @@
                 historyData[dateKey] = {...tradeData};
                 localStorage.setItem('tradeHistory', JSON.stringify(historyData));
                 
-                // Save settings
                 saveSettings();
-                
-                showNotification('Data saved', 'success');
             }
             
-            // Save settings
             function saveSettings() {
                 localStorage.setItem('appSettings', JSON.stringify(appSettings));
             }
             
             function loadDateData(date) {
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                const selectedDate = new Date(date);
+                selectedDate.setHours(0,0,0,0);
+                
+                // Prevent navigation to future dates
+                if (selectedDate > today) {
+                    showNotification("Cannot view future dates", "error");
+                    return;
+                }
+                
                 currentDate = date;
                 if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
                 
                 const dateKey = formatDateKey(currentDate);
+                
                 if (historyData[dateKey]) {
                     tradeData = historyData[dateKey];
                     trades = tradeData.trades || [];
@@ -1415,21 +1512,61 @@
                 }
                 
                 renderTable();
-                updateTotal();
-                renderHistory();
                 
-                // Update General tab
+                // Calculate balance for the selected day only (don't update the displayed balances)
+                let total = 0;
+                for (let i = 0; i < trades.length; i++) {
+                    const trade = trades[i];
+                    if (trade.result !== null) {
+                        const amount = trade.result.amount;
+                        const type = trade.result.type;
+                        
+                        if (type === 'profit') {
+                            total += amount;
+                        } else if (type === 'loss') {
+                            total -= amount;
+                        }
+                    }
+                }
+                
+                // Don't update the balance display when navigating through dates
+                // The balance display should always show today's data
+                
+                renderHistory();
                 updateGeneralTable();
+                updateNavigationButtons();
+            }
+            
+            function updateNavigationButtons() {
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                const current = new Date(currentDate);
+                current.setHours(0,0,0,0);
+                
+                // Disable next day button if trying to go to future
+                if (nextDayBtn) {
+                    const nextDay = new Date(current);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    
+                    if (nextDay > today) {
+                        nextDayBtn.disabled = true;
+                    } else {
+                        nextDayBtn.disabled = false;
+                    }
+                }
             }
             
             function renderHistory() {
-                if (!historyList) return;
+                if (!historyTable) return;
                 
-                historyList.innerHTML = '';
+                const tbody = historyTable.querySelector('tbody');
+                if (!tbody) return;
+                
+                tbody.innerHTML = '';
                 const dates = Object.keys(historyData).sort().reverse();
                 
                 if (dates.length === 0) {
-                    historyList.innerHTML = '<p>No records in history</p>';
+                    tbody.innerHTML = '<tr><td colspan="2" style="text-align: center;">No records in history</td></tr>';
                     return;
                 }
                 
@@ -1449,27 +1586,23 @@
                                 } else if (type === 'loss') {
                                     dayTotal -= amount;
                                 }
-                                // Refund no longer affects balance
                             }
                         }
                     }
                     
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
+                    const row = document.createElement('tr');
                     
-                    const dateEl = document.createElement('div');
-                    dateEl.className = 'history-date';
-                    dateEl.textContent = formatDate(new Date(date));
-                    historyItem.appendChild(dateEl);
+                    const dateCell = document.createElement('td');
+                    dateCell.textContent = formatDate(new Date(date));
+                    row.appendChild(dateCell);
                     
-                    const totalEl = document.createElement('div');
-                    totalEl.className = 'history-total';
-                    if (dayTotal > 0) totalEl.classList.add('positive');
-                    else if (dayTotal < 0) totalEl.classList.add('negative');
-                    totalEl.textContent = `Total: ${formatNumber(dayTotal)}`;
-                    historyItem.appendChild(totalEl);
+                    const totalCell = document.createElement('td');
+                    if (dayTotal > 0) totalCell.classList.add('positive');
+                    else if (dayTotal < 0) totalCell.classList.add('negative');
+                    totalCell.textContent = formatNumber(dayTotal);
+                    row.appendChild(totalCell);
                     
-                    historyList.appendChild(historyItem);
+                    tbody.appendChild(row);
                 });
             }
             
@@ -1484,31 +1617,8 @@
                 }, 3000);
             }
             
-            function sendDataToBot() {
-                if (!tg || !tg.sendData) {
-                    showNotification('Send function unavailable', 'error');
-                    return;
-                }
-                
-                const dataToSend = {
-                    date: formatDate(currentDate),
-                    total: parseFloat(dayResultValue?.textContent || '0'),
-                    details: tradeData
-                };
-                
-                tg.sendData(JSON.stringify(dataToSend));
-                showNotification('Data sent to bot', 'success');
-                
-                setTimeout(() => {
-                    if (tg && tg.close) {
-                        tg.close();
-                    }
-                }, 1500);
-            }
-            
             // Functions for General tab
             function initGeneralTab() {
-                // Set current date and month
                 const now = new Date();
                 currentYear = now.getFullYear();
                 currentMonth = now.getMonth();
@@ -1526,7 +1636,6 @@
                     currentGeneralDate.textContent = formatDate(now);
                 }
                 
-                // Create table for current month
                 updateGeneralTable();
             }
             
@@ -1538,30 +1647,24 @@
                 
                 tbody.innerHTML = '';
                 
-                // Get number of days in current month
                 const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
                 
-                // Get current day
                 const today = new Date();
                 const currentDay = today.getDate();
                 const currentMonthIndex = today.getMonth();
                 const currentYearValue = today.getFullYear();
                 
-                // Create rows for each day of the month
                 for (let day = 1; day <= daysInMonth; day++) {
                     const row = document.createElement('tr');
                     
-                    // Check if this day is current
                     if (day === currentDay && currentMonth === currentMonthIndex && currentYear === currentYearValue) {
                         row.classList.add('current-day');
                     }
                     
-                    // Day column
                     const dayCell = document.createElement('td');
                     dayCell.textContent = day;
                     row.appendChild(dayCell);
                     
-                    // Profit Target % column
                     const profitTargetCell = document.createElement('td');
                     profitTargetCell.className = 'editable';
                     const profitTargetValue = getGeneralData(day, 'profitTarget') || '-';
@@ -1571,7 +1674,6 @@
                     profitTargetCell.addEventListener('click', handleTargetCellClick);
                     row.appendChild(profitTargetCell);
                     
-                    // Loss Target % column
                     const lossTargetCell = document.createElement('td');
                     lossTargetCell.className = 'editable';
                     const lossTargetValue = getGeneralData(day, 'lossTarget') || '-';
@@ -1581,7 +1683,6 @@
                     lossTargetCell.addEventListener('click', handleTargetCellClick);
                     row.appendChild(lossTargetCell);
                     
-                    // Actual profit/loss % column
                     const actualCell = document.createElement('td');
                     const actualValue = getGeneralData(day, 'actualProfitLoss') || 0;
                     actualCell.textContent = actualValue !== 0 ? actualValue.toFixed(2) + '%' : '-';
@@ -1592,13 +1693,11 @@
                     }
                     row.appendChild(actualCell);
                     
-                    // Number win trades column
                     const winTradesCell = document.createElement('td');
                     const winTrades = getGeneralData(day, 'winTrades') || 0;
                     winTradesCell.textContent = winTrades > 0 ? winTrades : '-';
                     row.appendChild(winTradesCell);
                     
-                    // Number loss trades column
                     const lossTradesCell = document.createElement('td');
                     const lossTrades = getGeneralData(day, 'lossTrades') || 0;
                     lossTradesCell.textContent = lossTrades > 0 ? lossTrades : '-';
@@ -1626,7 +1725,6 @@
                 }
                 
                 if (targetInput) {
-                    // Remove % symbol when loading value
                     const cellText = cell.textContent;
                     targetInput.value = cellText !== '-' ? cellText.replace('%', '') : '';
                 }
@@ -1647,19 +1745,13 @@
                     amount: amount
                 });
                 
-                // Subtract withdrawal amount from current balance
                 appSettings.currentBalance -= amount;
                 if (currentBalanceValue) {
                     currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
                 }
                 
-                // Save withdrawal data
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
-                
-                // Save settings
                 saveSettings();
-                
-                // Update withdrawal table
                 renderWithdrawalTable();
                 
                 showNotification(`Withdrawal ${formatNumber(amount)} saved successfully`, 'success');
@@ -1671,19 +1763,13 @@
                 const oldAmount = withdrawalData[dateKey][index].amount;
                 withdrawalData[dateKey][index].amount = newAmount;
                 
-                // Update balance: add old amount and subtract new amount
                 appSettings.currentBalance += oldAmount - newAmount;
                 if (currentBalanceValue) {
                     currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
                 }
                 
-                // Save withdrawal data
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
-                
-                // Save settings
                 saveSettings();
-                
-                // Update withdrawal table
                 renderWithdrawalTable();
                 
                 showNotification(`Withdrawal updated to ${formatNumber(newAmount)}`, 'success');
@@ -1694,27 +1780,19 @@
                 
                 const amount = withdrawalData[dateKey][index].amount;
                 
-                // Remove withdrawal from array
                 withdrawalData[dateKey].splice(index, 1);
                 
-                // If array is empty, delete record
                 if (withdrawalData[dateKey].length === 0) {
                     delete withdrawalData[dateKey];
                 }
                 
-                // Add withdrawal amount back to current balance
                 appSettings.currentBalance += amount;
                 if (currentBalanceValue) {
                     currentBalanceValue.textContent = formatNumber(appSettings.currentBalance);
                 }
                 
-                // Save withdrawal data
                 localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
-                
-                // Save settings
                 saveSettings();
-                
-                // Update withdrawal table
                 renderWithdrawalTable();
                 
                 showNotification(`Withdrawal ${formatNumber(amount)} deleted`, 'success');
@@ -1728,7 +1806,6 @@
                 
                 tbody.innerHTML = '';
                 
-                // Get all withdrawals for current month
                 const currentMonthKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
                 let totalWithdrawal = 0;
                 
@@ -1740,17 +1817,14 @@
                             row.dataset.date = dateKey;
                             row.dataset.index = index;
                             
-                            // Date column
                             const dateCell = document.createElement('td');
                             dateCell.textContent = formatDate(new Date(withdrawal.date));
                             row.appendChild(dateCell);
                             
-                            // Withdrawal column
                             const amountCell = document.createElement('td');
                             amountCell.textContent = formatNumber(withdrawal.amount);
                             row.appendChild(amountCell);
                             
-                            // Click handler for editing/deleting
                             row.addEventListener('click', (e) => {
                                 currentWithdrawalDate = e.currentTarget.dataset.date;
                                 currentWithdrawalIndex = parseInt(e.currentTarget.dataset.index);
@@ -1767,7 +1841,6 @@
                     }
                 });
                 
-                // Add total row
                 if (totalWithdrawal > 0) {
                     const totalRow = document.createElement('tr');
                     totalRow.style.fontWeight = 'bold';
@@ -1795,13 +1868,9 @@
                 
                 generalData[dateKey][currentTargetType + 'Target'] = parseFloat(value);
                 
-                // Save general data
                 localStorage.setItem('generalData', JSON.stringify(generalData));
-                
-                // Update table
                 updateGeneralTable();
                 
-                // Close modal
                 if (targetModal) {
                     targetModal.style.display = 'none';
                 }
@@ -1824,13 +1893,9 @@
                     generalData[dateKey][currentTargetType + 'Target'] = parseFloat(value);
                 }
                 
-                // Save general data
                 localStorage.setItem('generalData', JSON.stringify(generalData));
-                
-                // Update table
                 updateGeneralTable();
                 
-                // Close modal
                 if (targetModal) {
                     targetModal.style.display = 'none';
                 }
@@ -1856,7 +1921,6 @@
             // Event Listeners
             if (prevDayBtn) {
                 prevDayBtn.addEventListener('click', () => {
-                    saveTradeData();
                     const newDate = new Date(currentDate);
                     newDate.setDate(newDate.getDate() - 1);
                     loadDateData(newDate);
@@ -1865,21 +1929,18 @@
             
             if (todayBtn) {
                 todayBtn.addEventListener('click', () => {
-                    saveTradeData();
                     loadDateData(new Date());
                 });
             }
             
             if (nextDayBtn) {
                 nextDayBtn.addEventListener('click', () => {
-                    saveTradeData();
                     const newDate = new Date(currentDate);
                     newDate.setDate(newDate.getDate() + 1);
                     loadDateData(newDate);
                 });
             }
             
-            // Adding new trade
             if (addTradeBtn) {
                 addTradeBtn.addEventListener('click', () => {
                     trades.push({
@@ -1893,7 +1954,6 @@
                 });
             }
             
-            // Adding withdrawal
             if (addWithdrawalBtn) {
                 addWithdrawalBtn.addEventListener('click', () => {
                     if (withdrawalAmountInput) withdrawalAmountInput.value = '';
@@ -1901,13 +1961,11 @@
                 });
             }
             
-            // Save month comments
             if (monthCommentsInput) {
                 monthCommentsInput.addEventListener('change', saveMonthComments);
                 monthCommentsInput.addEventListener('blur', saveMonthComments);
             }
 
-            // Handlers for clearing data
             if (clearCurrentDayBtn) {
                 clearCurrentDayBtn.addEventListener('click', function() {
                     if (confirm('Are you sure you want to clear current day data?')) {
@@ -1930,9 +1988,21 @@
                         historyData = {};
                         generalData = {};
                         withdrawalData = {};
+                        monthCommentsData = {};
+                        appSettings = {
+                            initialBalance: 10000,
+                            startingBalance: 10000,
+                            currentBalance: 10000
+                        };
+                        
                         localStorage.setItem('tradeHistory', JSON.stringify(historyData));
                         localStorage.setItem('generalData', JSON.stringify(generalData));
                         localStorage.setItem('withdrawalData', JSON.stringify(withdrawalData));
+                        localStorage.setItem('monthCommentsData', JSON.stringify(monthCommentsData));
+                        localStorage.setItem('appSettings', JSON.stringify(appSettings));
+                        
+                        if (startingBalanceValue) startingBalanceValue.textContent = '10000';
+                        if (currentBalanceValue) currentBalanceValue.textContent = '10000';
                         
                         initTrades();
                         renderTable();
@@ -1946,7 +2016,7 @@
                 });
             }
             
-            // Modal event listeners for trade result
+            // Modal event listeners
             const resultModalButtons = resultModal?.querySelectorAll('.modal-btn');
             if (resultModalButtons) {
                 resultModalButtons.forEach(button => {
@@ -1960,7 +2030,6 @@
                             currentCell.innerHTML = '';
                             
                             updateTotal();
-                            saveTradeData();
                             if (resultModal) resultModal.style.display = 'none';
                         } else if (currentTradeIndex !== null && value === 'refund') {
                             currentCell.className = 'cell refund';
@@ -1973,7 +2042,6 @@
                             }
                             
                             updateTotal();
-                            saveTradeData();
                             if (resultModal) resultModal.style.display = 'none';
                         } else if (currentTradeIndex !== null && !isNaN(amount) && amount > 0) {
                             if (value === 'profit') {
@@ -1987,7 +2055,6 @@
                             }
                             
                             updateTotal();
-                            saveTradeData();
                             if (resultModal) resultModal.style.display = 'none';
                         } else {
                             showNotification('Enter a valid positive amount', 'error');
@@ -2008,7 +2075,6 @@
                 });
             }
             
-            // Handlers for trade amount modal
             if (saveTradeAmountBtn) {
                 saveTradeAmountBtn.addEventListener('click', () => {
                     const amount = parseFloat(tradeAmountInput?.value.replace(',', '.'));
@@ -2043,7 +2109,6 @@
                 });
             }
             
-            // Handlers for withdrawal modal
             if (saveWithdrawalBtn) {
                 saveWithdrawalBtn.addEventListener('click', () => {
                     const amount = parseFloat(withdrawalAmountInput?.value.replace(',', '.'));
@@ -2074,7 +2139,6 @@
                 });
             }
             
-            // Handlers for withdrawal action modal
             if (editWithdrawalBtn) {
                 editWithdrawalBtn.addEventListener('click', () => {
                     if (currentWithdrawalDate !== null && currentWithdrawalIndex !== null) {
@@ -2109,7 +2173,6 @@
                 });
             }
             
-            // Handlers for emotion modal
             const emotionOptions = emotionModal?.querySelectorAll('.emotion-option');
             if (emotionOptions) {
                 emotionOptions.forEach(option => {
@@ -2140,7 +2203,6 @@
                 });
             }
             
-            // Handlers for comments modal
             if (saveCommentBtn) {
                 saveCommentBtn.addEventListener('click', () => {
                     trades[currentTradeIndex].comment = commentsInput.value;
@@ -2166,7 +2228,6 @@
                 });
             }
             
-            // Handlers for balance modal
             if (startingBalanceValue) {
                 startingBalanceValue.addEventListener('click', () => {
                     if (balanceInput) balanceInput.value = appSettings.startingBalance;
@@ -2215,7 +2276,6 @@
                 });
             }
             
-            // Tab switching
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const tabId = tab.dataset.tab;
@@ -2228,43 +2288,12 @@
                     if (tabContent) tabContent.classList.add('active');
                     
                     if (tabId === 'general') {
-                        // Update General tab when switching to it
                         updateGeneralTable();
                         renderWithdrawalTable();
                         loadMonthComments();
                     }
                 });
             });
-            
-            // Save and send buttons
-            if (saveDataBtn) {
-                saveDataBtn.addEventListener('click', () => {
-                    saveTradeData();
-                    showNotification('Data saved', 'success');
-                });
-            }
-            
-            if (sendToBotBtn) {
-                sendToBotBtn.addEventListener('click', sendDataToBot);
-            }
-            
-            // Handler for end day button
-            if (endDayBtn) {
-                endDayBtn.addEventListener('click', function() {
-                    // Save current balance as starting balance for next day
-                    appSettings.startingBalance = appSettings.currentBalance;
-                    
-                    // Save settings
-                    saveSettings();
-                    
-                    // Update display
-                    if (startingBalanceValue) {
-                        startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
-                    }
-                    
-                    showNotification('Day completed. Starting balance updated', 'success');
-                });
-            }
             
             if (applyToDayBtn) {
                 applyToDayBtn.addEventListener('click', () => {
