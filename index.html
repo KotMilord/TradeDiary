@@ -1354,7 +1354,7 @@
 
             // Функция для обновления результата дня только для текущей (сегодняшней) даты
             function updateDayResultForCurrentDate() {
-                const today = new Date();
+                const today = getToday();
                 const todayKey = formatDateKey(today);
                 
                 // Если мы просматриваем сегодняшний день, обновляем результат дня
@@ -1395,13 +1395,32 @@
                 }
             }
 
+            // Получить сегодняшнюю дату в локальном часовом поясе
+            function getToday() {
+                const now = new Date();
+                return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            }
+
+            // Форматирование даты в локальном часовом поясе
             function formatDate(date) {
-                const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-                return date.toLocaleDateString('en-US', options);
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}.${month}.${year}`;
             }
             
+            // Форматирование ключа даты в локальном часовом поясе
             function formatDateKey(date) {
-                return date.toISOString().split('T')[0];
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+            
+            // Парсинг ключа даты в локальном часовом поясе
+            function parseDateKey(dateKey) {
+                const [year, month, day] = dateKey.split('-').map(Number);
+                return new Date(year, month - 1, day);
             }
             
             function formatNumber(amount) {
@@ -1629,10 +1648,8 @@
                     saveTradeData();
                 }
                 
-                const today = new Date();
-                today.setHours(0,0,0,0);
-                const selectedDate = new Date(date);
-                selectedDate.setHours(0,0,0,0);
+                const today = getToday();
+                const selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
                 
                 // Prevent navigation to future dates
                 if (selectedDate > today) {
@@ -1688,10 +1705,8 @@
             function updateCurrentDayLabel() {
                 if (!currentDayLabel) return;
                 
-                const today = new Date();
-                today.setHours(0,0,0,0);
-                const current = new Date(currentDate);
-                current.setHours(0,0,0,0);
+                const today = getToday();
+                const current = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
                 
                 if (current.getTime() === today.getTime()) {
                     currentDayLabel.textContent = 'Today';
@@ -1709,10 +1724,8 @@
             
             // Функция для проверки, можно ли редактировать текущую дату
             function canEditCurrentDate() {
-                const today = new Date();
-                today.setHours(0,0,0,0);
-                const current = new Date(currentDate);
-                current.setHours(0,0,0,0);
+                const today = getToday();
+                const current = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
                 
                 return current.getTime() === today.getTime();
             }
@@ -1738,10 +1751,8 @@
             }
             
             function updateNavigationButtons() {
-                const today = new Date();
-                today.setHours(0,0,0,0);
-                const current = new Date(currentDate);
-                current.setHours(0,0,0,0);
+                const today = getToday();
+                const current = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
                 
                 // Disable next day button if trying to go to future
                 if (nextDayBtn) {
@@ -1770,8 +1781,8 @@
                     return;
                 }
                 
-                dates.forEach(date => {
-                    const data = historyData[date];
+                dates.forEach(dateKey => {
+                    const data = historyData[dateKey];
                     let dayTotal = 0;
                     
                     if (data.trades) {
@@ -1793,7 +1804,7 @@
                     const row = document.createElement('tr');
                     
                     const dateCell = document.createElement('td');
-                    dateCell.textContent = formatDate(new Date(date));
+                    dateCell.textContent = formatDate(parseDateKey(dateKey));
                     row.appendChild(dateCell);
                     
                     const totalCell = document.createElement('td');
@@ -1935,7 +1946,8 @@
             }
             
             function addWithdrawal(amount) {
-                const dateKey = formatDateKey(new Date());
+                const today = getToday();
+                const dateKey = formatDateKey(today);
                 if (!withdrawalData[dateKey]) {
                     withdrawalData[dateKey] = [];
                 }
@@ -2012,7 +2024,7 @@
                             row.dataset.index = index;
                             
                             const dateCell = document.createElement('td');
-                            dateCell.textContent = formatDate(new Date(withdrawal.date));
+                            dateCell.textContent = formatDate(parseDateKey(withdrawal.date));
                             row.appendChild(dateCell);
                             
                             const amountCell = document.createElement('td');
@@ -2123,7 +2135,7 @@
             
             if (currentDayLabel) {
                 currentDayLabel.addEventListener('click', () => {
-                    loadDateData(new Date());
+                    loadDateData(getToday());
                 });
             }
             
