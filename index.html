@@ -1250,6 +1250,7 @@
             // Variables for withdrawal management
             let currentWithdrawalDate = null;
             let currentWithdrawalIndex = null;
+            let isEditingWithdrawal = false;
 
             // Global variables for current month and year
             let currentYear, currentMonth;
@@ -1268,7 +1269,8 @@
                 
                 const dateKey = formatDateKey(currentDate);
                 if (historyData[dateKey]) {
-                    tradeData = historyData[dateKey];
+                    // Исправление: глубокое копирование данных для дня
+                    tradeData = JSON.parse(JSON.stringify(historyData[dateKey]));
                     trades = tradeData.trades || [];
                     renderTable();
                     updateDayResultForCurrentDate();
@@ -1296,6 +1298,20 @@
                 
                 // Проверяем, можно ли редактировать текущую дату
                 updateEditPermissions();
+            }
+
+            // Функция для проверки, есть ли в дне какие-либо данные
+            function hasDayData(dayTrades) {
+                if (!dayTrades || dayTrades.length === 0) return false;
+                
+                for (let i = 0; i < dayTrades.length; i++) {
+                    const trade = dayTrades[i];
+                    if (trade.tradeAmount !== null || trade.result !== null || 
+                        trade.emotion !== null || (trade.comment && trade.comment !== '')) {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             // Функция для пересчета текущего баланса с учетом всех сделок и выводов
@@ -1574,19 +1590,33 @@
                 
                 localStorage.setItem('generalData', JSON.stringify(generalData));
                 
-                // Auto save data
-                saveTradeData();
+                // Auto save data только если есть данные
+                if (hasDayData(trades)) {
+                    saveTradeData();
+                }
                 
                 updateGeneralTable();
             }
             
             function saveTradeData() {
+                // Сохраняем данные только если есть хотя бы одна заполненная сделка
+                if (!hasDayData(trades)) {
+                    const dateKey = formatDateKey(currentDate);
+                    // Удаляем пустые данные из истории
+                    delete historyData[dateKey];
+                    localStorage.setItem('tradeHistory', JSON.stringify(historyData));
+                    return;
+                }
+                
                 tradeData.trades = trades;
                 const dateKey = formatDateKey(currentDate);
-                historyData[dateKey] = {...tradeData};
+                historyData[dateKey] = JSON.parse(JSON.stringify(tradeData)); // Глубокое копирование
                 localStorage.setItem('tradeHistory', JSON.stringify(historyData));
                 
                 saveSettings();
+                
+                // Обновляем историю после сохранения
+                renderHistory();
             }
             
             function saveSettings() {
@@ -1594,6 +1624,11 @@
             }
             
             function loadDateData(date) {
+                // Сохраняем данные текущего дня перед переходом только если есть данные
+                if (hasDayData(trades)) {
+                    saveTradeData();
+                }
+                
                 const today = new Date();
                 today.setHours(0,0,0,0);
                 const selectedDate = new Date(date);
@@ -1611,9 +1646,11 @@
                 const dateKey = formatDateKey(currentDate);
                 
                 if (historyData[dateKey]) {
-                    tradeData = historyData[dateKey];
+                    // Исправление: глубокое копирование данных для дня
+                    tradeData = JSON.parse(JSON.stringify(historyData[dateKey]));
                     trades = tradeData.trades || [];
                 } else {
+                    tradeData = {};
                     initTrades();
                 }
                 
@@ -1897,7 +1934,7 @@
                 }
             }
             
-            function saveWithdrawal(amount) {
+            function addWithdrawal(amount) {
                 const dateKey = formatDateKey(new Date());
                 if (!withdrawalData[dateKey]) {
                     withdrawalData[dateKey] = [];
@@ -2110,12 +2147,13 @@
                         comment: ''
                     });
                     renderTable();
-                    saveTradeData();
+                    // Не сохраняем автоматически при добавлении пустой сделки
                 });
             }
             
             if (addWithdrawalBtn) {
                 addWithdrawalBtn.addEventListener('click', () => {
+                    isEditingWithdrawal = false;
                     if (withdrawalAmountInput) withdrawalAmountInput.value = '';
                     if (withdrawalModal) withdrawalModal.style.display = 'flex';
                 });
@@ -2269,11 +2307,17 @@
                 });
             }
             
+            // ИСПРАВЛЕНИЕ: Правильная обработка сохранения вывода (добавление или редактирование)
             if (saveWithdrawalBtn) {
                 saveWithdrawalBtn.addEventListener('click', () => {
                     const amount = parseFloat(withdrawalAmountInput?.value.replace(',', '.'));
                     if (!isNaN(amount) && amount > 0) {
-                        saveWithdrawal(amount);
+                        if (isEditingWithdrawal && currentWithdrawalDate !== null && currentWithdrawalIndex !== null) {
+                            editWithdrawal(currentWithdrawalDate, currentWithdrawalIndex, amount);
+                        } else {
+                            addWithdrawal(amount);
+                        }
+                        isEditingWithdrawal = false;
                         if (withdrawalModal) withdrawalModal.style.display = 'none';
                     } else {
                         showNotification('Enter a valid positive amount', 'error');
@@ -2287,6 +2331,7 @@
             
             if (cancelWithdrawalBtn) {
                 cancelWithdrawalBtn.addEventListener('click', () => {
+                    isEditingWithdrawal = false;
                     if (withdrawalModal) withdrawalModal.style.display = 'none';
                 });
             }
@@ -2294,14 +2339,17 @@
             if (withdrawalModal) {
                 withdrawalModal.addEventListener('click', (e) => {
                     if (e.target === withdrawalModal) {
+                        isEditingWithdrawal = false;
                         withdrawalModal.style.display = 'none';
                     }
                 });
             }
             
+            // ИСПРАВЛЕНИЕ: Установка флага редактирования при нажатии на Edit
             if (editWithdrawalBtn) {
                 editWithdrawalBtn.addEventListener('click', () => {
                     if (currentWithdrawalDate !== null && currentWithdrawalIndex !== null) {
+                        isEditingWithdrawal = true;
                         const withdrawal = withdrawalData[currentWithdrawalDate][currentWithdrawalIndex];
                         if (withdrawalAmountInput) withdrawalAmountInput.value = withdrawal.amount;
                         if (withdrawalModal) withdrawalModal.style.display = 'flex';
