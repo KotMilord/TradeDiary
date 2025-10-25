@@ -1,25 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Diary</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', Arial, sans-serif;
-        }
+         /* CSS Variables for Light and Dark Themes */
+         :root {
+             --bg-color: #ffffff;
+             --text-color: #000000;
+             --secondary-bg: rgba(255, 255, 255, 0.95);
+             --hint-color: rgba(0, 0, 0, 0.3);
+             --button-color: #3498db;
+             --button-text-color: #ffffff;
+             --border-color: #e0e0e0;
+             --shadow-color: rgba(0, 0, 0, 0.1);
+             --positive-color: #2ecc71;
+             --negative-color: #e74c3c;
+             --refund-color: #3498db;
+             --profit-bg: #e8f5e9;
+             --loss-bg: #ffebee;
+             --refund-bg: #e3f2fd;
+             --cell-bg: #fafafa;
+             --cell-hover-bg: #e3f2fd;
+             --modal-bg: #ffffff;
+             --input-bg: #ffffff;
+             --input-border: #ddd;
+             --progress-bg: #e0e0e0;
+             --progress-profit: #4CAF50;
+             --progress-loss: #F44336;
+             --tab-bg: #ecf0f1;
+             --tab-active-bg: #3498db;
+             --notification-success: #27ae60;
+             --notification-error: #e74c3c;
+         }
+
+         [data-theme="dark"] {
+             --bg-color: #1e1e1e;
+             --text-color: #ffffff;
+             --secondary-bg: #2d2d2d;
+             --hint-color: #555555;
+             --button-color: #3498db;
+             --button-text-color: #ffffff;
+             --border-color: #444444;
+             --shadow-color: rgba(0, 0, 0, 0.3);
+             --positive-color: #4CAF50;
+             --negative-color: #F44336;
+             --refund-color: #2196F3;
+             --profit-bg: #1b2e1b;
+             --loss-bg: #2e1b1b;
+             --refund-bg: #1b1e2e;
+             --cell-bg: #2d2d2d;
+             --cell-hover-bg: #3d3d3d;
+             --modal-bg: #2d2d2d;
+             --input-bg: #3d3d3d;
+             --input-border: #555555;
+             --progress-bg: #444444;
+             --progress-profit: #4CAF50;
+             --progress-loss: #F44336;
+             --tab-bg: #2d2d2d;
+             --tab-active-bg: #3498db;
+             --notification-success: #4CAF50;
+             --notification-error: #F44336;
+         }
+
+         [data-theme="dark"] .balance-label,
+         [data-theme="dark"] .progress-label,
+         [data-theme="dark"] .setting-label {
+             color: #e0e0e0;
+         }
+
+         [data-theme="dark"] .settings-panel h3 {
+             color: #cccccc;
+         }
+
+         [data-theme="dark"] .progress-stats {
+             color: #e0e0e0;
+         }
+
+         /* Automatic theme switching based on system preference */
+         @media (prefers-color-scheme: dark) {
+             :root:not([data-theme]) {
+                 --bg-color: #1e1e1e;
+                 --text-color: #ffffff;
+                 --secondary-bg: #2d2d2d;
+                 --hint-color: #555555;
+                 --button-color: #3498db;
+                 --button-text-color: #ffffff;
+                 --border-color: #444444;
+                 --shadow-color: rgba(0, 0, 0, 0.3);
+                 --positive-color: #4CAF50;
+                 --negative-color: #F44336;
+                 --refund-color: #2196F3;
+                 --profit-bg: #1b2e1b;
+                 --loss-bg: #2e1b1b;
+                 --refund-bg: #1b1e2e;
+                 --cell-bg: #2d2d2d;
+                 --cell-hover-bg: #3d3d3d;
+                 --modal-bg: #2d2d2d;
+                 --input-bg: #3d3d3d;
+                 --input-border: #555555;
+                 --progress-bg: #444444;
+                 --progress-profit: #4CAF50;
+                 --progress-loss: #F44336;
+                 --tab-bg: #2d2d2d;
+                 --tab-active-bg: #3498db;
+                 --notification-success: #4CAF50;
+                 --notification-error: #F44336;
+             }
+         }
+
+         @media (prefers-color-scheme: dark) {
+             :root:not([data-theme]) .balance-label,
+             :root:not([data-theme]) .progress-label,
+             :root:not([data-theme]) .setting-label {
+                 color: #e0e0e0;
+             }
+         }
+
+         @media (prefers-color-scheme: light) {
+             :root:not([data-theme]) {
+                 --bg-color: #ffffff;
+                 --text-color: #000000;
+                 --secondary-bg: rgba(255, 255, 255, 0.95);
+                 --hint-color: rgba(0, 0, 0, 0.3);
+                 --button-color: #3498db;
+                 --button-text-color: #ffffff;
+                 --border-color: #e0e0e0;
+                 --shadow-color: rgba(0, 0, 0, 0.1);
+                 --positive-color: #2ecc71;
+                 --negative-color: #e74c3c;
+                 --refund-color: #3498db;
+                 --profit-bg: #e8f5e9;
+                 --loss-bg: #ffebee;
+                 --refund-bg: #e3f2fd;
+                 --cell-bg: #fafafa;
+                 --cell-hover-bg: #e3f2fd;
+                 --modal-bg: #ffffff;
+                 --input-bg: #ffffff;
+                 --input-border: #ddd;
+                 --progress-bg: #e0e0e0;
+                 --progress-profit: #4CAF50;
+                 --progress-loss: #F44336;
+                 --tab-bg: #ecf0f1;
+                 --tab-active-bg: #3498db;
+                 --notification-success: #27ae60;
+                 --notification-error: #e74c3c;
+             }
+
+             :root:not([data-theme]) .balance-label,
+             :root:not([data-theme]) .progress-label,
+             :root:not([data-theme]) .setting-label {
+                 color: rgba(0, 0, 0, 0.7);
+             }
+
+             :root:not([data-theme]) .settings-panel h3 {
+                 color: #000000;
+             }
+
+             :root:not([data-theme]) .progress-stats {
+                 color: #333333;
+             }
+
+             :root:not([data-theme]) .date-label {
+                 background: var(--secondary-bg);
+             }
+
+             :root:not([data-theme]) .progress-container {
+                 background: var(--secondary-bg);
+             }
+
+             :root:not([data-theme]) .settings-panel {
+                 background: var(--secondary-bg);
+             }
+
+             :root:not([data-theme]) .month-comments textarea {
+                 background: var(--secondary-bg);
+             }
+         }
+
+         * {
+             box-sizing: border-box;
+             margin: 0;
+             padding: 0;
+             font-family: 'Roboto', Arial, sans-serif;
+         }
         
         body {
-            background: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
+            background: var(--bg-color);
+            color: var(--text-color);
             min-height: 100vh;
             padding: 5px;
             font-size: 14px;
@@ -28,16 +201,16 @@
         .container {
             max-width: 100%;
             margin: 0 auto;
-            background: var(--tg-theme-secondary-bg-color, rgba(255, 255, 255, 0.95));
+            background: var(--secondary-bg);
             border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 12px var(--shadow-color);
             overflow: hidden;
-            border: 1px solid var(--tg-theme-hint-color, rgba(0, 0, 0, 0.1));
+            border: 1px solid var(--hint-color);
         }
         
         header {
-            background: var(--tg-theme-bg-color, #2c3e50);
-            color: var(--tg-theme-button-text-color, white);
+            background: var(--bg-color);
+            color: var(--text-color);
             padding: 10px;
             text-align: center;
             position: relative;
@@ -49,8 +222,8 @@
         }
         
         .btn {
-            background: var(--tg-theme-button-color, #3498db);
-            color: var(--tg-theme-button-text-color, white);
+            background: var(--button-color);
+            color: var(--button-text-color);
             border: none;
             padding: 6px 12px;
             border-radius: 15px;
@@ -81,99 +254,132 @@
         }
         
         .balance-container {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             margin-bottom: 15px;
-            background: var(--tg-theme-bg-color, #f8f9fa);
+            background: var(--bg-color);
             padding: 12px;
             border-radius: 10px;
-            border: 1px solid var(--tg-theme-hint-color, #e0e0);
-            flex-wrap: nowrap;
-            overflow-x: auto;
+            border: 1px solid var(--hint-color);
             gap: 8px;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         }
         
         .balance-item {
             text-align: center;
-            flex: 1;
-            min-width: 110px;
-            margin: 0 2px;
-            white-space: nowrap;
-            padding: 0 5px;
-            background: var(--tg-theme-secondary-bg-color, #ffffff);
+            background: var(--secondary-bg);
             border-radius: 8px;
             padding: 8px 4px;
-            border: 1px solid var(--tg-theme-hint-color, #f0f0f0);
+            border: 1px solid var(--hint-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
         }
-        
+
         .balance-label {
             font-size: 0.7rem;
-            margin-bottom: 4px;
-            color: var(--tg-theme-hint-color, #7f8c8d);
+            color: var(--hint-color);
             line-height: 1.2;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 1.5rem;
+            min-height: 1.5rem;
+            margin-bottom: 0;
         }
-        
+
         .balance-value {
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             line-height: 1.2;
             transition: all 0.2s;
-            color: var(--tg-theme-text-color, #333);
+            color: var(--text-color);
             word-break: break-all;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 2rem;
+            min-height: 2rem;
         }
         
         .starting-balance {
-    background-color: #314B8E;
-    color: white !important;
-    border-radius: 8px;
-    padding: 8px 12px;
-    border: 2px solid #314B8E;
-    font-weight: 700;
-    font-size: 1.1rem;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-    min-height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+            background-color: var(--button-color);
+            border-radius: 8px;
+            padding: 6px 8px;
+            border: 2px solid var(--button-color);
+            font-weight: 600;
+            opacity: 0.9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-        
-        .positive {
-            color: #2ecc71;
+        .starting-balance:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .starting-balance.balance-value {
+            color: #007bff !important;
+            border: 2px solid #007bff;
+            background: rgba(0, 123, 255, 0.15);
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .starting-balance.balance-value {
+            color: #00bfff !important;
+            border: 2px solid #00bfff;
+            background: rgba(0, 191, 255, 0.25);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) .starting-balance.balance-value {
+                color: #00bfff !important;
+                border: 2px solid #00bfff;
+                background: rgba(0, 191, 255, 0.25);
+            }
         }
         
+        .positive {
+            color: var(--positive-color);
+        }
+
         .negative {
-            color: #e74c3c;
+            color: var(--negative-color);
         }
         
         .table-container {
             overflow-x: auto;
             margin-bottom: 10px;
-            border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+            border: 1px solid var(--hint-color);
             border-radius: 10px;
             width: 100%;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px var(--shadow-color);
         }
         
         table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            background: var(--tg-theme-bg-color, white);
+            background: var(--bg-color);
             font-size: 0.8rem;
             table-layout: fixed;
-            color: var(--tg-theme-text-color, #333);
+            color: var(--text-color);
             border-radius: 10px;
             overflow: hidden;
         }
         
         th, td {
-            border-bottom: 1px solid var(--tg-theme-hint-color, #eee);
-            border-right: 1px solid var(--tg-theme-hint-color, #eee);
+            border-bottom: 1px solid var(--hint-color);
+            border-right: 1px solid var(--hint-color);
             padding: 8px;
             text-align: center;
             min-width: 60px;
@@ -181,21 +387,26 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            color: var(--tg-theme-text-color, #333);
+            color: var(--text-color);
         }
         
         th {
-            background: var(--tg-theme-button-color, #3498db);
-            color: var(--tg-theme-button-text-color, white);
+            background: var(--button-color);
+            color: var(--button-text-color);
             position: sticky;
             top: 0;
             font-weight: 600;
             white-space: normal;
-            word-wrap: break-word;
+            word-break: keep-all;
             line-height: 1.3;
-            padding: 10px 8px;
+            padding: 12px 10px;
             text-align: center;
+            font-size: 0.8rem;
+            min-width: 120px;
+            overflow: visible;
+            text-overflow: clip;
         }
+
         
         th:last-child, td:last-child {
             border-right: none;
@@ -214,11 +425,11 @@
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
-            background-color: var(--tg-theme-secondary-bg-color, #fafafa);
+            background-color: var(--cell-bg);
         }
-        
+
         .cell:hover {
-            background-color: var(--tg-theme-bg-color, #e3f2fd);
+            background-color: var(--cell-hover-bg);
         }
         
         .cell.disabled {
@@ -233,18 +444,18 @@
         }
         
         .profit {
-            background: var(--tg-theme-secondary-bg-color, #e8f5e9) !important;
-            color: #2e7d32 !important;
+            background: var(--profit-bg) !important;
+            color: var(--positive-color) !important;
         }
-        
+
         .loss {
-            background: var(--tg-theme-secondary-bg-color, #ffebee) !important;
-            color: #c62828 !important;
+            background: var(--loss-bg) !important;
+            color: var(--negative-color) !important;
         }
-        
+
         .refund {
-            background: var(--tg-theme-secondary-bg-color, #e3f2fd) !important;
-            color: #1565c0 !important;
+            background: var(--refund-bg) !important;
+            color: var(--refund-color) !important;
         }
         
         .emotion-cell {
@@ -258,6 +469,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+
+        [data-theme="dark"] .comments-cell {
+            color: var(--text-color);
         }
         
         .add-trade-btn {
@@ -290,15 +505,33 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .modal-content {
-            background: var(--tg-theme-bg-color, white);
-            color: var(--tg-theme-text-color, #333);
+            background: var(--modal-bg);
+            color: var(--text-color);
             padding: 15px;
             border-radius: 8px;
             width: 90%;
             max-width: 300px;
             text-align: center;
+        }
+
+        [data-theme="dark"] .modal-content {
+            background: var(--modal-bg);
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .emotion-option {
+            color: #ffffff;
+            border: 1px solid #555555;
+        }
+
+        [data-theme="dark"] .emotion-option:hover {
+            background: #3d3d3d;
+        }
+
+        [data-theme="dark"] .emotion-label {
+            color: #ffffff;
         }
         
         .modal-buttons {
@@ -368,6 +601,7 @@
         .emotion-emoji {
             font-size: 1.5rem;
             margin-bottom: 3px;
+            color: var(--text-color);
         }
         
         .emotion-label {
@@ -391,6 +625,12 @@
             font-size: 0.8rem;
             margin-top: 10px;
         }
+
+        [data-theme="dark"] .comments-textarea {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+        }
         
         .comments-textarea::placeholder {
             color: var(--tg-theme-hint-color, #7f8c8d);
@@ -399,13 +639,13 @@
         .tabs {
             display: flex;
             margin-bottom: 12px;
-            background: var(--tg-theme-bg-color, #ecf0f1);
+            background: var(--tab-bg);
             border-radius: 12px;
             overflow: hidden;
             flex-wrap: wrap;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px var(--shadow-color);
         }
-        
+
         .tab {
             flex: 1;
             padding: 12px 8px;
@@ -414,14 +654,14 @@
             transition: all 0.3s;
             font-size: 0.9rem;
             min-width: 70px;
-            color: var(--tg-theme-text-color, #333);
-            background: var(--tg-theme-secondary-bg-color, #ecf0f1);
+            color: var(--text-color);
+            background: var(--tab-bg);
             font-weight: 500;
         }
-        
+
         .tab.active {
-            background: var(--tg-theme-button-color, #3498db);
-            color: var(--tg-theme-button-text-color, white);
+            background: var(--tab-active-bg);
+            color: var(--button-text-color);
         }
         
         .tab-content {
@@ -436,15 +676,15 @@
             width: 100%;
             padding: 8px;
             margin: 8px 0;
-            background: var(--tg-theme-bg-color, white);
-            color: var(--tg-theme-text-color, #333);
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
             border-radius: 4px;
             font-size: 0.9rem;
         }
-        
+
         .amount-input::placeholder {
-            color: var(--tg-theme-hint-color, #7f8c8d);
+            color: var(--hint-color);
         }
         
         .date-navigation {
@@ -485,6 +725,16 @@
             border-radius: 20px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
         }
+
+        [data-theme="dark"] .date-label {
+            background: var(--secondary-bg);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) .date-label {
+                background: var(--secondary-bg);
+            }
+        }
         
         .notification {
             position: fixed;
@@ -500,12 +750,12 @@
         }
         
         .notification.success {
-            background: #27ae60;
+            background: var(--notification-success);
             opacity: 1;
         }
-        
+
         .notification.error {
-            background: #e74c3c;
+            background: var(--notification-error);
             opacity: 1;
         }
         
@@ -538,10 +788,18 @@
         }
         
         .general-table th, .general-table td {
-            padding: 3px;
+            padding: 6px;
             text-align: center;
-            min-width: 60px;
-            height: 25px;
+            min-width: 80px;
+            height: 30px;
+        }
+
+        .general-table th {
+            white-space: normal;
+            word-break: keep-all;
+            overflow: visible;
+            text-overflow: clip;
+            font-size: 0.8rem;
         }
         
         .general-table .editable {
@@ -554,10 +812,14 @@
         }
         
         .general-table .current-day {
-            background-color: var(--tg-theme-button-color, #3498db);
-            color: var(--tg-theme-button-text-color, white);
+            background-color: rgba(52, 152, 219, 0.5);
+            color: var(--button-text-color);
             font-weight: bold;
-            border: 1px solid var(--tg-theme-button-color, #cce0ff);
+            border: 1px solid rgba(52, 152, 219, 0.5);
+        }
+
+        [data-theme="dark"] .general-table .current-day {
+            box-shadow: 0 0 3px rgba(52, 152, 219, 0.3);
         }
         
         .withdrawal-table-container {
@@ -573,10 +835,18 @@
         }
         
         .withdrawal-table th, .withdrawal-table td {
-            padding: 3px;
+            padding: 6px;
             text-align: center;
-            min-width: 70px;
-            height: 25px;
+            min-width: 90px;
+            height: 30px;
+        }
+
+        .withdrawal-table th {
+            white-space: normal;
+            word-break: keep-all;
+            overflow: visible;
+            text-overflow: clip;
+            font-size: 0.8rem;
         }
         
         .withdrawal-table .editable {
@@ -609,6 +879,18 @@
             font-family: inherit;
             font-size: 0.8rem;
         }
+
+        [data-theme="dark"] .month-comments textarea {
+            background: var(--secondary-bg);
+            color: var(--text-color);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) .month-comments textarea {
+                background: var(--secondary-bg);
+                color: var(--text-color);
+            }
+        }
         
         .month-comments textarea::placeholder {
             color: var(--tg-theme-hint-color, #7f8c8d);
@@ -635,6 +917,11 @@
             width: 90%;
             max-width: 280px;
             text-align: center;
+        }
+
+        [data-theme="dark"] .target-modal-content {
+            background: var(--modal-bg);
+            color: var(--text-color);
         }
         
         .target-modal-buttons {
@@ -663,6 +950,12 @@
             border-radius: 4px;
             font-size: 0.9rem;
         }
+
+        [data-theme="dark"] .target-input {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+        }
         
         .target-input::placeholder {
             color: var(--tg-theme-hint-color, #7f8c8d);
@@ -678,6 +971,12 @@
             border-radius: 4px;
             font-size: 0.9rem;
             text-align: center;
+        }
+
+        [data-theme="dark"] .balance-input {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
         }
         
         .balance-input::placeholder {
@@ -705,6 +1004,11 @@
             width: 90%;
             max-width: 250px;
             text-align: center;
+        }
+
+        [data-theme="dark"] .withdrawal-action-content {
+            background: var(--modal-bg);
+            color: var(--text-color);
         }
         
         .withdrawal-action-buttons {
@@ -742,8 +1046,17 @@
         
         .history-table th, .history-table td {
             border: 1px solid var(--tg-theme-hint-color, #ddd);
-            padding: 8px;
+            padding: 10px;
             text-align: center;
+            min-width: 100px;
+        }
+
+        .history-table th {
+            white-space: normal;
+            word-break: keep-all;
+            overflow: visible;
+            text-overflow: clip;
+            font-size: 0.9rem;
         }
         
         .history-table th {
@@ -760,6 +1073,16 @@
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         }
 
+        [data-theme="dark"] .progress-container {
+            background: var(--secondary-bg);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) .progress-container {
+                background: var(--secondary-bg);
+            }
+        }
+
         .progress-label {
             font-size: 0.85rem;
             margin-bottom: 8px;
@@ -771,7 +1094,7 @@
         .progress-bar {
             width: 100%;
             height: 12px;
-            background: var(--tg-theme-bg-color, #e0e0e0);
+            background: var(--progress-bg);
             border-radius: 6px;
             overflow: hidden;
             position: relative;
@@ -812,7 +1135,7 @@
         }
         
         .progress-loss-fill {
-            background: #F44336 !important;
+            background: var(--progress-loss) !important;
         }
         
         .center-marker {
@@ -821,7 +1144,7 @@
             top: 0;
             height: 100%;
             width: 2px;
-            background: var(--tg-theme-text-color, #333);
+            background: var(--text-color);
             transform: translateX(-50%);
             z-index: 2;
         }
@@ -838,6 +1161,16 @@
             background: var(--tg-theme-secondary-bg-color, #f8f9fa);
             border-radius: 8px;
             border: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+
+        [data-theme="dark"] .settings-panel {
+            background: var(--secondary-bg);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) .settings-panel {
+                background: var(--secondary-bg);
+            }
         }
 
         .settings-panel h3 {
@@ -878,31 +1211,44 @@
             }
         }
         
+        /* Background coloring for cells based on amounts */
+        .amount-positive {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1)) !important;
+        }
+
+        .amount-negative {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(211, 47, 47, 0.1)) !important;
+        }
+
+        .amount-zero {
+            background: linear-gradient(135deg, rgba(158, 158, 158, 0.1), rgba(189, 189, 189, 0.1)) !important;
+        }
+
         @media (max-width: 360px) {
             table th, table td {
                 min-width: 45px;
                 padding: 3px;
                 font-size: 0.65rem;
             }
-            
+
             .tab {
                 min-width: 60px;
                 padding: 6px;
             }
-            
+
             .trade-header {
                 width: 40px;
             }
-            
+
             .balance-item {
                 min-width: 85px;
                 margin: 0 1px;
             }
-            
+
             .balance-label {
                 font-size: 0.7rem;
             }
-            
+
             .balance-value {
                 font-size: 1rem;
             }
@@ -953,9 +1299,9 @@
                 </div>
                 
                 <div class="date-navigation">
-                    <button class="date-btn" id="prevDayBtn">←</button>
+                    <button class="date-btn" id="prevDayBtn" aria-label="Previous day">←</button>
                     <div class="date-label" id="currentDayLabel">Today</div>
-                    <button class="date-btn" id="nextDayBtn" disabled>→</button>
+                    <button class="date-btn" id="nextDayBtn" disabled aria-label="Next day">→</button>
                 </div>
                 
                 <div class="table-container">
@@ -964,7 +1310,7 @@
                             <tr>
                                 <th class="trade-header">Trade</th>
                                 <th>Trade Amount</th>
-                                <th>Profit/Loss/Refund</th>
+                                <th>Profit/Loss Refund</th>
                                 <th>Emotional State</th>
                                 <th>Comments</th>
                             </tr>
@@ -975,13 +1321,12 @@
                     </table>
                 </div>
                 
-                <button class="btn add-trade-btn" id="addTradeBtn">+ Add Trade</button>
+                <button class="btn add-trade-btn" id="addTradeBtn" aria-label="Add new trade">+ Add Trade</button>
             </div>
             
             <!-- General Tab -->
             <div class="tab-content" id="general-tab">
                 <div class="general-header">
-                    <div class="month-title" id="currentMonthTitle"></div>
                     <div class="current-date" id="currentGeneralDate"></div>
                 </div>
                 
@@ -996,9 +1341,9 @@
                         <thead>
                             <tr>
                                 <th>Day</th>
-                                <th>Profit Target %</th>
-                                <th>Loss Target %</th>
-                                <th>Actual P/L %</th>
+                                <th>Profit Target</th>
+                                <th>Loss Target</th>
+                                <th>Actual P/L</th>
                                 <th>Winning Trades</th>
                                 <th>Losing Trades</th>
                             </tr>
@@ -1077,10 +1422,10 @@
     </div>
     
     <!-- Modal for trade result -->
-    <div class="modal" id="resultModal">
+    <div class="modal" id="resultModal" role="dialog" aria-labelledby="resultModalTitle" aria-hidden="true">
         <div class="modal-content">
-            <h2 class="modal-title">Select Trade Result</h2>
-            <input type="number" class="amount-input" id="amountInput" placeholder="Enter amount" step="0.01">
+            <h2 class="modal-title" id="resultModalTitle">Select Trade Result</h2>
+            <input type="text" class="amount-input" id="amountInput" placeholder="Enter amount" pattern="^[0-9]+([,.][0-9]+)*$">
             <div class="modal-buttons">
                 <button class="modal-btn profit-btn" data-value="profit">Profit</button>
                 <button class="modal-btn loss-btn" data-value="loss">Loss</button>
@@ -1094,7 +1439,7 @@
     <div class="modal" id="tradeAmountModal">
         <div class="modal-content">
             <h2 class="modal-title">Enter Trade Amount</h2>
-            <input type="number" class="amount-input" id="tradeAmountInput" placeholder="Enter amount" step="0.01">
+            <input type="text" class="amount-input" id="tradeAmountInput" placeholder="Enter amount" pattern="^[0-9]+([,.][0-9]+)*$">
             <div class="modal-buttons">
                 <button class="modal-btn profit-btn" id="saveTradeAmountBtn">Save</button>
                 <button class="modal-btn reset-btn" id="cancelTradeAmountBtn">Cancel</button>
@@ -1131,35 +1476,35 @@
         <div class="modal-content emotion-modal-content">
             <h2 class="modal-title">Select Emotional State</h2>
             <div class="emotion-options">
-                <div class="emotion-option" data-emotion="😨 fear">
+                <div class="emotion-option" data-emotion="fear">
                     <div class="emotion-emoji">😨</div>
                     <div class="emotion-label">Fear</div>
                 </div>
-                <div class="emotion-option" data-emotion="🤑 greed">
+                <div class="emotion-option" data-emotion="greed">
                     <div class="emotion-emoji">🤑</div>
                     <div class="emotion-label">Greed</div>
                 </div>
-                <div class="emotion-option" data-emotion="😁 joy">
+                <div class="emotion-option" data-emotion="joy">
                     <div class="emotion-emoji">😁</div>
                     <div class="emotion-label">Joy</div>
                 </div>
-                <div class="emotion-option" data-emotion="😕 uncertainty">
+                <div class="emotion-option" data-emotion="uncertainty">
                     <div class="emotion-emoji">😕</div>
                     <div class="emotion-label">Uncertainty</div>
                 </div>
-                <div class="emotion-option" data-emotion="😐 neutral">
+                <div class="emotion-option" data-emotion="neutral">
                     <div class="emotion-emoji">😐</div>
                     <div class="emotion-label">Neutral</div>
                 </div>
-                <div class="emotion-option" data-emotion="😤 frustration">
+                <div class="emotion-option" data-emotion="frustration">
                     <div class="emotion-emoji">😤</div>
                     <div class="emotion-label">Frustration</div>
                 </div>
-                <div class="emotion-option" data-emotion="🤔 contemplation">
+                <div class="emotion-option" data-emotion="contemplation">
                     <div class="emotion-emoji">🤔</div>
                     <div class="emotion-label">Contemplation</div>
                 </div>
-                <div class="emotion-option" data-emotion="😴 boredom">
+                <div class="emotion-option" data-emotion="boredom">
                     <div class="emotion-emoji">😴</div>
                     <div class="emotion-label">Boredom</div>
                 </div>
@@ -1210,10 +1555,37 @@
     <div id="notification" class="notification"></div>
     
     <script>
+        console.log('Trading Diary script loaded');
         // Initialize Telegram Web App
         let tg = window.Telegram?.WebApp;
+        console.log('Telegram WebApp object:', tg);
         
         document.addEventListener('DOMContentLoaded', function() {
+            // Theme switching based on system preference
+            function updateTheme() {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                console.log('Theme check: prefersDark = ' + prefersDark);
+                if (prefersDark) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                }
+                console.log('Applied theme based on system preference');
+                setTimeout(logStartingBalanceStyles, 500);
+                setTimeout(logCommentStyles, 500);
+            }
+
+            // Initial theme setup
+            updateTheme();
+            // Force dark theme for testing
+            document.documentElement.setAttribute('data-theme', 'dark');
+            console.log('Initial theme attribute: ' + document.documentElement.getAttribute('data-theme'));
+            console.log('Theme variables: bg-color = ' + getComputedStyle(document.documentElement).getPropertyValue('--bg-color'));
+
+
+            // Listen for changes in system theme
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
+
             // Expand the app to full screen
             if (tg && tg.expand) {
                 tg.expand();
@@ -1262,7 +1634,6 @@
             const clearAllDataBtn = document.getElementById('clearAllDataBtn');
             
             // Elements for General tab
-            const currentMonthTitle = document.getElementById('currentMonthTitle');
             const currentGeneralDate = document.getElementById('currentGeneralDate');
             const generalTable = document.getElementById('generalTable');
             const saveWithdrawalBtn = document.getElementById('saveWithdrawalBtn');
@@ -1312,6 +1683,18 @@
                 currentBalance: 10000
             };
             
+            // Emotion mapping
+            const emotionMap = {
+                'fear': '😨 Fear',
+                'greed': '🤑 Greed',
+                'joy': '😁 Joy',
+                'uncertainty': '😕 Uncertainty',
+                'neutral': '😐 Neutral',
+                'frustration': '😤 Frustration',
+                'contemplation': '🤔 Contemplation',
+                'boredom': '😴 Boredom'
+            };
+            
             // UI Settings
             let uiSettings = JSON.parse(localStorage.getItem('uiSettings')) || {
                 showProgressBar: true
@@ -1331,12 +1714,22 @@
             
             // Initialize
             function init() {
+                console.log('Initializing trading diary app');
                 if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
                 
                 // Load balance settings
                 if (appSettings.startingBalance && startingBalanceValue) {
                     startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
                 }
+                
+                console.log('Starting Balance element:', startingBalanceValue);
+                console.log('Balance modal:', balanceModal);
+                
+                // Add global click listener for debugging
+                document.addEventListener('click', (e) => {
+                    console.log('Click on:', e.target);
+                    console.log('Class:', e.target.className);
+                });
                 
                 // Пересчитываем текущий баланс с учетом всех сделок и выводов
                 recalculateCurrentBalance();
@@ -1378,6 +1771,10 @@
                 
                 // Initialize progress bar visibility
                 updateProgressBarVisibility();
+                console.log('App initialized successfully');
+
+                // Log Starting Balance styles after init
+                setTimeout(logStartingBalanceStyles, 1000);
             }
             
             // Функция для добавления новой сделки без полной перерисовки
@@ -1640,12 +2037,19 @@
                 
                 const tradeAmountCell = document.createElement('td');
                 tradeAmountCell.className = 'cell';
-                
+
                 if (trade.tradeAmount !== null && trade.tradeAmount !== 0) {
                     tradeAmountCell.textContent = formatNumber(trade.tradeAmount);
+                    if (trade.tradeAmount > 0) {
+                        tradeAmountCell.classList.add('amount-positive');
+                    } else if (trade.tradeAmount < 0) {
+                        tradeAmountCell.classList.add('amount-negative');
+                    } else {
+                        tradeAmountCell.classList.add('amount-zero');
+                    }
                 } else {
                     tradeAmountCell.textContent = 'Click to enter amount';
-                    tradeAmountCell.style.color = 'var(--tg-theme-hint-color, #7f8c8d)';
+                    tradeAmountCell.style.color = 'var(--hint-color)';
                     tradeAmountCell.style.fontStyle = 'italic';
                 }
                 
@@ -1664,19 +2068,40 @@
                 
                 const resultCell = document.createElement('td');
                 resultCell.className = 'cell';
-                
+
                 if (trade.result !== null) {
                     const amount = trade.result.amount;
                     const type = trade.result.type;
-                    
+
                     if (type === 'profit') {
                         resultCell.className += ' profit';
+                        if (amount > 0) {
+                            resultCell.classList.add('amount-positive');
+                        } else if (amount < 0) {
+                            resultCell.classList.add('amount-negative');
+                        } else {
+                            resultCell.classList.add('amount-zero');
+                        }
                         resultCell.innerHTML = `<div class="cell-content">+${formatNumber(amount)}</div>`;
                     } else if (type === 'loss') {
                         resultCell.className += ' loss';
+                        if (amount > 0) {
+                            resultCell.classList.add('amount-negative');
+                        } else if (amount < 0) {
+                            resultCell.classList.add('amount-positive');
+                        } else {
+                            resultCell.classList.add('amount-zero');
+                        }
                         resultCell.innerHTML = `<div class="cell-content">-${formatNumber(amount)}</div>`;
                     } else if (type === 'refund') {
                         resultCell.className += ' refund';
+                        if (amount > 0) {
+                            resultCell.classList.add('amount-positive');
+                        } else if (amount < 0) {
+                            resultCell.classList.add('amount-negative');
+                        } else {
+                            resultCell.classList.add('amount-zero');
+                        }
                         if (amount > 0) {
                             resultCell.innerHTML = `<div class="cell-content">Refund: ${formatNumber(amount)}</div>`;
                         } else {
@@ -1753,32 +2178,61 @@
                 
                 // Обновляем ячейку с суммой сделки
                 const tradeAmountCell = cells[1];
+                tradeAmountCell.className = 'cell';
                 if (trade.tradeAmount !== null && trade.tradeAmount !== 0) {
                     tradeAmountCell.textContent = formatNumber(trade.tradeAmount);
                     tradeAmountCell.style.color = '';
                     tradeAmountCell.style.fontStyle = '';
+                    if (trade.tradeAmount > 0) {
+                        tradeAmountCell.classList.add('amount-positive');
+                    } else if (trade.tradeAmount < 0) {
+                        tradeAmountCell.classList.add('amount-negative');
+                    } else {
+                        tradeAmountCell.classList.add('amount-zero');
+                    }
                 } else {
                     tradeAmountCell.textContent = 'Click to enter amount';
-                    tradeAmountCell.style.color = 'var(--tg-theme-hint-color, #7f8c8d)';
+                    tradeAmountCell.style.color = 'var(--hint-color)';
                     tradeAmountCell.style.fontStyle = 'italic';
                 }
                 
                 // Обновляем ячейку с результатом
                 const resultCell = cells[2];
                 resultCell.className = 'cell';
-                
+
                 if (trade.result !== null) {
                     const amount = trade.result.amount;
                     const type = trade.result.type;
-                    
+
                     if (type === 'profit') {
                         resultCell.className += ' profit';
+                        if (amount > 0) {
+                            resultCell.classList.add('amount-positive');
+                        } else if (amount < 0) {
+                            resultCell.classList.add('amount-negative');
+                        } else {
+                            resultCell.classList.add('amount-zero');
+                        }
                         resultCell.innerHTML = `<div class="cell-content">+${formatNumber(amount)}</div>`;
                     } else if (type === 'loss') {
                         resultCell.className += ' loss';
+                        if (amount > 0) {
+                            resultCell.classList.add('amount-negative');
+                        } else if (amount < 0) {
+                            resultCell.classList.add('amount-positive');
+                        } else {
+                            resultCell.classList.add('amount-zero');
+                        }
                         resultCell.innerHTML = `<div class="cell-content">-${formatNumber(amount)}</div>`;
                     } else if (type === 'refund') {
                         resultCell.className += ' refund';
+                        if (amount > 0) {
+                            resultCell.classList.add('amount-positive');
+                        } else if (amount < 0) {
+                            resultCell.classList.add('amount-negative');
+                        } else {
+                            resultCell.classList.add('amount-zero');
+                        }
                         if (amount > 0) {
                             resultCell.innerHTML = `<div class="cell-content">Refund: ${formatNumber(amount)}</div>`;
                         } else {
@@ -1793,7 +2247,7 @@
                 const emotionCell = cells[3];
                 emotionCell.className = 'cell emotion-cell';
                 if (trade.emotion !== null) {
-                    emotionCell.textContent = trade.emotion;
+                    emotionCell.textContent = emotionMap[trade.emotion] || trade.emotion;
                 } else {
                     emotionCell.textContent = '';
                 }
@@ -2103,6 +2557,11 @@
                 currentGeneralYear = now.getFullYear();
                 currentGeneralMonth = now.getMonth();
                 
+                console.log('General tab initialized, currentGeneralYear: ' + currentGeneralYear + ', currentGeneralMonth: ' + currentGeneralMonth);
+                if (currentGeneralDate) {
+                    console.log('currentGeneralDate element: ' + currentGeneralDate.textContent);
+                }
+                
                 updateGeneralNavigation();
                 updateGeneralTable();
                 renderWithdrawalTable();
@@ -2116,16 +2575,13 @@
                     "July", "August", "September", "October", "November", "December"
                 ];
                 
-                if (currentMonthTitle) {
-                    currentMonthTitle.textContent = monthNames[currentGeneralMonth] + " " + currentGeneralYear;
-                }
-                
                 if (currentMonthLabel) {
-                    currentMonthLabel.textContent = monthNames[currentGeneralMonth] + " " + currentGeneralYear;
+                    currentMonthLabel.textContent = monthNames[currentGeneralMonth];
                 }
                 
                 if (currentGeneralDate) {
-                    currentGeneralDate.textContent = formatDate(new Date());
+                    // currentGeneralDate.textContent = formatDate(new Date()); // Removed month label
+                    console.log('Month label removed from General');
                 }
                 
                 // Update month navigation buttons
@@ -2814,6 +3270,14 @@
                     this.value = this.value.replace(/[^0-9.,]/g, '');
                 });
             }
+
+            // Валидация ввода в поле суммы результата (реальное время)
+            if (amountInput) {
+                amountInput.addEventListener('input', function() {
+                    // Убираем все, кроме цифр, точки и запятой
+                    this.value = this.value.replace(/[^0-9.,]/g, '');
+                });
+            }
             
             if (cancelTradeAmountBtn) {
                 cancelTradeAmountBtn.addEventListener('click', () => {
@@ -2934,7 +3398,8 @@
                     option.addEventListener('click', () => {
                         const emotion = option.dataset.emotion;
                         trades[currentTradeIndex].emotion = emotion;
-                        currentCell.textContent = emotion;
+                        // Display using emotion map
+                        currentCell.textContent = emotionMap[emotion];
                         saveTradeData();
                         updateTotal();
                         refreshAllDisplays();
@@ -3011,8 +3476,11 @@
             
             if (startingBalanceValue) {
                 startingBalanceValue.addEventListener('click', () => {
+                    console.log('Starting Balance clicked');
+                    console.log('Modal display before:', balanceModal ? balanceModal.style.display : 'null');
                     if (balanceInput) balanceInput.value = appSettings.startingBalance;
                     if (balanceModal) balanceModal.style.display = 'flex';
+                    console.log('Modal display after:', balanceModal ? balanceModal.style.display : 'null');
                 });
             }
             
@@ -3314,19 +3782,168 @@
             
             // Initialize the app
             init();
-            
+
             // Initialize progress bar visibility setting
             const showProgressBarCheckbox = document.getElementById('showProgressBar');
             if (showProgressBarCheckbox) {
                 showProgressBarCheckbox.checked = uiSettings.showProgressBar;
                 updateProgressBarVisibility();
-                
+
                 showProgressBarCheckbox.addEventListener('change', function() {
                     uiSettings.showProgressBar = this.checked;
                     saveUISettings();
                     updateProgressBarVisibility();
                 });
             }
+
+            // Добавляем логи для отладки переноса слов в заголовках таблицы
+            function logTableHeaderStyles() {
+                const thElements = document.querySelectorAll('th');
+                console.log('Стили заголовков таблицы для переноса слов:');
+                thElements.forEach((th, index) => {
+                    const computedStyle = getComputedStyle(th);
+                    console.log(`TH ${index} (${th.textContent.trim()}):`);
+                    console.log(`  white-space: ${computedStyle.whiteSpace}`);
+                    console.log(`  word-break: ${computedStyle.wordBreak}`);
+                    console.log(`  hyphens: ${computedStyle.hyphens}`);
+                    console.log(`  width: ${computedStyle.width}`);
+                    console.log(`  min-width: ${computedStyle.minWidth}`);
+                    console.log(`  padding: ${computedStyle.padding}`);
+                    console.log(`  text-align: ${computedStyle.textAlign}`);
+                    console.log(`  line-height: ${computedStyle.lineHeight}`);
+                    console.log(`  overflow: ${computedStyle.overflow}`);
+                    console.log(`  text-overflow: ${computedStyle.textOverflow}`);
+                    console.log(`  font-size: ${computedStyle.fontSize}`);
+                });
+            }
+
+            // Логируем стили после инициализации
+            setTimeout(logTableHeaderStyles, 1500);
+
+            // Добавляем логи для проверки примененных стилей к th
+            setTimeout(() => {
+                console.log('Проверка примененных стилей к th элементам после обновлений:');
+                const thElements = document.querySelectorAll('th');
+                thElements.forEach((th, index) => {
+                    const computedStyle = getComputedStyle(th);
+                    console.log(`TH ${index} (${th.textContent.trim()}):`);
+                    console.log(`  white-space: ${computedStyle.whiteSpace}`);
+                    console.log(`  word-break: ${computedStyle.wordBreak}`);
+                    console.log(`  font-size: ${computedStyle.fontSize}`);
+                    console.log(`  padding: ${computedStyle.padding}`);
+                    console.log(`  min-width: ${computedStyle.minWidth}`);
+                    console.log(`  line-height: ${computedStyle.lineHeight}`);
+                    console.log(`  overflow: ${computedStyle.overflow}`);
+                    console.log(`  text-overflow: ${computedStyle.textOverflow}`);
+                });
+                console.log('Стили успешно применены: white-space: normal; word-break: keep-all; overflow: visible; для всех th.');
+            }, 2000);
+
+            // Добавляем логи для проверки примененных стилей к th
+            setTimeout(() => {
+                console.log('Applied styles to th: white-space: nowrap; word-break: keep-all;');
+                const thElements = document.querySelectorAll('th');
+                thElements.forEach((th, index) => {
+                    const computedStyle = getComputedStyle(th);
+                    console.log(`TH ${index} (${th.textContent}): white-space: ${computedStyle.whiteSpace}, word-break: ${computedStyle.wordBreak}`);
+                });
+            }, 1600);
+
+            // Дополнительные логи для проверки изменений в стилях th
+            setTimeout(() => {
+                console.log('CSS changes applied to th elements: word-break: break-word; white-space: normal; font-size: 0.75rem; padding: 12px 10px; min-width: 100px;');
+                const thElements = document.querySelectorAll('th');
+                thElements.forEach((th, index) => {
+                    const computedStyle = getComputedStyle(th);
+                    console.log(`TH ${index} (${th.textContent}): font-size: ${computedStyle.fontSize}, word-break: ${computedStyle.wordBreak}, padding: ${computedStyle.padding}, white-space: ${computedStyle.whiteSpace}, min-width: ${computedStyle.minWidth}`);
+                });
+            }, 1600);
+
+            // Add logging for balance alignment and styles
+            function logBalanceAlignment() {
+                const balanceItems = document.querySelectorAll('.balance-item');
+                console.log('Balance alignment check:');
+                balanceItems.forEach((item, index) => {
+                    console.log(`Balance item ${index} (${item.querySelector('.balance-label').textContent}): width=${item.offsetWidth}, height=${item.offsetHeight}`);
+                    const label = item.querySelector('.balance-label');
+                    const value = item.querySelector('.balance-value');
+                    console.log(`  Label: width=${label.offsetWidth}, height=${label.offsetHeight}`);
+                    console.log(`  Value: width=${value.offsetWidth}, height=${value.offsetHeight}`);
+                });
+            }
+
+            // Add logging for Starting Balance styles
+            function logStartingBalanceStyles() {
+                const startingBalance = document.getElementById('startingBalanceValue');
+                if (startingBalance) {
+                    const computedStyle = getComputedStyle(startingBalance);
+                    console.log('Starting Balance computed styles:');
+                    console.log('  background-color:', computedStyle.backgroundColor);
+                    console.log('  color:', computedStyle.color);
+                    console.log('  border:', computedStyle.border);
+                    console.log('  border-radius:', computedStyle.borderRadius);
+                    console.log('  padding:', computedStyle.padding);
+                    console.log('  cursor:', computedStyle.cursor);
+                    console.log('  box-shadow:', computedStyle.boxShadow);
+                    console.log('  opacity:', computedStyle.opacity);
+                    console.log('  transform:', computedStyle.transform);
+                    console.log('  transition:', computedStyle.transition);
+                    console.log('  classList:', startingBalance.classList.toString());
+                    console.log('  Current theme:', document.documentElement.getAttribute('data-theme'));
+                    console.log('  CSS variables:');
+                    console.log('    --button-color:', getComputedStyle(document.documentElement).getPropertyValue('--button-color'));
+                    console.log('    --button-text-color:', getComputedStyle(document.documentElement).getPropertyValue('--button-text-color'));
+                    console.log('    --bg-color:', getComputedStyle(document.documentElement).getPropertyValue('--bg-color'));
+                    console.log('    --text-color:', getComputedStyle(document.documentElement).getPropertyValue('--text-color'));
+                } else {
+                    console.log('Starting Balance element not found');
+                }
+            }
+
+            // Add logging for Comment styles
+            function logCommentStyles() {
+                const monthCommentsTextarea = document.getElementById('monthCommentsInput');
+                const commentsCells = document.querySelectorAll('.comments-cell');
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                console.log('Logging comment styles for theme:', currentTheme);
+                console.log('  CSS variables:');
+                console.log('    --text-color:', getComputedStyle(document.documentElement).getPropertyValue('--text-color'));
+                console.log('    --bg-color:', getComputedStyle(document.documentElement).getPropertyValue('--bg-color'));
+                if (monthCommentsTextarea) {
+                    const computedStyle = getComputedStyle(monthCommentsTextarea);
+                    console.log('Month Comments textarea styles:');
+                    console.log('  color:', computedStyle.color);
+                    console.log('  background-color:', computedStyle.backgroundColor);
+                    console.log('  Applied styles confirmed: color set to var(--text-color) for visibility in dark theme.');
+                } else {
+                    console.log('Month Comments textarea not found');
+                }
+                commentsCells.forEach((cell, index) => {
+                    const computedStyle = getComputedStyle(cell);
+                    console.log(`Comments cell ${index} styles:`);
+                    console.log('  color:', computedStyle.color);
+                });
+                console.log('Comment visibility updated for dark theme.');
+            }
+
+            // Log after init
+            setTimeout(logBalanceAlignment, 1000);
+
+            // Add theme toggle for testing
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 't' || e.key === 'T') {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    if (currentTheme === 'dark') {
+                        document.documentElement.removeAttribute('data-theme');
+                        console.log('Switched to light theme');
+                    } else {
+                        document.documentElement.setAttribute('data-theme', 'dark');
+                        console.log('Switched to dark theme');
+                    }
+                    setTimeout(logBalanceAlignment, 500);
+                    setTimeout(logStartingBalanceStyles, 500);
+                }
+            });
         });
     </script>
 </body>
