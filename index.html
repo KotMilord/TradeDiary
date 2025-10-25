@@ -79,109 +79,50 @@
          }
 
          [data-theme="dark"] .progress-stats {
-             color: #e0e0e0;
+             color: var(--text-color);
          }
 
-         /* Automatic theme switching based on system preference */
-         @media (prefers-color-scheme: dark) {
-             :root:not([data-theme]) {
-                 --bg-color: #1e1e1e;
-                 --text-color: #ffffff;
-                 --secondary-bg: #2d2d2d;
-                 --hint-color: #555555;
-                 --button-color: #3498db;
-                 --button-text-color: #ffffff;
-                 --border-color: #444444;
-                 --shadow-color: rgba(0, 0, 0, 0.3);
-                 --positive-color: #4CAF50;
-                 --negative-color: #F44336;
-                 --refund-color: #2196F3;
-                 --profit-bg: #1b2e1b;
-                 --loss-bg: #2e1b1b;
-                 --refund-bg: #1b1e2e;
-                 --cell-bg: #2d2d2d;
-                 --cell-hover-bg: #3d3d3d;
-                 --modal-bg: #2d2d2d;
-                 --input-bg: #3d3d3d;
-                 --input-border: #555555;
-                 --progress-bg: #444444;
-                 --progress-profit: #4CAF50;
-                 --progress-loss: #F44336;
-                 --tab-bg: #2d2d2d;
-                 --tab-active-bg: #3498db;
-                 --notification-success: #4CAF50;
-                 --notification-error: #F44336;
-             }
+         [data-theme="dark"] .progress-label {
+             color: var(--text-color);
          }
+          [data-theme="dark"] .progress-bar {
+              background: var(--progress-bg);
+          }
 
-         @media (prefers-color-scheme: dark) {
-             :root:not([data-theme]) .balance-label,
-             :root:not([data-theme]) .progress-label,
-             :root:not([data-theme]) .setting-label {
-                 color: #e0e0e0;
-             }
-         }
+          [data-theme="dark"] .progress-container {
+              background: var(--secondary-bg);
+              border: 1px solid var(--border-color);
+          }
 
-         @media (prefers-color-scheme: light) {
-             :root:not([data-theme]) {
-                 --bg-color: #ffffff;
-                 --text-color: #000000;
-                 --secondary-bg: rgba(255, 255, 255, 0.95);
-                 --hint-color: rgba(0, 0, 0, 0.3);
-                 --button-color: #3498db;
-                 --button-text-color: #ffffff;
-                 --border-color: #e0e0e0;
-                 --shadow-color: rgba(0, 0, 0, 0.1);
-                 --positive-color: #2ecc71;
-                 --negative-color: #e74c3c;
-                 --refund-color: #3498db;
-                 --profit-bg: #e8f5e9;
-                 --loss-bg: #ffebee;
-                 --refund-bg: #e3f2fd;
-                 --cell-bg: #fafafa;
-                 --cell-hover-bg: #e3f2fd;
-                 --modal-bg: #ffffff;
-                 --input-bg: #ffffff;
-                 --input-border: #ddd;
-                 --progress-bg: #e0e0e0;
-                 --progress-profit: #4CAF50;
-                 --progress-loss: #F44336;
-                 --tab-bg: #ecf0f1;
-                 --tab-active-bg: #3498db;
-                 --notification-success: #27ae60;
-                 --notification-error: #e74c3c;
-             }
+          [data-theme="dark"] .progress-stats {
+              color: var(--text-color);
+          }
 
-             :root:not([data-theme]) .balance-label,
-             :root:not([data-theme]) .progress-label,
-             :root:not([data-theme]) .setting-label {
-                 color: rgba(0, 0, 0, 0.7);
-             }
+          [data-theme="dark"] .date-label {
+              background: var(--secondary-bg);
+              border: 1px solid var(--border-color);
+              color: var(--text-color);
+          }
 
-             :root:not([data-theme]) .settings-panel h3 {
-                 color: #000000;
-             }
+          [data-theme="dark"] .month-comments textarea {
+              background: var(--input-bg);
+              color: var(--text-color);
+              border: 1px solid var(--input-border);
+          }
 
-             :root:not([data-theme]) .progress-stats {
-                 color: #333333;
-             }
+          [data-theme="dark"] .settings-panel {
+              background: var(--secondary-bg);
+              border: 1px solid var(--border-color);
+          }
 
-             :root:not([data-theme]) .date-label {
-                 background: var(--secondary-bg);
-             }
+          [data-theme="dark"] .settings-panel h3 {
+              color: var(--text-color);
+          }
 
-             :root:not([data-theme]) .progress-container {
-                 background: var(--secondary-bg);
-             }
+          [data-theme="dark"] .setting-label {
+              color: var(--text-color);
+          }
 
-             :root:not([data-theme]) .settings-panel {
-                 background: var(--secondary-bg);
-             }
-
-             :root:not([data-theme]) .month-comments textarea {
-                 background: var(--secondary-bg);
-             }
-         }
 
          * {
              box-sizing: border-box;
@@ -312,9 +253,9 @@
             border: 2px solid var(--button-color);
             font-weight: 600;
             opacity: 0.9;
-            cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
 
         .starting-balance:hover {
@@ -326,7 +267,7 @@
         .starting-balance.balance-value {
             color: #007bff !important;
             border: 2px solid #007bff;
-            background: rgba(0, 123, 255, 0.15);
+            background:  rgba(0, 123, 255, 0.15);
             border-radius: 6px;
             padding: 4px 6px;
             font-size: 1.2rem;
@@ -334,19 +275,6 @@
             transition: all 0.3s ease;
         }
 
-        [data-theme="dark"] .starting-balance.balance-value {
-            color: #00bfff !important;
-            border: 2px solid #00bfff;
-            background: rgba(0, 191, 255, 0.25);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme]) .starting-balance.balance-value {
-                color: #00bfff !important;
-                border: 2px solid #00bfff;
-                background: rgba(0, 191, 255, 0.25);
-            }
-        }
         
         .positive {
             color: var(--positive-color);
@@ -472,6 +400,10 @@
         }
 
         [data-theme="dark"] .comments-cell {
+            color: var(--text-color);
+        }
+
+        .comments-cell {
             color: var(--text-color);
         }
         
@@ -726,15 +658,6 @@
             border: 1px solid var(--tg-theme-hint-color, #ddd);
         }
 
-        [data-theme="dark"] .date-label {
-            background: var(--secondary-bg);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme]) .date-label {
-                background: var(--secondary-bg);
-            }
-        }
         
         .notification {
             position: fixed;
@@ -880,17 +803,6 @@
             font-size: 0.8rem;
         }
 
-        [data-theme="dark"] .month-comments textarea {
-            background: var(--secondary-bg);
-            color: var(--text-color);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme]) .month-comments textarea {
-                background: var(--secondary-bg);
-                color: var(--text-color);
-            }
-        }
         
         .month-comments textarea::placeholder {
             color: var(--tg-theme-hint-color, #7f8c8d);
@@ -1073,15 +985,6 @@
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        [data-theme="dark"] .progress-container {
-            background: var(--secondary-bg);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme]) .progress-container {
-                background: var(--secondary-bg);
-            }
-        }
 
         .progress-label {
             font-size: 0.85rem;
@@ -1103,7 +1006,7 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            background: linear-gradient(90deg, var(--progress-profit), var(--progress-profit));
             border-radius: 6px;
             transition: width 0.5s ease;
             position: relative;
@@ -1163,15 +1066,6 @@
             border: 1px solid var(--tg-theme-hint-color, #ddd);
         }
 
-        [data-theme="dark"] .settings-panel {
-            background: var(--secondary-bg);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme]) .settings-panel {
-                background: var(--secondary-bg);
-            }
-        }
 
         .settings-panel h3 {
             margin-bottom: 10px;
@@ -1250,10 +1144,137 @@
             }
 
             .balance-value {
-                font-size: 1rem;
-            }
-        }
-    </style>
+                   font-size: 1rem;
+               }
+           }
+   
+           /* Styles for Light and Dark Theme buttons */
+           #lightThemeBtn {
+               background-color: #333;
+               color: #fff;
+               border: 2px solid #333;
+               border-radius: 6px;
+               padding: 4px 6px;
+               font-weight: 600;
+               transition: all 0.3s ease;
+               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               cursor: pointer;
+           }
+
+           #lightThemeBtn:hover {
+               opacity: 1;
+               transform: translateY(-1px);
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+           }
+   
+           #darkThemeBtn {
+               background-color: #333;
+               color: #fff;
+               border: 2px solid #333;
+               border-radius: 6px;
+               padding: 4px 6px;
+               font-weight: 600;
+               transition: all 0.3s ease;
+               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               cursor: pointer;
+           }
+
+           #darkThemeBtn:hover {
+               opacity: 1;
+               transform: translateY(-1px);
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+           }
+   
+           /* Ensure cohesive style for Clear buttons */
+           .btn-warning {
+               background-color: #ff9800;
+               color: #fff;
+               border: 2px solid #ff9800;
+               border-radius: 6px;
+               padding: 4px 6px;
+               font-weight: 600;
+               transition: all 0.3s ease;
+               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               cursor: pointer;
+           }
+
+           .btn-warning:hover {
+               opacity: 1;
+               transform: translateY(-1px);
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+           }
+
+           .btn-danger {
+               background-color: #f44336;
+               color: #fff;
+               border: 2px solid #f44336;
+               border-radius: 6px;
+               padding: 4px 6px;
+               font-weight: 600;
+               transition: all 0.3s ease;
+               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               cursor: pointer;
+           }
+
+           .btn-danger:hover {
+               opacity: 1;
+               transform: translateY(-1px);
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+           }
+
+           /* Custom styles for settings buttons */
+           #clearCurrentDayBtn {
+               color: #d19e1c !important; /* Dark yellow */
+               border: 2px solid #d19e1e !important; /* Dark yellow border */
+               background-color: #e7e7a1 !important; /* Light yellow background */
+           }
+
+           #clearCurrentDayBtn:hover {
+               opacity: 0.9;
+               transform: translateY(-1px);
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+           }
+
+           #clearAllDataBtn {
+               color: #B22222 !important; /* Dark red */
+               border: 2px solid #B22222 !important; /* Dark red border */
+               background-color: #ff7777 !important; /*  red background */
+           }
+
+           #clearAllDataBtn:hover {
+               opacity: 0.9;
+               transform: translateY(-1px);
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+           }
+
+           #lightThemeBtn {
+               color: #f5f5f5 !important; /*  gray */
+               border: 2px solid #ffffff !important; /*  gray border */
+               background-color: #afafaf !important; /*  white background */
+           }
+
+           #lightThemeBtn:hover {
+               opacity: 0.9;
+               transform: translateY(-1px);
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+           }
+
+           #darkThemeBtn {
+               color: #202020 !important; /* Dark */
+               border: 2px solid #202020 !important; /* Dark border */
+               background-color: #5e5e5e !important; /*  gray background */
+           }
+
+           #darkThemeBtn:hover {
+               opacity: 0.9;
+               transform: translateY(-1px);
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+           }
+
+           #startingBalanceValue {
+               background-color: #00b7ff49 !important; /*  blue background */
+           }
+       </style>
 </head>
 <body>
     <div class="container">
@@ -1410,6 +1431,10 @@
                             Show Daily Progress Bar
                         </label>
                     </div>
+                    <div class="setting-row">
+                        <button class="btn settings-btn" id="lightThemeBtn">Light Theme</button>
+                        <button class="btn settings-btn" id="darkThemeBtn">Dark Theme</button>
+                    </div>
                 </div>
 
                 <div class="settings-panel">
@@ -1561,30 +1586,38 @@
         console.log('Telegram WebApp object:', tg);
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Theme switching based on system preference
+            // Theme management
             function updateTheme() {
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                console.log('Theme check: prefersDark = ' + prefersDark);
-                if (prefersDark) {
+                const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark
+                console.log('updateTheme called, savedTheme:', savedTheme);
+                if (savedTheme === 'dark') {
                     document.documentElement.setAttribute('data-theme', 'dark');
                 } else {
                     document.documentElement.removeAttribute('data-theme');
                 }
-                console.log('Applied theme based on system preference');
+                console.log('Applied theme: ' + savedTheme);
+                console.log('data-theme attribute after updateTheme:', document.documentElement.getAttribute('data-theme'));
                 setTimeout(logStartingBalanceStyles, 500);
                 setTimeout(logCommentStyles, 500);
             }
 
+            function switchTheme(theme) {
+                console.log('switchTheme called with theme:', theme);
+                if (theme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                }
+                localStorage.setItem('theme', theme);
+                console.log('Switched to ' + theme + ' theme');
+                console.log('data-theme attribute set to:', document.documentElement.getAttribute('data-theme'));
+                updateTheme();
+                updateProgressBar(); // Обновляем прогресс-бар при переключении темы
+                console.log('Progress bar updated after theme switch');
+            }
+
             // Initial theme setup
             updateTheme();
-            // Force dark theme for testing
-            document.documentElement.setAttribute('data-theme', 'dark');
-            console.log('Initial theme attribute: ' + document.documentElement.getAttribute('data-theme'));
-            console.log('Theme variables: bg-color = ' + getComputedStyle(document.documentElement).getPropertyValue('--bg-color'));
-
-
-            // Listen for changes in system theme
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
 
             // Expand the app to full screen
             if (tg && tg.expand) {
@@ -3670,7 +3703,11 @@
 
             // Функция для обновления прогресс-бара
             function updateProgressBar() {
-                if (!progressFill || !progressStart || !progressCurrent || !progressTarget) return;
+                console.log('updateProgressBar called');
+                if (!progressFill || !progressStart || !progressCurrent || !progressTarget) {
+                    console.log('Progress bar elements not found');
+                    return;
+                }
                 
                 // Получаем текущую дату
                 const currentDateKey = formatDateKey(currentDate);
@@ -3741,7 +3778,7 @@
                     lossFill.className = 'progress-loss-fill';
                     const lossPercentage = (Math.abs(dayResultPercent) / Math.abs(lossTarget)) * 50;
                     lossFill.style.width = `${Math.min(50, Math.max(0, lossPercentage))}%`;
-                    lossFill.style.background = '#F44336';
+                    lossFill.style.background = 'var(--progress-loss)';
                     lossFill.style.height = '100%';
                     lossFill.style.position = 'absolute';
                     lossFill.style.left = `${50 - lossPercentage}%`;
@@ -3754,7 +3791,7 @@
                     profitFill.className = 'progress-profit-fill';
                     const profitPercentage = (dayResultPercent / profitTarget) * 50;
                     profitFill.style.width = `${Math.min(50, Math.max(0, profitPercentage))}%`;
-                    profitFill.style.background = '#4CAF50';
+                    profitFill.style.background = 'var(--progress-profit)';
                     profitFill.style.height = '100%';
                     profitFill.style.position = 'absolute';
                     profitFill.style.left = '50%';
@@ -3771,13 +3808,14 @@
                 marker.style.top = '0';
                 marker.style.height = '100%';
                 marker.style.width = '2px';
-                marker.style.background = 'var(--tg-theme-text-color, #333)';
+                marker.style.background = 'var(--text-color)';
                 marker.style.transform = 'translateX(-50%)';
                 marker.style.zIndex = '2';
                 progressBar.appendChild(marker);
                 
                 // Убираем основной элемент прогресс-бара, так как теперь у нас двунаправленный прогресс
                 progressFill.style.width = '0%';
+                console.log('Progress bar updated successfully');
             }
             
             // Initialize the app
@@ -3793,6 +3831,23 @@
                     uiSettings.showProgressBar = this.checked;
                     saveUISettings();
                     updateProgressBarVisibility();
+                });
+            }
+
+            // Initialize theme buttons
+            const lightThemeBtn = document.getElementById('lightThemeBtn');
+            const darkThemeBtn = document.getElementById('darkThemeBtn');
+            console.log('Theme buttons found:', { lightThemeBtn, darkThemeBtn });
+            if (lightThemeBtn) {
+                lightThemeBtn.addEventListener('click', () => {
+                    console.log('Light Theme button clicked');
+                    switchTheme('light');
+                });
+            }
+            if (darkThemeBtn) {
+                darkThemeBtn.addEventListener('click', () => {
+                    console.log('Dark Theme button clicked');
+                    switchTheme('dark');
                 });
             }
 
