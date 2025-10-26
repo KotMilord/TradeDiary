@@ -12,13 +12,13 @@
          /* CSS Variables for Light and Dark Themes */
          :root {
              --bg-color: #ffffff;
-             --text-color: #000000;
-             --secondary-bg: rgba(255, 255, 255, 0.95);
+             --text-color: #252525;
+             --secondary-bg: rgba(235, 232, 232, 0.95);
              --hint-color: rgba(0, 0, 0, 0.3);
-             --button-color: #3498db;
-             --button-text-color: #ffffff;
+             --button-color: #3498dbb4;
+             --button-text-color: #dddddd;
              --border-color: #e0e0e0;
-             --shadow-color: rgba(0, 0, 0, 0.1);
+             --shadow-color: rgba(0, 0, 0, 0.8);
              --positive-color: #2ecc71;
              --negative-color: #e74c3c;
              --refund-color: #3498db;
@@ -34,20 +34,20 @@
              --progress-profit: #4CAF50;
              --progress-loss: #F44336;
              --tab-bg: #ecf0f1;
-             --tab-active-bg: #3498db;
+             --tab-active-bg: #3498dbb4;
              --notification-success: #27ae60;
              --notification-error: #e74c3c;
          }
 
          [data-theme="dark"] {
-             --bg-color: #1e1e1e;
-             --text-color: #ffffff;
+             --bg-color: #242424;
+             --text-color: #dddddd;
              --secondary-bg: #2d2d2d;
-             --hint-color: #555555;
-             --button-color: #3498db;
-             --button-text-color: #ffffff;
+             --hint-color: rgba(255, 255, 255, 0.3);
+             --button-color: #3498dbb4;
+             --button-text-color: #dddddd;
              --border-color: #444444;
-             --shadow-color: rgba(0, 0, 0, 0.3);
+             --shadow-color: rgba(0, 0, 0, 0.8);
              --positive-color: #4CAF50;
              --negative-color: #F44336;
              --refund-color: #2196F3;
@@ -63,7 +63,7 @@
              --progress-profit: #4CAF50;
              --progress-loss: #F44336;
              --tab-bg: #2d2d2d;
-             --tab-active-bg: #3498db;
+             --tab-active-bg: #3498dbb4;
              --notification-success: #4CAF50;
              --notification-error: #F44336;
          }
@@ -71,18 +71,14 @@
          [data-theme="dark"] .balance-label,
          [data-theme="dark"] .progress-label,
          [data-theme="dark"] .setting-label {
-             color: #e0e0e0;
-         }
-
-         [data-theme="dark"] .settings-panel h3 {
-             color: #cccccc;
-         }
-
-         [data-theme="dark"] .progress-stats {
              color: var(--text-color);
          }
 
-         [data-theme="dark"] .progress-label {
+         [data-theme="dark"] .settings-panel h3 {
+             color: var(--text-color);
+         }
+
+         [data-theme="dark"] .progress-stats {
              color: var(--text-color);
          }
           [data-theme="dark"] .progress-bar {
@@ -94,9 +90,6 @@
               border: 1px solid var(--border-color);
           }
 
-          [data-theme="dark"] .progress-stats {
-              color: var(--text-color);
-          }
 
           [data-theme="dark"] .date-label {
               background: var(--secondary-bg);
@@ -115,13 +108,7 @@
               border: 1px solid var(--border-color);
           }
 
-          [data-theme="dark"] .settings-panel h3 {
-              color: var(--text-color);
-          }
 
-          [data-theme="dark"] .setting-label {
-              color: var(--text-color);
-          }
 
 
          * {
@@ -179,15 +166,15 @@
         }
         
         .btn-success {
-            background: var(--tg-theme-button-color, #27ae60);
+            background: var(--button-color);
         }
         
         .btn-danger {
-            background: var(--tg-theme-button-color, #e74c3c);
+            background: var(--button-color);
         }
         
         .btn-warning {
-            background: var(--tg-theme-button-color, #f39c12);
+            background: var(--button-color);
         }
         
         .main-content {
@@ -203,7 +190,7 @@
             border-radius: 10px;
             border: 1px solid var(--hint-color);
             gap: 8px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: inset 0 1px 3px var(--shadow-color);
         }
         
         .balance-item {
@@ -220,7 +207,7 @@
 
         .balance-label {
             font-size: 0.7rem;
-            color: var(--hint-color);
+            color: var(--shadow-color);
             line-height: 1.2;
             font-weight: 500;
             display: flex;
@@ -252,30 +239,38 @@
             padding: 6px 8px;
             border: 2px solid var(--button-color);
             font-weight: 600;
-            opacity: 0.9;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             cursor: pointer;
+            opacity: 0.7;
         }
 
         .starting-balance:hover {
-            opacity: 1;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
         }
 
         .starting-balance.balance-value {
             color: #007bff !important;
             border: 2px solid #007bff;
-            background:  rgba(0, 123, 255, 0.15);
+            background: rgba(0, 123, 255, 0.15);
+            opacity: 0.7;
             border-radius: 6px;
             padding: 4px 6px;
             font-size: 1.2rem;
             font-weight: 700;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        
+        /* Обновляем hover для .starting-balance.balance-value */
+        .starting-balance.balance-value:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
         .positive {
             color: var(--positive-color);
         }
@@ -345,7 +340,8 @@
         }
         
         .trade-header {
-            background: var(--tg-theme-bg-color, #34495e);
+            background: var(--bg-color);
+            color: var(--text-color);
             width: 50px;
         }
         
@@ -399,9 +395,6 @@
             white-space: nowrap;
         }
 
-        [data-theme="dark"] .comments-cell {
-            color: var(--text-color);
-        }
 
         .comments-cell {
             color: var(--text-color);
@@ -454,16 +447,16 @@
         }
 
         [data-theme="dark"] .emotion-option {
-            color: #ffffff;
-            border: 1px solid #555555;
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
         }
 
         [data-theme="dark"] .emotion-option:hover {
-            background: #3d3d3d;
+            background: var(--input-bg);
         }
 
         [data-theme="dark"] .emotion-label {
-            color: #ffffff;
+            color: var(--text-color);
         }
         
         .modal-buttons {
@@ -486,23 +479,23 @@
         }
         
         .profit-btn {
-            background: #2ecc71;
-            color: white;
+            background: var(--positive-color);
+            color: var(--button-text-color);
         }
         
         .loss-btn {
-            background: #e74c3c;
-            color: white;
+            background: var(--negative-color);
+            color: var(--button-text-color);
         }
         
         .refund-btn {
-            background: #3498db;
-            color: white;
+            background: var(--refund-color);
+            color: var(--button-text-color);
         }
         
         .reset-btn {
-            background: #7f8c8d;
-            color: white;
+            background: var(--hint-color);
+            color: var(--button-text-color);
         }
         
         .emotion-modal-content {
@@ -518,16 +511,16 @@
         
         .emotion-option {
             padding: 8px;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border: 1px solid var(--hint-color);
             border-radius: 4px;
             cursor: pointer;
             text-align: center;
             transition: all 0.2s;
-            color: var(--tg-theme-text-color, #333);
+            color: var(--text-color);
         }
         
         .emotion-option:hover {
-            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            background: var(--secondary-bg);
         }
         
         .emotion-emoji {
@@ -548,9 +541,9 @@
             width: 100%;
             min-height: 100px;
             padding: 8px;
-            background: var(--tg-theme-bg-color, white);
-            color: var(--tg-theme-text-color, #333);
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--hint-color);
             border-radius: 4px;
             resize: vertical;
             font-family: inherit;
@@ -565,7 +558,7 @@
         }
         
         .comments-textarea::placeholder {
-            color: var(--tg-theme-hint-color, #7f8c8d);
+            color: var(--hint-color);
         }
         
         .tabs {
@@ -628,15 +621,15 @@
         }
         
         .date-btn {
-            background: var(--tg-theme-button-color, #3498db);
-            color: var(--tg-theme-button-text-color, white);
+            background: var(--button-color);
+            color: var(--button-text-color);
             border: none;
             padding: 10px 16px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px var(--shadow-color);
         }
         
         .date-btn:disabled {
@@ -653,9 +646,9 @@
             min-width: 150px;
             text-align: center;
             font-weight: bold;
-            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            background: var(--secondary-bg);
             border-radius: 20px;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border: 1px solid var(--hint-color);
         }
 
         
@@ -696,13 +689,13 @@
         
         .current-date {
             font-size: 0.9rem;
-            color: var(--tg-theme-hint-color, #7f8c8d);
+            color: var(--hint-color);
         }
         
         .general-table-container {
             overflow-x: auto;
             margin-bottom: 10px;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border: 1px solid var(--hint-color);
             border-radius: 6px;
         }
         
@@ -731,24 +724,24 @@
         }
         
         .general-table .editable:hover {
-            background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            background-color: var(--secondary-bg);
         }
         
         .general-table .current-day {
-            background-color: rgba(52, 152, 219, 0.5);
-            color: var(--button-text-color);
+            background: rgba(52, 152, 219, 0.2);
+            color: var(--button-text-color) !important;
             font-weight: bold;
             border: 1px solid rgba(52, 152, 219, 0.5);
         }
 
         [data-theme="dark"] .general-table .current-day {
-            box-shadow: 0 0 3px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 0 3px rgba(52, 152, 219, 0.5);
         }
         
         .withdrawal-table-container {
             margin-top: 15px;
             overflow-x: auto;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border: 1px solid var(--hint-color);
             border-radius: 6px;
         }
         
@@ -778,7 +771,7 @@
         }
         
         .withdrawal-table .editable:hover {
-            background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            background-color: var(--secondary-bg);
         }
         
         .add-withdrawal-btn {
@@ -794,9 +787,9 @@
             width: 100%;
             min-height: 80px;
             padding: 8px;
-            background: var(--tg-theme-bg-color, white);
-            color: var(--tg-theme-text-color, #333);
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--hint-color);
             border-radius: 4px;
             resize: vertical;
             font-family: inherit;
@@ -805,7 +798,7 @@
 
         
         .month-comments textarea::placeholder {
-            color: var(--tg-theme-hint-color, #7f8c8d);
+            color: var(--hint-color);
         }
         
         .target-modal {
@@ -822,8 +815,8 @@
         }
         
         .target-modal-content {
-            background: var(--tg-theme-bg-color, white);
-            color: var(--tg-theme-text-color, #333);
+            background: var(--modal-bg);
+            color: var(--text-color);
             padding: 15px;
             border-radius: 8px;
             width: 90%;
@@ -856,9 +849,9 @@
             width: 100%;
             padding: 8px;
             margin: 8px 0;
-            background: var(--tg-theme-bg-color, white);
-            color: var(--tg-theme-text-color, #333);
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--hint-color);
             border-radius: 4px;
             font-size: 0.9rem;
         }
@@ -870,16 +863,16 @@
         }
         
         .target-input::placeholder {
-            color: var(--tg-theme-hint-color, #7f8c8d);
+            color: var(--hint-color);
         }
         
         .balance-input {
             width: 100%;
             padding: 8px;
             margin: 8px 0;
-            background: var(--tg-theme-bg-color, white);
-            color: var(--tg-theme-text-color, #333);
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--hint-color);
             border-radius: 4px;
             font-size: 0.9rem;
             text-align: center;
@@ -892,7 +885,7 @@
         }
         
         .balance-input::placeholder {
-            color: var(--tg-theme-hint-color, #7f8c8d);
+            color: var(--hint-color);
         }
         
         .withdrawal-action-modal {
@@ -909,8 +902,8 @@
         }
         
         .withdrawal-action-content {
-            background: var(--tg-theme-bg-color, white);
-            color: var(--tg-theme-text-color, #333);
+            background: var(--modal-bg);
+            color: var(--text-color);
             padding: 15px;
             border-radius: 8px;
             width: 90%;
@@ -941,13 +934,13 @@
         }
         
         .edit-btn {
-            background: #3498db;
-            color: white;
+            background: var(--button-color);
+            color: var(--button-text-color);
         }
         
         .delete-btn {
-            background: #e74c3c;
-            color: white;
+            background: var(--negative-color);
+            color: var(--button-text-color);
         }
         
         .history-table {
@@ -957,7 +950,7 @@
         }
         
         .history-table th, .history-table td {
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border: 1px solid var(--hint-color);
             padding: 10px;
             text-align: center;
             min-width: 100px;
@@ -972,24 +965,24 @@
         }
         
         .history-table th {
-            background: var(--tg-theme-secondary-bg-color, #2c3e50);
-            color: var(--tg-theme-button-text-color, white);
+            background: var(--secondary-bg);
+            color: var(--text-color);
         }
         
         .progress-container {
             margin-top: 15px;
             padding: 12px;
-            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            background: var(--secondary-bg);
             border-radius: 12px;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--hint-color);
+            box-shadow: inset 0 1px 3px var(--shadow-color);
         }
 
 
         .progress-label {
             font-size: 0.85rem;
             margin-bottom: 8px;
-            color: var(--tg-theme-text-color, #333);
+            color: var(--text-color);
             text-align: center;
             font-weight: 600;
         }
@@ -1001,7 +994,7 @@
             border-radius: 6px;
             overflow: hidden;
             position: relative;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+            box-shadow: inset 0 1px 3px var(--shadow-color);
         }
 
         .progress-fill {
@@ -1019,7 +1012,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,0.3), transparent);
+            background: linear-gradient(90deg, transparent, var(--hint-color), transparent);
             animation: shimmer 2s infinite;
         }
 
@@ -1033,7 +1026,7 @@
             justify-content: space-between;
             margin-top: 6px;
             font-size: 0.75rem;
-            color: var(--tg-theme-hint-color, #666);
+            color: var(--shadow-color);
             font-weight: 500;
         }
         
@@ -1061,21 +1054,22 @@
         .settings-panel {
             margin-bottom: 20px;
             padding: 15px;
-            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            background: var(--secondary-bg);
             border-radius: 8px;
-            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border: 1px solid var(--hint-color);
         }
 
 
         .settings-panel h3 {
             margin-bottom: 10px;
-            color: var(--tg-theme-text-color, #333);
+            color: var(--text-color);
         }
         
         .setting-row {
             margin-bottom: 10px;
             display: flex;
             align-items: center;
+            gap: 20px;
         }
         
         .setting-label {
@@ -1083,7 +1077,7 @@
             align-items: center;
             cursor: pointer;
             font-size: 0.9rem;
-            color: var(--tg-theme-text-color, #333);
+            color: var(--text-color);
         }
         
         .setting-label input[type="checkbox"] {
@@ -1150,129 +1144,133 @@
    
            /* Styles for Light and Dark Theme buttons */
            #lightThemeBtn {
-               background-color: #333;
+               background: #333;
                color: #fff;
                border: 2px solid #333;
                border-radius: 6px;
                padding: 4px 6px;
                font-weight: 600;
                transition: all 0.3s ease;
-               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               box-shadow: 0 2px 4px var(--shadow-color);
                cursor: pointer;
            }
 
            #lightThemeBtn:hover {
-               opacity: 1;
-               transform: translateY(-1px);
-               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+               opacity: 0.9;
+               transform: translateY(-2px);
+               box-shadow: 0 4px 8px var(--shadow-color);
            }
-   
+
            #darkThemeBtn {
-               background-color: #333;
+               background: #333;
                color: #fff;
                border: 2px solid #333;
                border-radius: 6px;
                padding: 4px 6px;
                font-weight: 600;
                transition: all 0.3s ease;
-               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               box-shadow: 0 2px 4px var(--shadow-color);
                cursor: pointer;
            }
 
            #darkThemeBtn:hover {
-               opacity: 1;
-               transform: translateY(-1px);
-               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+               opacity: 0.9;
+               transform: translateY(-2px);
+               box-shadow: 0 4px 8px var(--shadow-color);
            }
    
            /* Ensure cohesive style for Clear buttons */
            .btn-warning {
-               background-color: #ff9800;
+               background: #ff9800;
                color: #fff;
                border: 2px solid #ff9800;
                border-radius: 6px;
                padding: 4px 6px;
                font-weight: 600;
                transition: all 0.3s ease;
-               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               box-shadow: 0 2px 4px var(--shadow-color);
                cursor: pointer;
            }
 
            .btn-warning:hover {
-               opacity: 1;
-               transform: translateY(-1px);
-               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+               opacity: 0.9;
+               transform: translateY(-2px);
+               box-shadow: 0 4px 8px var(--shadow-color);
            }
 
            .btn-danger {
-               background-color: #f44336;
+               background: #f44336;
                color: #fff;
                border: 2px solid #f44336;
                border-radius: 6px;
                padding: 4px 6px;
                font-weight: 600;
                transition: all 0.3s ease;
-               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               box-shadow: 0 2px 4px var(--shadow-color);
                cursor: pointer;
            }
 
            .btn-danger:hover {
-               opacity: 1;
-               transform: translateY(-1px);
-               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+               opacity: 0.9;
+               transform: translateY(-2px);
+               box-shadow: 0 4px 8px var(--shadow-color);
            }
 
            /* Custom styles for settings buttons */
            #clearCurrentDayBtn {
-               color: #d19e1c !important; /* Dark yellow */
-               border: 2px solid #d19e1e !important; /* Dark yellow border */
-               background-color: #e7e7a1 !important; /* Light yellow background */
+               color: #d19e1c !important;
+               border: 2px solid #d19e1c !important;
+               background: #e7e7a1 !important;
+               opacity: 0.7;
            }
 
            #clearCurrentDayBtn:hover {
                opacity: 0.9;
-               transform: translateY(-1px);
-               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+               transform: translateY(-2px);
+               box-shadow: 0 4px 8px var(--shadow-color);
            }
 
            #clearAllDataBtn {
-               color: #B22222 !important; /* Dark red */
-               border: 2px solid #B22222 !important; /* Dark red border */
-               background-color: #ff7777 !important; /*  red background */
+               color: #B22222 !important;
+               border: 2px solid #B22222 !important;
+               background: #ff7777 !important;
+               opacity: 0.7;
            }
 
            #clearAllDataBtn:hover {
                opacity: 0.9;
-               transform: translateY(-1px);
-               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+               transform: translateY(-2px);
+               box-shadow: 0 4px 8px var(--shadow-color);
            }
 
            #lightThemeBtn {
-               color: #f5f5f5 !important; /*  gray */
-               border: 2px solid #ffffff !important; /*  gray border */
-               background-color: #afafaf !important; /*  white background */
+               color: #f5f5f5 !important;
+               border: 2px solid #ffffff !important;
+               background: #c4c4c4 !important;
+               opacity: 0.7;
            }
 
            #lightThemeBtn:hover {
                opacity: 0.9;
-               transform: translateY(-1px);
-               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+               transform: translateY(-2px);
+               box-shadow: 0 4px 8px var(--shadow-color);
            }
 
            #darkThemeBtn {
-               color: #202020 !important; /* Dark */
-               border: 2px solid #202020 !important; /* Dark border */
-               background-color: #5e5e5e !important; /*  gray background */
+               color: #202020 !important;
+               border: 2px solid #202020 !important;
+               background: #5e5e5e !important;
+               opacity: 0.7;
            }
 
            #darkThemeBtn:hover {
                opacity: 0.9;
-               transform: translateY(-1px);
-               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+               transform: translateY(-2px);
+               box-shadow: 0 4px 8px var(--shadow-color);
            }
 
            #startingBalanceValue {
-               background-color: #00b7ff49 !important; /*  blue background */
+               background-color: #0091ca5e !important; /*  blue background */
            }
        </style>
 </head>
@@ -1420,7 +1418,7 @@
                 <div class="settings-panel">
                     <h3>Data Management</h3>
                     <button class="btn btn-warning settings-btn" id="clearCurrentDayBtn">Clear Current Day</button>
-                    <button class="btn btn-danger settings-btn" id="clearAllDataBtn">Clear All History</button>
+                    <button class="btn btn-danger settings-btn" id="clearAllDataBtn">Delete all history</button>
                 </div>
                 
                 <div class="settings-panel">
@@ -1432,8 +1430,8 @@
                         </label>
                     </div>
                     <div class="setting-row">
-                        <button class="btn settings-btn" id="lightThemeBtn">Light Theme</button>
-                        <button class="btn settings-btn" id="darkThemeBtn">Dark Theme</button>
+                        <button class="btn settings-btn" id="lightThemeBtn">Daylight</button>
+                        <button class="btn settings-btn" id="darkThemeBtn">Midnight</button>
                     </div>
                 </div>
 
@@ -1614,6 +1612,12 @@
                 updateTheme();
                 updateProgressBar(); // Обновляем прогресс-бар при переключении темы
                 console.log('Progress bar updated after theme switch');
+                // Обновляем стили для открытых модалей
+                const openModals = document.querySelectorAll('.modal[style*="display: flex"], .target-modal[style*="display: flex"], .withdrawal-action-modal[style*="display: flex"]');
+                openModals.forEach(modal => {
+                    modal.style.background = getComputedStyle(document.documentElement).getPropertyValue('--modal-bg');
+                    modal.style.color = getComputedStyle(document.documentElement).getPropertyValue('--text-color');
+                });
             }
 
             // Initial theme setup
@@ -2182,7 +2186,7 @@
                     commentsCell.textContent = trade.comment;
                 } else {
                     commentsCell.textContent = 'Click to add comment';
-                    commentsCell.style.color = 'var(--tg-theme-hint-color, #7f8c8d)';
+                    commentsCell.style.color = 'var(--hint-color)';
                     commentsCell.style.fontStyle = 'italic';
                 }
                 
@@ -2292,7 +2296,7 @@
                     commentsCell.textContent = trade.comment;
                 } else {
                     commentsCell.textContent = 'Click to add comment';
-                    commentsCell.style.color = 'var(--tg-theme-hint-color, #7f8c8d)';
+                    commentsCell.style.color = 'var(--hint-color)';
                     commentsCell.style.fontStyle = 'italic';
                 }
             }
@@ -2929,7 +2933,7 @@
                     emptyCell.textContent = 'No withdrawals for this month';
                     emptyCell.style.textAlign = 'center';
                     emptyCell.style.fontStyle = 'italic';
-                    emptyCell.style.color = 'var(--tg-theme-hint-color, #7f8c8d)';
+                    emptyCell.style.color = 'var(--hint-color)';
                     emptyRow.appendChild(emptyCell);
                     tbody.appendChild(emptyRow);
                 } else if (totalWithdrawal > 0) {
@@ -3263,7 +3267,7 @@
                     if (!inputValue || inputValue === '0') {
                         trades[currentTradeIndex].tradeAmount = null;
                         currentCell.textContent = 'Click to enter amount';
-                        currentCell.style.color = 'var(--tg-theme-hint-color, #7f8c8d)';
+                        currentCell.style.color = 'var(--hint-color)';
                         currentCell.style.fontStyle = 'italic';
                     } else {
                         const amount = parseFloat(inputValue.replace(',', '.'));
