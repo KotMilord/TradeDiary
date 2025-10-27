@@ -1059,10 +1059,123 @@
             border: 1px solid var(--hint-color);
         }
 
-
         .settings-panel h3 {
             margin-bottom: 10px;
             color: var(--text-color);
+        }
+
+        /* Toggle Switch Styles */
+        .toggle-switch-container {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 4px 6px;
+            font-weight: 600;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: var(--text-color);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Размещаем текст по краям */
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 4px 8px; /* Увеличен padding для размещения текста */
+            cursor: pointer;
+            transition: all 0.3s ease, box-shadow 0.2s ease, transform 0.1s ease; /* Добавлены transition для эффектов */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            width: 120px;
+            opacity: 0.9;
+            position: relative;
+            overflow: visible; /* Изменено для эффекта тени */
+        }
+
+        /* Эффект при наведении */
+        .toggle-switch:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Эффект при нажатии */
+        .toggle-switch:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .toggle-switch.on {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .toggle-label {
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 2;
+            transition: opacity 0.3s ease;
+            padding: 0;
+            user-select: none;
+        }
+
+        .toggle-label.off {
+            opacity: 1;
+            left: 10px;
+        }
+
+        .toggle-label.on {
+            opacity: 0.5;
+            right: 10px;
+        }
+
+        .toggle-switch.on .toggle-label.off {
+            opacity: 0.5;
+        }
+
+        .toggle-switch.on .toggle-label.on {
+            opacity: 1;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            width: 46%;
+            height: calc(100% - 8px);
+            background: white;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        .toggle-switch.on .toggle-slider {
+            transform: translateX(100%);
+        }
+
+        .toggle-indicator {
+            width: 100%;
+            height: 100%;
+            background: #dc3545; /* red for OFF */
+            border-radius: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.on .toggle-indicator {
+            background: #28a745; /* green for ON */
+        }
+
+        .toggle-description {
+            font-size: 0.9rem;
+            color: white;
+            text-align: left;
+            flex: 1;
         }
         
         .setting-row {
@@ -1081,9 +1194,9 @@
         }
         
         .setting-label input[type="checkbox"] {
-            margin-right: 8px;
-            width: 18px;
-            height: 18px;
+            margin-right: 6px;
+            width: 14px;
+            height: 14px;
             cursor: pointer;
         }
         
@@ -1093,9 +1206,36 @@
                 gap: 5px;
                 padding: 6px;
             }
-            
+
             .balance-value {
                 font-size: 1.1rem;
+            }
+
+            .toggle-switch-container {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 8px 12px;
+            }
+
+            .toggle-switch {
+                width: 100px;
+                overflow: hidden;
+            }
+
+            .toggle-label {
+                font-size: 0.7rem;
+                padding: 0 6px;
+            }
+
+            .toggle-label.on {
+                text-align: right;
+            }
+
+            .toggle-description {
+                text-align: left;
+                font-size: 0.8rem;
+                flex: 1;
             }
         }
         
@@ -1423,11 +1563,15 @@
                 
                 <div class="settings-panel">
                     <h3>Display Settings</h3>
-                    <div class="setting-row">
-                        <label class="setting-label">
-                            <input type="checkbox" id="showProgressBar" checked>
-                            Show Daily Progress Bar
-                        </label>
+                    <div class="toggle-switch-container">
+                        <label class="toggle-description">Daily Progress Bar</label>
+                        <div class="toggle-switch" id="showProgressBarToggle">
+                            <span class="toggle-label off">OFF</span>
+                            <div class="toggle-slider">
+                                <div class="toggle-indicator"></div>
+                            </div>
+                            <span class="toggle-label on">ON</span>
+                        </div>
                     </div>
                     <div class="setting-row">
                         <button class="btn settings-btn" id="lightThemeBtn">Daylight</button>
@@ -3826,13 +3970,25 @@
             init();
 
             // Initialize progress bar visibility setting
-            const showProgressBarCheckbox = document.getElementById('showProgressBar');
-            if (showProgressBarCheckbox) {
-                showProgressBarCheckbox.checked = uiSettings.showProgressBar;
+            const showProgressBarToggle = document.getElementById('showProgressBarToggle');
+            if (showProgressBarToggle) {
+                // Set initial state
+                if (uiSettings.showProgressBar) {
+                    showProgressBarToggle.classList.add('on');
+                } else {
+                    showProgressBarToggle.classList.remove('on');
+                }
                 updateProgressBarVisibility();
 
-                showProgressBarCheckbox.addEventListener('change', function() {
-                    uiSettings.showProgressBar = this.checked;
+                showProgressBarToggle.addEventListener('click', function() {
+                    const isOn = showProgressBarToggle.classList.contains('on');
+                    if (isOn) {
+                        showProgressBarToggle.classList.remove('on');
+                        uiSettings.showProgressBar = false;
+                    } else {
+                        showProgressBarToggle.classList.add('on');
+                        uiSettings.showProgressBar = true;
+                    }
                     saveUISettings();
                     updateProgressBarVisibility();
                 });
