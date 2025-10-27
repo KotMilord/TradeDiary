@@ -1448,7 +1448,7 @@
     <div class="modal" id="resultModal" role="dialog" aria-labelledby="resultModalTitle" aria-hidden="true">
         <div class="modal-content">
             <h2 class="modal-title" id="resultModalTitle">Select Trade Result</h2>
-            <input type="text" class="amount-input" id="amountInput" placeholder="Enter amount" pattern="^[0-9]+([,.][0-9]+)*$">
+            <input type="text" class="amount-input" id="amountInput" placeholder="Enter amount" pattern="^[0-9]+([,.][0-9]+)*$" inputmode="decimal">
             <div class="modal-buttons">
                 <button class="modal-btn profit-btn" data-value="profit">Profit</button>
                 <button class="modal-btn loss-btn" data-value="loss">Loss</button>
@@ -1462,7 +1462,7 @@
     <div class="modal" id="tradeAmountModal">
         <div class="modal-content">
             <h2 class="modal-title">Enter Trade Amount</h2>
-            <input type="text" class="amount-input" id="tradeAmountInput" placeholder="Enter amount" pattern="^[0-9]+([,.][0-9]+)*$">
+            <input type="text" class="amount-input" id="tradeAmountInput" placeholder="Enter amount" pattern="^[0-9]+([,.][0-9]+)*$" inputmode="decimal">
             <div class="modal-buttons">
                 <button class="modal-btn profit-btn" id="saveTradeAmountBtn">Save</button>
                 <button class="modal-btn reset-btn" id="cancelTradeAmountBtn">Cancel</button>
@@ -1566,7 +1566,7 @@
     <div class="target-modal" id="targetModal">
         <div class="target-modal-content">
             <h2 class="modal-title" id="targetModalTitle">Set Target (%)</h2>
-            <input type="number" class="target-input" id="targetInput" placeholder="Enter value in %" step="0.01">
+            <input type="text" class="target-input" id="targetInput" placeholder="Enter value in %" pattern="^[0-9.,-]+$" inputmode="decimal">
             <div class="target-modal-buttons">
                 <button class="target-modal-btn" id="applyToDayBtn">Day Only</button>
                 <button class="target-modal-btn" id="applyToAllBtn">All Days</button>
