@@ -140,13 +140,51 @@
             background: var(--bg-color);
             color: var(--text-color);
             padding: 10px;
-            text-align: center;
+            text-align: left;
             position: relative;
         }
         
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .header-content h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        } 
+
         .date-display {
             font-size: 1rem;
-            margin-bottom: 5px;
+            margin: 0;
+            text-align: right;
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 480px) {
+            .header-content h1 {
+                font-size: 1.3rem;
+            }
+
+            .date-display {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header-content h1 {
+                font-size: 1.1rem;
+            }
+
+            .date-display {
+                font-size: 0.8rem;
+            }
+
+            .header-content {
+                padding: 5px 0;
+            }
         }
         
         .btn {
@@ -257,18 +295,182 @@
             background: rgba(0, 123, 255, 0.15);
             opacity: 0.7;
             border-radius: 6px;
-            padding: 4px 6px;
-            font-size: 1.2rem;
-            font-weight: 700;
+            padding: 4px 8px !important;
+            font-size: 0.85rem !important;
+            min-height: 30px !important;
             transition: all 0.3s ease;
             cursor: pointer;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between  !important;
+            gap: 8px;
+            width: 100%;
         }
 
-        /* Обновляем hover для .starting-balance.balance-value */
-        .starting-balance.balance-value:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px var(--shadow-color);
+        .balance-amount {
+            flex: 1;
+            text-align: left;
+            padding: 2px 0;
+            font-size: 1.0rem !important;
+            font-weight: 400;
+            color: var(--text-color) !important;
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: ellipsis;
+        }
+
+        .percentage-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 5px; /* Расстояние между стрелкой и процентом */
+            font-size: 1.2rem !important;
+            font-weight: 700;
+            min-width: 2px !important;
+            max-width: 80px;
+            flex-shrink: 0;
+            height: 100%;
+        }
+
+        .indicator-arrow {
+            width: 28px !important;
+            height: 18px !important;
+            font-size: 16px !important;
+            font-weight: 900 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none !important;
+            border-radius: 0 !important;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .indicator-percentage {
+            font-size: 0.9rem !important;
+            font-weight: 700;
+            line-height: 1;
+            margin: 0;
+        }
+
+        
+
+        /* Цвета для положительной стрелки */
+        .indicator-arrow.positive {
+            color: #00d909 !important;
+        }
+
+        /* Цвета для отрицательной стрелки */
+        .indicator-arrow.negative {
+            color: var(--negative-color) !important;
+        }
+
+        /* Цвета для нейтральной стрелки */
+        .indicator-arrow.neutral {
+            color: var(--text-color) !important;
+        }
+
+        /* Цвета для положительного процента */
+        .indicator-percentage.positive {
+            color: #00d909 !important;
+        }
+
+        /* Цвета для отрицательного процента */
+        .indicator-percentage.negative {
+            color: var(--negative-color) !important;
+        }
+
+        /* Цвета для нейтрального процента */
+        .indicator-percentage.neutral {
+            color: var(--text-color) !important;
+        }
+
+        /* Адаптивные стили для мобильных устройств */
+        @media (max-width: 400px) {
+            .starting-balance.balance-value {
+                padding: 3px 6px !important;
+                font-size: 0.8rem !important;
+                min-height: 28px !important;
+                gap: 1px;
+            }
+
+            .balance-amount {
+                font-size: 0.9rem !important;
+            }
+
+            .percentage-indicator {
+                font-size: 1.0rem !important;
+                min-width: 1px !important;
+                gap: 6px;
+            }
+
+            .indicator-arrow {
+                width: 24px !important;
+                height: 16px !important;
+                font-size: 14px !important;
+            }
+
+            .indicator-percentage {
+                font-size: 0.6rem !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .starting-balance.balance-value {
+                padding: 2px 4px !important;
+                font-size: 0.75rem !important;
+                min-height: 26px !important;
+                gap: 4px;
+            }
+
+            .balance-amount {
+                font-size: 0.85rem !important;
+            }
+
+            .percentage-indicator {
+                font-size: 0.9rem !important;
+                min-width: 1px !important;
+                gap: 3px;
+            }
+
+            .indicator-arrow {
+                width: 20px !important;
+                height: 14px !important;
+                font-size: 12px !important;
+            }
+
+            .indicator-percentage {
+                font-size: 0.6rem !important;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .starting-balance.balance-value {
+                padding: 2px 3px !important;
+                font-size: 0.7rem !important;
+                min-height: 24px !important;
+            }
+
+            .balance-amount {
+                font-size: 0.8rem !important;
+            }
+
+            .percentage-indicator {
+                font-size: 0.8rem !important;
+                min-width: 1px !important;
+                gap: 6px;
+            }
+
+            .indicator-arrow {
+                width: 18px !important;
+                height: 12px !important;
+                font-size: 11px !important;
+            }
+
+            .indicator-percentage {
+                font-size: 0.6rem !important;
+            }
         }
 
         .positive {
@@ -277,6 +479,58 @@
 
         .negative {
             color: var(--negative-color);
+        }
+
+        /* Обновляем стили для индикатора баланса - мобильная адаптация */
+        @media (max-width: 400px) {
+            #percentage-indicator {
+                font-size: 0.4rem !important;
+                min-width: 25px !important;
+            }
+
+            #indicator-arrow {
+                width: 12px !important;
+                height: 15px !important;
+                font-size: 16px !important;
+            }
+
+            #indicator-percentage {
+                font-size: 0.7rem !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+            #percentage-indicator {
+                font-size: 0.35rem !important;
+                min-width: 22px !important;
+            }
+
+            #indicator-arrow {
+                width: 12px !important;
+                height: 15px !important;
+                font-size: 16px !important;
+            }
+
+            #indicator-percentage {
+                font-size: 0.7rem !important;
+            }
+        }
+
+        @media (max-width: 320px) {
+            #percentage-indicator {
+                font-size: 0.3rem !important;
+                min-width: 20px !important;
+            }
+
+            #indicator-arrow {
+                width: 12px !important;
+                height: 12px !important;
+                font-size: 15px !important;
+            }
+
+            #indicator-percentage {
+                font-size: 0.5rem !important;
+            }
         }
         
         .table-container {
@@ -1059,123 +1313,10 @@
             border: 1px solid var(--hint-color);
         }
 
+
         .settings-panel h3 {
             margin-bottom: 10px;
             color: var(--text-color);
-        }
-
-        /* Toggle Switch Styles */
-        .toggle-switch-container {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 4px 6px;
-            font-weight: 600;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: var(--text-color);
-            box-shadow: 0 2px 4px var(--shadow-color);
-        }
-
-        .toggle-switch {
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Размещаем текст по краям */
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 4px 8px; /* Увеличен padding для размещения текста */
-            cursor: pointer;
-            transition: all 0.3s ease, box-shadow 0.2s ease, transform 0.1s ease; /* Добавлены transition для эффектов */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-            width: 120px;
-            opacity: 0.9;
-            position: relative;
-            overflow: visible; /* Изменено для эффекта тени */
-        }
-
-        /* Эффект при наведении */
-        .toggle-switch:hover {
-            opacity: 1;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Эффект при нажатии */
-        .toggle-switch:active {
-            transform: translateY(0px);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-        }
-
-        .toggle-switch.on {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .toggle-label {
-            color: white;
-            font-weight: bold;
-            font-size: 0.8rem;
-            z-index: 2;
-            transition: opacity 0.3s ease;
-            padding: 0;
-            user-select: none;
-        }
-
-        .toggle-label.off {
-            opacity: 1;
-            left: 10px;
-        }
-
-        .toggle-label.on {
-            opacity: 0.5;
-            right: 10px;
-        }
-
-        .toggle-switch.on .toggle-label.off {
-            opacity: 0.5;
-        }
-
-        .toggle-switch.on .toggle-label.on {
-            opacity: 1;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            right: 4px;
-            width: 46%;
-            height: calc(100% - 8px);
-            background: white;
-            border-radius: 20px;
-            transition: transform 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-            z-index: 1;
-        }
-
-        .toggle-switch.on .toggle-slider {
-            transform: translateX(100%);
-        }
-
-        .toggle-indicator {
-            width: 100%;
-            height: 100%;
-            background: #dc3545; /* red for OFF */
-            border-radius: 20px;
-            transition: background 0.3s ease;
-        }
-
-        .toggle-switch.on .toggle-indicator {
-            background: #28a745; /* green for ON */
-        }
-
-        .toggle-description {
-            font-size: 0.9rem;
-            color: white;
-            text-align: left;
-            flex: 1;
         }
         
         .setting-row {
@@ -1194,9 +1335,9 @@
         }
         
         .setting-label input[type="checkbox"] {
-            margin-right: 6px;
-            width: 14px;
-            height: 14px;
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
         }
         
@@ -1206,36 +1347,9 @@
                 gap: 5px;
                 padding: 6px;
             }
-
+            
             .balance-value {
                 font-size: 1.1rem;
-            }
-
-            .toggle-switch-container {
-                flex-direction: row;
-                justify-content: space-between;
-                gap: 12px;
-                padding: 8px 12px;
-            }
-
-            .toggle-switch {
-                width: 100px;
-                overflow: hidden;
-            }
-
-            .toggle-label {
-                font-size: 0.7rem;
-                padding: 0 6px;
-            }
-
-            .toggle-label.on {
-                text-align: right;
-            }
-
-            .toggle-description {
-                text-align: left;
-                font-size: 0.8rem;
-                flex: 1;
             }
         }
         
@@ -1356,6 +1470,120 @@
                box-shadow: 0 4px 8px var(--shadow-color);
            }
 
+           /* Toggle Switch Styles */
+           .toggle-switch-container {
+               margin-bottom: 15px;
+               display: flex;
+               flex-direction: row;
+               align-items: center;
+               gap: 8px;
+               border: 2px solid rgba(255, 255, 255, 0.3);
+               padding: 4px 6px;
+               font-weight: 600;
+               border-radius: 6px;
+               background: linear-gradient(135deg, #007bff, #0056b3);
+               color: var(--text-color);
+               box-shadow: 0 2px 4px var(--shadow-color);
+           }
+
+           .toggle-switch {
+               display: flex;
+               align-items: center;
+               justify-content: space-between; /* Размещаем текст по краям */
+               background: rgba(255, 255, 255, 0.1);
+               border-radius: 25px;
+               padding: 4px 8px; /* Увеличен padding для размещения текста */
+               cursor: pointer;
+               transition: all 0.3s ease, box-shadow 0.2s ease, transform 0.1s ease; /* Добавлены transition для эффектов */
+               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+               width: 120px;
+               opacity: 0.9;
+               position: relative;
+               overflow: visible; /* Изменено для эффекта тени */
+           }
+
+           /* Эффект при наведении */
+           .toggle-switch:hover {
+               opacity: 1;
+               transform: translateY(-2px);
+               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+           }
+
+           /* Эффект при нажатии */
+           .toggle-switch:active {
+               transform: translateY(0px);
+               box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+           }
+
+           .toggle-switch.on {
+               background: rgba(255, 255, 255, 0.1);
+           }
+
+           .toggle-label {
+               color: white;
+               font-weight: bold;
+               font-size: 0.8rem;
+               z-index: 2;
+               transition: opacity 0.3s ease;
+               padding: 0;
+               user-select: none;
+           }
+
+           .toggle-label.off {
+               opacity: 1;
+               left: 10px;
+           }
+
+           .toggle-label.on {
+               opacity: 0.5;
+               right: 10px;
+           }
+
+           .toggle-switch.on .toggle-label.off {
+               opacity: 0.5;
+           }
+
+           .toggle-switch.on .toggle-label.on {
+               opacity: 1;
+           }
+
+           .toggle-slider {
+               position: absolute;
+               top: 4px;
+               left: 4px;
+               right: 4px;
+               width: 46%;
+               height: calc(100% - 8px);
+               background: white;
+               border-radius: 20px;
+               transition: transform 0.3s ease;
+               box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+               z-index: 1;
+           }
+
+           .toggle-switch.on .toggle-slider {
+               transform: translateX(100%);
+           }
+
+           .toggle-indicator {
+               width: 100%;
+               height: 100%;
+               background: #dc3545; /* red for OFF */
+               border-radius: 20px;
+               transition: background 0.3s ease;
+           }
+
+           .toggle-switch.on .toggle-indicator {
+               background: #28a745; /* green for ON */
+           }
+
+           .toggle-description {
+               font-size: 0.9rem;
+               color: white;
+               text-align: left;
+               flex: 1;
+           }
+
            /* Custom styles for settings buttons */
            #clearCurrentDayBtn {
                color: #d19e1c !important;
@@ -1417,8 +1645,10 @@
 <body>
     <div class="container">
         <header>
-            <h1>Trading Diary</h1>
-            <div class="date-display" id="currentDate"></div>
+            <div class="header-content">
+                <h1>Trading Diary</h1>
+                <div class="date-display" id="currentDate"></div>
+            </div>
         </header>
         
         <div class="tabs">
@@ -1433,7 +1663,13 @@
                 <div class="balance-container">
                     <div class="balance-item">
                         <div class="balance-label">Starting Balance</div>
-                        <div class="balance-value starting-balance" id="startingBalanceValue">10000</div>
+                        <div class="balance-value starting-balance" id="startingBalanceValue">
+                            <span class="balance-amount" id="balanceAmount">10000</span>
+                            <div class="percentage-indicator" id="percentageIndicator">
+                                <div class="indicator-arrow" id="indicatorArrow">●</div>
+                                <span class="indicator-percentage" id="indicatorPercentage">0.0%</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="balance-item">
                         <div class="balance-label">Current Balance</div>
@@ -1563,6 +1799,10 @@
                 
                 <div class="settings-panel">
                     <h3>Display Settings</h3>
+                    <div class="setting-row">
+                        <button class="btn settings-btn" id="lightThemeBtn">Daylight</button>
+                        <button class="btn settings-btn" id="darkThemeBtn">Midnight</button>
+                    </div>
                     <div class="toggle-switch-container">
                         <label class="toggle-description">Daily Progress Bar</label>
                         <div class="toggle-switch" id="showProgressBarToggle">
@@ -1572,10 +1812,6 @@
                             </div>
                             <span class="toggle-label on">ON</span>
                         </div>
-                    </div>
-                    <div class="setting-row">
-                        <button class="btn settings-btn" id="lightThemeBtn">Daylight</button>
-                        <button class="btn settings-btn" id="darkThemeBtn">Midnight</button>
                     </div>
                 </div>
 
@@ -1833,6 +2069,18 @@
             const saveCommentBtn = document.getElementById('saveCommentBtn');
             const cancelCommentBtn = document.getElementById('cancelCommentBtn');
 
+            // Elements for percentage indicator
+            const percentageIndicator = document.getElementById('percentageIndicator');
+            const indicatorArrow = document.getElementById('indicatorArrow');
+            const indicatorPercentage = document.getElementById('indicatorPercentage');
+            const balanceAmount = document.querySelector('.balance-amount');
+
+            console.log('Percentage indicator elements initialized:');
+            console.log('percentageIndicator:', percentageIndicator);
+            console.log('indicatorArrow:', indicatorArrow);
+            console.log('indicatorPercentage:', indicatorPercentage);
+            console.log('balanceAmount:', balanceAmount);
+
             // Elements for trade amount modal
             const saveTradeAmountBtn = document.getElementById('saveTradeAmountBtn');
             const cancelTradeAmountBtn = document.getElementById('cancelTradeAmountBtn');
@@ -1899,8 +2147,8 @@
                 if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
                 
                 // Load balance settings
-                if (appSettings.startingBalance && startingBalanceValue) {
-                    startingBalanceValue.textContent = formatNumber(appSettings.startingBalance);
+                if (appSettings.startingBalance && balanceAmount) {
+                    balanceAmount.textContent = formatNumber(appSettings.startingBalance);
                 }
                 
                 console.log('Starting Balance element:', startingBalanceValue);
@@ -1949,9 +2197,14 @@
                 
                 // Initialize progress bar
                 updateProgressBar();
-                
+
                 // Initialize progress bar visibility
                 updateProgressBarVisibility();
+
+                // Initialize percentage indicator
+                console.log('About to call updatePercentageIndicator() during init');
+                updatePercentageIndicator();
+                console.log('updatePercentageIndicator() called during init');
                 console.log('App initialized successfully');
 
                 // Log Starting Balance styles after init
@@ -1966,16 +2219,17 @@
                     emotion: null,
                     comment: ''
                 };
-                
+
                 trades.push(newTrade);
-                
+
                 const tbody = tradingTable.querySelector('tbody');
                 const row = createTableRow(trades.length - 1, newTrade);
                 tbody.appendChild(row);
-                
+
                 // Обновляем права доступа для ячеек
                 updateEditPermissions();
                 refreshAllDisplays();
+                updatePercentageIndicator();
             }
             
             function saveTradeData() {
@@ -2059,7 +2313,7 @@
             // Функция для обновления результата дня для текущей даты
             function updateDayResultForCurrentDate() {
                 if (!dayResultValue) return;
-                
+
                 let dayTotal = 0;
                 // Используем текущие данные trades вместо historyData для мгновенного обновления
                 for (let i = 0; i < trades.length; i++) {
@@ -2067,7 +2321,7 @@
                     if (trade.result !== null) {
                         const amount = trade.result.amount;
                         const type = trade.result.type;
-                        
+
                         if (type === 'profit') {
                             dayTotal += amount;
                         } else if (type === 'loss') {
@@ -2075,7 +2329,7 @@
                         }
                     }
                 }
-                
+
                 dayResultValue.textContent = formatNumber(dayTotal);
                 if (dayTotal > 0) {
                     dayResultValue.classList.add('positive');
@@ -2086,7 +2340,10 @@
                 } else {
                     dayResultValue.classList.remove('positive', 'negative');
                 }
-                
+
+                // Обновляем процентный индикатор при изменении результата дня
+                updatePercentageIndicator();
+
                 // Сохраняем данные
                 saveTradeData();
             }
@@ -2449,13 +2706,13 @@
                 let total = 0;
                 let winTrades = 0;
                 let lossTrades = 0;
-                
+
                 for (let i = 0; i < trades.length; i++) {
                     const trade = trades[i];
                     if (trade.result !== null) {
                         const amount = trade.result.amount;
                         const type = trade.result.type;
-                        
+
                         if (type === 'profit') {
                             total += amount;
                             winTrades++;
@@ -2465,35 +2722,38 @@
                         }
                     }
                 }
-                
+
                 // Обновляем результат дня только если это сегодняшний день
                 updateDayResultForCurrentDate();
-                
+
                 // Пересчитываем общий баланс с учетом всех сделок и выводов
                 recalculateCurrentBalance();
-                
+
                 // Update progress bar
                 updateProgressBar();
-                
+
+                // Update percentage indicator
+                updatePercentageIndicator();
+
                 const startingBalance = appSettings.startingBalance;
                 const profitLossPercent = startingBalance > 0 ? (total / startingBalance) * 100 : 0;
-                
+
                 const dateKey = formatDateKey(currentDate);
                 if (!generalData[dateKey]) {
                     generalData[dateKey] = {};
                 }
-                
+
                 generalData[dateKey].actualProfitLoss = profitLossPercent;
                 generalData[dateKey].winTrades = winTrades;
                 generalData[dateKey].lossTrades = lossTrades;
-                
+
                 localStorage.setItem('generalData', JSON.stringify(generalData));
-                
+
                 // Auto save data только если есть данные
                 if (hasDayData(trades)) {
                     saveTradeData();
                 }
-                
+
                 updateGeneralTable();
                 renderHistory();
             }
@@ -2506,7 +2766,8 @@
                 renderHistory();
                 updateGeneralTable();
                 updateProgressBar();
-                
+                updatePercentageIndicator();
+
                 // Добавьте сохранение данных
                 saveTradeData();
             }
@@ -2592,15 +2853,21 @@
                 
                 // Update progress bar
                 updateProgressBar();
-                
+
                 // Update progress bar visibility
                 updateProgressBarVisibility();
-                
+
+                // Update percentage indicator
+                updatePercentageIndicator();
+
+                // Добавьте сохранение данных
+                saveTradeData();
+
                 renderHistory();
                 updateGeneralTable();
                 updateNavigationButtons();
                 updateEditPermissions();
-                
+
                 // Обновляем цвет ячейки day result в баланс-панели при навигации
                 updateDayResultDisplay();
             }
@@ -2948,25 +3215,28 @@
                     showNotification("Cannot add withdrawals to past months", "error");
                     return;
                 }
-                
+
                 const today = getToday();
                 const dateKey = formatDateKey(today);
                 if (!withdrawalData[dateKey]) {
                     withdrawalData[dateKey] = [];
                 }
-                
+
                 withdrawalData[dateKey].push({
                     date: dateKey,
                     amount: amount
                 });
-                
+
                 // Вместо прямого изменения баланса, пересчитываем его полностью
                 recalculateCurrentBalance();
-                
+
                 saveWithdrawalData();
                 saveSettings();
                 renderWithdrawalTable();
-                
+
+                // Update percentage indicator after withdrawal
+                updatePercentageIndicator();
+
                 showNotification(`Withdrawal ${formatNumber(amount)} saved successfully`, 'success');
             }
             
@@ -2976,19 +3246,22 @@
                     showNotification("Cannot edit withdrawals in past months", "error");
                     return;
                 }
-                
+
                 if (!withdrawalData[dateKey] || !withdrawalData[dateKey][index]) return;
-                
+
                 const oldAmount = withdrawalData[dateKey][index].amount;
                 withdrawalData[dateKey][index].amount = newAmount;
-                
+
                 // Вместо прямого изменения баланса, пересчитываем его полностью
                 recalculateCurrentBalance();
-                
+
                 saveWithdrawalData();
                 saveSettings();
                 renderWithdrawalTable();
-                
+
+                // Update percentage indicator after withdrawal edit
+                updatePercentageIndicator();
+
                 showNotification(`Withdrawal updated to ${formatNumber(newAmount)}`, 'success');
             }
             
@@ -2998,24 +3271,27 @@
                     showNotification("Cannot delete withdrawals from past months", "error");
                     return;
                 }
-                
+
                 if (!withdrawalData[dateKey] || !withdrawalData[dateKey][index]) return;
-                
+
                 const amount = withdrawalData[dateKey][index].amount;
-                
+
                 withdrawalData[dateKey].splice(index, 1);
-                
+
                 if (withdrawalData[dateKey].length === 0) {
                     delete withdrawalData[dateKey];
                 }
-                
+
                 // Вместо прямого изменения баланса, пересчитываем его полностью
                 recalculateCurrentBalance();
-                
+
                 saveWithdrawalData();
                 saveSettings();
                 renderWithdrawalTable();
-                
+
+                // Update percentage indicator after withdrawal deletion
+                updatePercentageIndicator();
+
                 showNotification(`Withdrawal ${formatNumber(amount)} deleted`, 'success');
             }
             
@@ -3296,23 +3572,28 @@
                             startingBalance: 10000,
                             currentBalance: 10000
                         };
-                        
+
                         saveTradeData();
                         saveGeneralData();
                         saveWithdrawalData();
                         saveMonthCommentsData();
                         saveSettings();
-                        
-                        if (startingBalanceValue) startingBalanceValue.textContent = '10000';
+
+                        if (balanceAmount) balanceAmount.textContent = '10000';
                         if (currentBalanceValue) currentBalanceValue.textContent = '10000';
-                        
+
                         initTrades();
                         renderTable();
                         updateTotal();
                         renderHistory();
                         renderWithdrawalTable();
                         updateGeneralTable();
-                        
+
+                        // Update percentage indicator immediately after clearing all data
+                        console.log('About to call updatePercentageIndicator() after clearing all data');
+                        updatePercentageIndicator();
+                        console.log('updatePercentageIndicator() called after clearing all data');
+
                         showNotification('All history cleared', 'success');
                     }
                 });
@@ -3672,20 +3953,23 @@
                     if (!isNaN(newBalance)) {
                         appSettings.startingBalance = newBalance;
                         appSettings.currentBalance = newBalance;
-                        
-                        if (startingBalanceValue) {
-                            startingBalanceValue.textContent = formatNumber(newBalance);
+
+                        if (balanceAmount) {
+                            balanceAmount.textContent = formatNumber(newBalance);
                         }
-                        
+
                         if (currentBalanceValue) {
                             currentBalanceValue.textContent = formatNumber(newBalance);
                         }
-                        
+
                         updateTotal();
                         saveSettings();
-                        
+
+                        // Update percentage indicator after balance change
+                        updatePercentageIndicator();
+
                         if (balanceModal) balanceModal.style.display = 'none';
-                        
+
                         showNotification('Balance updated', 'success');
                     } else {
                         showNotification('Enter a valid number', 'error');
@@ -3856,19 +4140,19 @@
                     console.log('Progress bar elements not found');
                     return;
                 }
-                
+
                 // Получаем текущую дату
                 const currentDateKey = formatDateKey(currentDate);
-                
+
                 // Получаем данные о целях для текущего дня
                 const dayGeneralData = generalData[currentDateKey] || {};
                 const profitTarget = dayGeneralData.profitTarget || 2; // По умолчанию 2%
                 const lossTarget = dayGeneralData.lossTarget || -2; // По умолчанию -2%
-                
+
                 // Вычисляем результат за текущий день
                 let dayResult = 0;
                 let dayResultPercent = 0;
-                
+
                 // Используем текущие данные trades для текущей даты, а не historyData для актуальности
                 if (currentDateKey === formatDateKey(new Date())) {
                     // Для текущей даты используем актуальные данные из переменной trades
@@ -3896,29 +4180,29 @@
                         });
                     }
                 }
-                
+
                 // Вычисляем процент результата относительно начального баланса дня
                 if (appSettings.startingBalance > 0) {
                     dayResultPercent = (dayResult / appSettings.startingBalance) * 100;
                 }
-                
+
                 // Обновляем UI элементы
                 progressStart.textContent = `${lossTarget.toFixed(1)}%`;
                 progressCurrent.textContent = `${dayResultPercent.toFixed(1)}%`;
                 progressTarget.textContent = `${profitTarget.toFixed(1)}%`;
-                
+
                 // Создаем контейнер для прогресс-бара, чтобы корректно отображать двунаправленный прогресс
                 const progressBar = document.querySelector('.progress-bar');
-                
+
                 // Очищаем предыдущие элементы прогресса, если они есть
                 const existingLossFill = document.querySelector('.progress-loss-fill');
                 const existingProfitFill = document.querySelector('.progress-profit-fill');
                 const centerMarker = document.querySelector('.center-marker');
-                
+
                 if (existingLossFill) existingLossFill.remove();
                 if (existingProfitFill) existingProfitFill.remove();
                 if (centerMarker) centerMarker.remove();
-                
+
                 // Создаем отдельные элементы для отрицательного (убыток) и положительного (прибыль) прогресса
                 if (dayResultPercent < 0) {
                     // Красная часть (убыток) - от центра влево
@@ -3947,7 +4231,7 @@
                     profitFill.style.borderRadius = '6px';
                     progressBar.appendChild(profitFill);
                 }
-                
+
                 // Центральная метка (0%)
                 const marker = document.createElement('div');
                 marker.className = 'center-marker';
@@ -3960,11 +4244,160 @@
                 marker.style.transform = 'translateX(-50%)';
                 marker.style.zIndex = '2';
                 progressBar.appendChild(marker);
-                
+
                 // Убираем основной элемент прогресс-бара, так как теперь у нас двунаправленный прогресс
                 progressFill.style.width = '0%';
                 console.log('Progress bar updated successfully');
             }
+
+            // Обновляем функцию updatePercentageIndicator с цветами и одним знаком после запятой для процентов
+            function updatePercentageIndicator() {
+                console.log('updatePercentageIndicator() called');
+
+                if (!percentageIndicator || !indicatorArrow || !indicatorPercentage || !balanceAmount) {
+                    return;
+                }
+
+                const startingBalance = appSettings.startingBalance;
+
+                // Рассчитываем текущий баланс только на основе торговой истории
+                let tradingProfitLoss = 0;
+
+                Object.keys(historyData).forEach(dateKey => {
+                    const dayData = historyData[dateKey];
+                    if (dayData.trades) {
+                        dayData.trades.forEach(trade => {
+                            if (trade.result) {
+                                if (trade.result.type === 'profit') {
+                                    tradingProfitLoss += trade.result.amount;
+                                } else if (trade.result.type === 'loss') {
+                                    tradingProfitLoss -= trade.result.amount;
+                                }
+                            }
+                        });
+                    }
+                });
+
+                const currentDateKey = formatDateKey(currentDate);
+                if (trades && trades.length > 0) {
+                    const hasSavedData = historyData[currentDateKey] && historyData[currentDateKey].trades;
+                    if (!hasSavedData) {
+                        trades.forEach(trade => {
+                            if (trade.result) {
+                                if (trade.result.type === 'profit') {
+                                    tradingProfitLoss += trade.result.amount;
+                                } else if (trade.result.type === 'loss') {
+                                    tradingProfitLoss -= trade.result.amount;
+                                }
+                            }
+                        });
+                    }
+                }
+
+                const currentTradingBalance = startingBalance + tradingProfitLoss;
+
+                let percentageChange;
+                if (startingBalance === 0) {
+                    percentageChange = 0;
+                } else {
+                    percentageChange = ((currentTradingBalance - startingBalance) / startingBalance) * 100;
+                }
+
+                // Округляем до одного знака после запятой
+                const roundedPercentage = Math.round(percentageChange * 10) / 10;
+
+                // Форматируем отображение процента с одним знаком после запятой
+                let displayPercentage;
+                if (Math.abs(roundedPercentage) < 0.1) {
+                    displayPercentage = '0.0%';
+                } else {
+                    displayPercentage = (roundedPercentage > 0 ? '+' : '') + roundedPercentage.toFixed(1) + '%';
+                }
+
+                // Обрезаем до 5 символов если нужно (например: +12.3%)
+                if (displayPercentage.length > 5) {
+                    // Для значений больше 99.9% показываем целое число
+                    displayPercentage = (roundedPercentage > 0 ? '+' : '') + Math.round(roundedPercentage) + '%';
+                }
+
+                // Update percentage text
+                indicatorPercentage.textContent = displayPercentage;
+
+                // Update arrow and colors - используем широкие толстые символы с цветами
+                if (roundedPercentage > 0) {
+                    // ЗЕЛЕНЫЙ для плюса
+                    indicatorArrow.textContent = '▲';
+                    indicatorArrow.className = 'indicator-arrow positive';
+                    indicatorPercentage.className = 'indicator-percentage positive';
+                } else if (roundedPercentage < 0) {
+                    // КРАСНЫЙ для минуса
+                    indicatorArrow.textContent = '▼';
+                    indicatorArrow.className = 'indicator-arrow negative';
+                    indicatorPercentage.className = 'indicator-percentage negative';
+                } else {
+                    // Нейтральный цвет для нуля
+                    indicatorArrow.textContent = '●';
+                    indicatorArrow.className = 'indicator-arrow neutral';
+                    indicatorPercentage.className = 'indicator-percentage neutral';
+                }
+
+                // Always show the indicator
+                percentageIndicator.style.display = 'flex';
+
+                // Обновляем отображение суммы баланса
+                updateBalanceDisplay();
+
+                console.log('Percentage indicator updated:', {
+                    percentage: roundedPercentage,
+                    display: displayPercentage,
+                    arrowColor: indicatorArrow.className,
+                    percentageColor: indicatorPercentage.className
+                });
+            }
+
+            // Функция для форматирования суммы баланса с двумя знаками после запятой
+            function formatBalanceForDisplay(number) {
+                if (number >= 1000000) {
+                    // Формат: 1.23M
+                    return (number / 1000000).toFixed(2) + 'M';
+                } else if (number >= 100000) {
+                    // Формат: 123.45K
+                    return (number / 1000).toFixed(2) + 'K';
+                } else if (number >= 10000) {
+                    // Формат: 10.23K
+                    return (number / 1000).toFixed(2) + 'K';
+                } else if (number >= 1000) {
+                    // Формат: 1.23K
+                    return (number / 1000).toFixed(2) + 'K';
+                } else {
+                    // Формат: 123.45
+                    return number.toFixed(2);
+                }
+            }
+
+            function updateBalanceDisplay() {
+                if (!balanceAmount) return;
+
+                const startingBalance = appSettings.startingBalance;
+                const formattedBalance = formatBalanceForDisplay(startingBalance);
+
+                // Проверяем что не превышаем 7 символов
+                if (formattedBalance.length > 7) {
+                    // Если превышает, используем более агрессивное форматирование
+                    if (startingBalance >= 1000000) {
+                        balanceAmount.textContent = Math.round(startingBalance / 1000000) + 'M';
+                    } else if (startingBalance >= 1000) {
+                        balanceAmount.textContent = Math.round(startingBalance / 1000) + 'K';
+                    } else {
+                        balanceAmount.textContent = Math.round(startingBalance).toString();
+                    }
+                } else {
+                    balanceAmount.textContent = formattedBalance;
+                }
+            }
+
+            // Вызываем при инициализации
+            updateBalanceDisplay();
             
             // Initialize the app
             init();
@@ -3993,6 +4426,9 @@
                     updateProgressBarVisibility();
                 });
             }
+
+            // Вызываем при инициализации
+            updateBalanceDisplay();
 
             // Initialize theme buttons
             const lightThemeBtn = document.getElementById('lightThemeBtn');
