@@ -9,114 +9,111 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
-         /* CSS Variables for Light and Dark Themes */
-         :root {
-             --bg-color: #ffffff;
-             --text-color: #252525;
-             --secondary-bg: rgba(235, 232, 232, 0.95);
-             --hint-color: rgba(0, 0, 0, 0.3);
-             --button-color: #3498dbb4;
-             --button-text-color: #dddddd;
-             --border-color: #e0e0e0;
-             --shadow-color: rgba(0, 0, 0, 0.8);
-             --positive-color: #2ecc71;
-             --negative-color: #e74c3c;
-             --refund-color: #3498db;
-             --profit-bg: #e8f5e9;
-             --loss-bg: #ffebee;
-             --refund-bg: #e3f2fd;
-             --cell-bg: #fafafa;
-             --cell-hover-bg: #e3f2fd;
-             --modal-bg: #ffffff;
-             --input-bg: #ffffff;
-             --input-border: #ddd;
-             --progress-bg: #e0e0e0;
-             --progress-profit: #4CAF50;
-             --progress-loss: #F44336;
-             --tab-bg: #ecf0f1;
-             --tab-active-bg: #3498dbb4;
-             --notification-success: #27ae60;
-             --notification-error: #e74c3c;
-         }
+        /* CSS Variables for Light and Dark Themes */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #252525;
+            --secondary-bg: rgba(235, 232, 232, 0.95);
+            --hint-color: rgba(0, 0, 0, 0.3);
+            --button-color: #3498dbb4;
+            --button-text-color: #dddddd;
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+            --positive-color: #2ecc71;
+            --negative-color: #e74c3c;
+            --refund-color: #3498db;
+            --profit-bg: #e8f5e9;
+            --loss-bg: #ffebee;
+            --refund-bg: #e3f2fd;
+            --cell-bg: #fafafa;
+            --cell-hover-bg: #e3f2fd;
+            --modal-bg: #ffffff;
+            --input-bg: #ffffff;
+            --input-border: #ddd;
+            --progress-bg: #e0e0e0;
+            --progress-profit: #4CAF50;
+            --progress-loss: #F44336;
+            --tab-bg: #ecf0f1;
+            --tab-active-bg: #3498dbb4;
+            --notification-success: #27ae60;
+            --notification-error: #e74c3c;
+        }
 
-         [data-theme="dark"] {
-             --bg-color: #242424;
-             --text-color: #dddddd;
-             --secondary-bg: #2d2d2d;
-             --hint-color: rgba(255, 255, 255, 0.3);
-             --button-color: #3498dbb4;
-             --button-text-color: #dddddd;
-             --border-color: #444444;
-             --shadow-color: rgba(0, 0, 0, 0.8);
-             --positive-color: #4CAF50;
-             --negative-color: #F44336;
-             --refund-color: #2196F3;
-             --profit-bg: #1b2e1b;
-             --loss-bg: #2e1b1b;
-             --refund-bg: #1b1e2e;
-             --cell-bg: #2d2d2d;
-             --cell-hover-bg: #3d3d3d;
-             --modal-bg: #2d2d2d;
-             --input-bg: #3d3d3d;
-             --input-border: #555555;
-             --progress-bg: #444444;
-             --progress-profit: #4CAF50;
-             --progress-loss: #F44336;
-             --tab-bg: #2d2d2d;
-             --tab-active-bg: #3498dbb4;
-             --notification-success: #4CAF50;
-             --notification-error: #F44336;
-         }
+        [data-theme="dark"] {
+            --bg-color: #242424;
+            --text-color: #dddddd;
+            --secondary-bg: #2d2d2d;
+            --hint-color: rgba(255, 255, 255, 0.3);
+            --button-color: #3498dbb4;
+            --button-text-color: #dddddd;
+            --border-color: #444444;
+            --shadow-color: rgba(0, 0, 0, 0.8);
+            --positive-color: #4CAF50;
+            --negative-color: #F44336;
+            --refund-color: #2196F3;
+            --profit-bg: #1b2e1b;
+            --loss-bg: #2e1b1b;
+            --refund-bg: #1b1e2e;
+            --cell-bg: #2d2d2d;
+            --cell-hover-bg: #3d3d3d;
+            --modal-bg: #2d2d2d;
+            --input-bg: #3d3d3d;
+            --input-border: #555555;
+            --progress-bg: #444444;
+            --progress-profit: #4CAF50;
+            --progress-loss: #F44336;
+            --tab-bg: #2d2d2d;
+            --tab-active-bg: #3498dbb4;
+            --notification-success: #4CAF50;
+            --notification-error: #F44336;
+        }
 
-         [data-theme="dark"] .balance-label,
-         [data-theme="dark"] .progress-label,
-         [data-theme="dark"] .setting-label {
-             color: var(--text-color);
-         }
+        [data-theme="dark"] .balance-label,
+        [data-theme="dark"] .progress-label,
+        [data-theme="dark"] .setting-label {
+            color: var(--text-color);
+        }
 
-         [data-theme="dark"] .settings-panel h3 {
-             color: var(--text-color);
-         }
+        [data-theme="dark"] .settings-panel h3 {
+            color: var(--text-color);
+        }
 
-         [data-theme="dark"] .progress-stats {
-             color: var(--text-color);
-         }
-          [data-theme="dark"] .progress-bar {
-              background: var(--progress-bg);
-          }
+        [data-theme="dark"] .progress-stats {
+            color: var(--text-color);
+        }
+        [data-theme="dark"] .progress-bar {
+            background: var(--progress-bg);
+        }
 
-          [data-theme="dark"] .progress-container {
-              background: var(--secondary-bg);
-              border: 1px solid var(--border-color);
-          }
-
-
-          [data-theme="dark"] .date-label {
-              background: var(--secondary-bg);
-              border: 1px solid var(--border-color);
-              color: var(--text-color);
-          }
-
-          [data-theme="dark"] .month-comments textarea {
-              background: var(--input-bg);
-              color: var(--text-color);
-              border: 1px solid var(--input-border);
-          }
-
-          [data-theme="dark"] .settings-panel {
-              background: var(--secondary-bg);
-              border: 1px solid var(--border-color);
-          }
+        [data-theme="dark"] .progress-container {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+        }
 
 
+        [data-theme="dark"] .date-label {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
 
+        [data-theme="dark"] .month-comments textarea {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+        }
 
-         * {
-             box-sizing: border-box;
-             margin: 0;
-             padding: 0;
-             font-family: 'Roboto', Arial, sans-serif;
-         }
+        [data-theme="dark"] .settings-panel {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
         
         body {
             background: var(--bg-color);
@@ -149,41 +146,111 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            gap: 10px;
+            min-height: 40px;
         }
 
         .header-content h1 {
             margin: 0;
             font-size: 1.5rem;
-        } 
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
 
         .date-display {
-            font-size: 1rem;
-            margin: 0;
-            text-align: right;
+            white-space: nowrap;
+            flex-shrink: 0;
+            font-size: 0.9rem;
         }
         
         /* Адаптивность для мобильных устройств */
         @media (max-width: 480px) {
+            .header-content {
+                gap: 8px;
+            }
+
             .header-content h1 {
                 font-size: 1.3rem;
             }
 
-            .date-display {
-                font-size: 0.9rem;
+            .header-actions {
+                gap: 8px;
             }
-        }
 
-        @media (max-width: 360px) {
-            .header-content h1 {
-                font-size: 1.1rem;
+            .export-header-btn {
+                font-size: 0.75rem;
+                padding: 5px 10px;
             }
 
             .date-display {
                 font-size: 0.8rem;
             }
+        }
 
+        @media (max-width: 400px) {
             .header-content {
-                padding: 5px 0;
+                gap: 6px;
+            }
+
+            .header-content h1 {
+                font-size: 1.2rem;
+            }
+
+            .export-header-btn {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
+
+            .date-display {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header-content {
+                gap: 6px;
+            }
+
+            .header-content h1 {
+                font-size: 1.1rem;
+                flex-shrink: 1;
+            }
+
+            .header-actions {
+                flex-shrink: 0;
+            }
+
+            .export-header-btn {
+                font-size: 0.65rem;
+                padding: 4px 6px;
+            }
+
+            .date-display {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .header-content {
+                gap: 4px;
+            }
+
+            .header-content h1 {
+                font-size: 1.0rem;
+                flex-shrink: 1;
+            }
+
+            .header-actions {
+                flex-shrink: 0;
+            }
+
+            .export-header-btn {
+                font-size: 0.6rem;
+                padding: 3px 5px;
+            }
+
+            .date-display {
+                font-size: 0.65rem;
             }
         }
         
@@ -324,7 +391,7 @@
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
-            gap: 5px; /* Расстояние между стрелкой и процентом */
+            gap: 4px; /* Расстояние между стрелкой и процентом */
             font-size: 1.2rem !important;
             font-weight: 700;
             min-width: 2px !important;
@@ -353,8 +420,6 @@
             line-height: 1;
             margin: 0;
         }
-
-        
 
         /* Цвета для положительной стрелки */
         .indicator-arrow.positive {
@@ -649,7 +714,6 @@
             white-space: nowrap;
         }
 
-
         .comments-cell {
             color: var(--text-color);
         }
@@ -662,6 +726,13 @@
             font-weight: 600;
         }
         
+        .add-trade-btn:hover {
+            background: #27ae60; /* Зеленый вместо синего */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
         .add-trade-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -838,6 +909,13 @@
             font-weight: 500;
         }
 
+        .tab:hover {
+            background: #27ae60; /* Зеленый вместо синего */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
         .tab.active {
             background: var(--tab-active-bg);
             color: var(--button-text-color);
@@ -886,6 +964,13 @@
             box-shadow: 0 2px 4px var(--shadow-color);
         }
         
+        .date-btn:hover {
+            background: #27ae60; /* Зеленый вместо синего */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
         .date-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -908,8 +993,8 @@
         
         .notification {
             position: fixed;
-            top: 10px;
-            right: 10px;
+            top: 0px;
+            left: 10px;
             padding: 8px;
             border-radius: 4px;
             color: white;
@@ -917,6 +1002,8 @@
             opacity: 0;
             transition: opacity 0.3s;
             font-size: 0.8rem;
+            max-width: 200px;
+            word-wrap: break-word;
         }
         
         .notification.success {
@@ -1033,6 +1120,13 @@
             width: 100%;
         }
         
+        .add-withdrawal-btn:hover {
+            background: #27ae60; /* Зеленый вместо синего */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
         .month-comments {
             margin-top: 15px;
         }
@@ -1394,260 +1488,376 @@
             .balance-value {
                    font-size: 1rem;
                }
-           }
-   
-           /* Styles for Light and Dark Theme buttons */
-           #lightThemeBtn {
-               background: #333;
-               color: #fff;
-               border: 2px solid #333;
-               border-radius: 6px;
-               padding: 4px 6px;
-               font-weight: 600;
-               transition: all 0.3s ease;
-               box-shadow: 0 2px 4px var(--shadow-color);
-               cursor: pointer;
-           }
+        }
+        
+        /* Ensure cohesive style for Clear buttons */
+        .btn-warning {
+            background: #ff9800;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            cursor: pointer;
+        }
 
-           #lightThemeBtn:hover {
-               opacity: 0.9;
-               transform: translateY(-2px);
-               box-shadow: 0 4px 8px var(--shadow-color);
-           }
+        .btn-warning:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
 
-           #darkThemeBtn {
-               background: #333;
-               color: #fff;
-               border: 2px solid #333;
-               border-radius: 6px;
-               padding: 4px 6px;
-               font-weight: 600;
-               transition: all 0.3s ease;
-               box-shadow: 0 2px 4px var(--shadow-color);
-               cursor: pointer;
-           }
+        .btn-danger {
+            background: #f44336;
+            color: #fff;
+            border: 2px solid #f44336;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            cursor: pointer;
+        }
 
-           #darkThemeBtn:hover {
-               opacity: 0.9;
-               transform: translateY(-2px);
-               box-shadow: 0 4px 8px var(--shadow-color);
-           }
-   
-           /* Ensure cohesive style for Clear buttons */
-           .btn-warning {
-               background: #ff9800;
-               color: #fff;
-               border: 2px solid #ff9800;
-               border-radius: 6px;
-               padding: 4px 6px;
-               font-weight: 600;
-               transition: all 0.3s ease;
-               box-shadow: 0 2px 4px var(--shadow-color);
-               cursor: pointer;
-           }
+        .btn-danger:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
 
-           .btn-warning:hover {
-               opacity: 0.9;
-               transform: translateY(-2px);
-               box-shadow: 0 4px 8px var(--shadow-color);
-           }
+        /* Toggle Switch Styles */
+        .toggle-switch-container {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 4px 6px;
+            font-weight: 600;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: var(--text-color);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
 
-           .btn-danger {
-               background: #f44336;
-               color: #fff;
-               border: 2px solid #f44336;
-               border-radius: 6px;
-               padding: 4px 6px;
-               font-weight: 600;
-               transition: all 0.3s ease;
-               box-shadow: 0 2px 4px var(--shadow-color);
-               cursor: pointer;
-           }
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Размещаем текст по краям */
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 4px 8px; /* Увеличен padding для размещения текста */
+            cursor: pointer;
+            transition: all 0.3s ease, box-shadow 0.2s ease, transform 0.1s ease; /* Добавлены transition для эффектов */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            width: 120px;
+            opacity: 0.9;
+            position: relative;
+            overflow: visible; /* Изменено для эффекта тени */
+        }
 
-           .btn-danger:hover {
-               opacity: 0.9;
-               transform: translateY(-2px);
-               box-shadow: 0 4px 8px var(--shadow-color);
-           }
+        /* Эффект при наведении */
+        .toggle-switch:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
 
-           /* Toggle Switch Styles */
-           .toggle-switch-container {
-               margin-bottom: 15px;
-               display: flex;
-               flex-direction: row;
-               align-items: center;
-               gap: 8px;
-               border: 2px solid rgba(255, 255, 255, 0.3);
-               padding: 4px 6px;
-               font-weight: 600;
-               border-radius: 6px;
-               background: linear-gradient(135deg, #007bff, #0056b3);
-               color: var(--text-color);
-               box-shadow: 0 2px 4px var(--shadow-color);
-           }
+        /* Эффект при нажатии */
+        .toggle-switch:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+        }
 
-           .toggle-switch {
-               display: flex;
-               align-items: center;
-               justify-content: space-between; /* Размещаем текст по краям */
-               background: rgba(255, 255, 255, 0.1);
-               border-radius: 25px;
-               padding: 4px 8px; /* Увеличен padding для размещения текста */
-               cursor: pointer;
-               transition: all 0.3s ease, box-shadow 0.2s ease, transform 0.1s ease; /* Добавлены transition для эффектов */
-               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-               width: 120px;
-               opacity: 0.9;
-               position: relative;
-               overflow: visible; /* Изменено для эффекта тени */
-           }
+        .toggle-switch.on {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-           /* Эффект при наведении */
-           .toggle-switch:hover {
-               opacity: 1;
-               transform: translateY(-2px);
-               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-           }
+        .toggle-label {
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 2;
+            transition: opacity 0.3s ease;
+            padding: 0;
+            user-select: none;
+        }
 
-           /* Эффект при нажатии */
-           .toggle-switch:active {
-               transform: translateY(0px);
-               box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-           }
+        .toggle-label.off {
+            opacity: 1;
+            left: 10px;
+        }
 
-           .toggle-switch.on {
-               background: rgba(255, 255, 255, 0.1);
-           }
+        .toggle-label.on {
+            opacity: 0.5;
+            right: 10px;
+        }
 
-           .toggle-label {
-               color: white;
-               font-weight: bold;
-               font-size: 0.8rem;
-               z-index: 2;
-               transition: opacity 0.3s ease;
-               padding: 0;
-               user-select: none;
-           }
+        .toggle-switch.on .toggle-label.off {
+            opacity: 0.5;
+        }
 
-           .toggle-label.off {
-               opacity: 1;
-               left: 10px;
-           }
+        .toggle-switch.on .toggle-label.on {
+            opacity: 1;
+        }
 
-           .toggle-label.on {
-               opacity: 0.5;
-               right: 10px;
-           }
+        .toggle-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            width: 46%;
+            height: calc(100% - 8px);
+            background: white;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            z-index: 1;
+        }
 
-           .toggle-switch.on .toggle-label.off {
-               opacity: 0.5;
-           }
+        .toggle-switch.on .toggle-slider {
+            transform: translateX(100%);
+        }
 
-           .toggle-switch.on .toggle-label.on {
-               opacity: 1;
-           }
+        .toggle-indicator {
+            width: 100%;
+            height: 100%;
+            background: #dc3545; /* red for OFF */
+            border-radius: 20px;
+            transition: background 0.3s ease;
+        }
 
-           .toggle-slider {
-               position: absolute;
-               top: 4px;
-               left: 4px;
-               right: 4px;
-               width: 46%;
-               height: calc(100% - 8px);
-               background: white;
-               border-radius: 20px;
-               transition: transform 0.3s ease;
-               box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-               z-index: 1;
-           }
+        .toggle-switch.on .toggle-indicator {
+            background: #28a745; /* green for ON */
+        }
 
-           .toggle-switch.on .toggle-slider {
-               transform: translateX(100%);
-           }
+        .toggle-description {
+            font-size: 0.9rem;
+            color: white;
+            text-align: left;
+            flex: 1;
+        }
 
-           .toggle-indicator {
-               width: 100%;
-               height: 100%;
-               background: #dc3545; /* red for OFF */
-               border-radius: 20px;
-               transition: background 0.3s ease;
-           }
+        /* Custom styles for settings buttons */
+        #clearCurrentDayBtn {
+            color: #d19e1c !important;
+            border: 2px solid #d19e1c !important;
+            background: #e7e7a1 !important;
+            opacity: 0.7;
+        }
 
-           .toggle-switch.on .toggle-indicator {
-               background: #28a745; /* green for ON */
-           }
+        #clearCurrentDayBtn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
 
-           .toggle-description {
-               font-size: 0.9rem;
-               color: white;
-               text-align: left;
-               flex: 1;
-           }
+        #clearAllDataBtn {
+            color: #B22222 !important;
+            border: 2px solid #B22222 !important;
+            background: #ff7777 !important;
+            opacity: 0.7;
+        }
 
-           /* Custom styles for settings buttons */
-           #clearCurrentDayBtn {
-               color: #d19e1c !important;
-               border: 2px solid #d19e1c !important;
-               background: #e7e7a1 !important;
-               opacity: 0.7;
-           }
+        #clearAllDataBtn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
 
-           #clearCurrentDayBtn:hover {
-               opacity: 0.9;
-               transform: translateY(-2px);
-               box-shadow: 0 4px 8px var(--shadow-color);
-           }
+        #lightThemeBtn {
+            color: #f5f5f5 !important;
+            border: 2px solid #ffffff !important;
+            border-radius: 6px;
+            background: #c4c4c4 !important;
+            opacity: 0.7;
+            padding: 4px 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px var(--shadow-color)
+               
+        }
 
-           #clearAllDataBtn {
-               color: #B22222 !important;
-               border: 2px solid #B22222 !important;
-               background: #ff7777 !important;
-               opacity: 0.7;
-           }
+        #lightThemeBtn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
 
-           #clearAllDataBtn:hover {
-               opacity: 0.9;
-               transform: translateY(-2px);
-               box-shadow: 0 4px 8px var(--shadow-color);
-           }
+        #darkThemeBtn {
+            color: #202020 !important;
+            border: 2px solid #202020 !important;
+            background: #5e5e5e !important;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            cursor: pointer;
+            opacity: 0.7;
+        }
 
-           #lightThemeBtn {
-               color: #f5f5f5 !important;
-               border: 2px solid #ffffff !important;
-               background: #c4c4c4 !important;
-               opacity: 0.7;
-           }
+        #darkThemeBtn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
 
-           #lightThemeBtn:hover {
-               opacity: 0.9;
-               transform: translateY(-2px);
-               box-shadow: 0 4px 8px var(--shadow-color);
-           }
+        #startingBalanceValue {
+            background-color: #0091ca5e !important; /*  blue background */
+        }
+        
+        /* Header actions */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
 
-           #darkThemeBtn {
-               color: #202020 !important;
-               border: 2px solid #202020 !important;
-               background: #5e5e5e !important;
-               opacity: 0.7;
-           }
+        .export-header-btn {
+            background: var(--button-color);
+            color: var(--button-text-color);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap; /* Запрещаем перенос текста */
+            flex-shrink: 0;
+            transition: all 0.3s;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            position: relative;
+            z-index: 10;
+        }
 
-           #darkThemeBtn:hover {
-               opacity: 0.9;
-               transform: translateY(-2px);
-               box-shadow: 0 4px 8px var(--shadow-color);
-           }
+        .export-header-btn:hover {
+            opacity: 1;
+            background: #27ae60; /* Зеленый вместо синего */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
 
-           #startingBalanceValue {
-               background-color: #0091ca5e !important; /*  blue background */
-           }
-       </style>
+        /* Export modal styles */
+        .export-period {
+            margin: 15px 0;
+        }
+
+        .period-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .period-row label {
+            min-width: 50px;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .date-input {
+            flex: 1;
+            padding: 8px;
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .export-tabs {
+            display: flex;
+            margin: 15px 0;
+            background: var(--tab-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .export-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-color);
+            font-size: 0.8rem;
+        }
+
+        .export-tab.active {
+            background: var(--tab-active-bg);
+            color: var(--button-text-color);
+        }
+
+        /* Mobile responsiveness for header */
+        @media (max-width: 480px) {
+            .header-actions {
+                flex-direction: column;
+                gap: 5px;
+                align-items: flex-end;
+            }
+
+            .export-header-btn {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+                position: relative;
+                z-index: 10;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header-content {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .header-actions {
+                flex-direction: row;
+                width: auto;
+                justify-content: flex-end;
+                margin-top: 0;
+                flex-shrink: 0;
+            }
+
+            .export-header-btn {
+                position: relative;
+                z-index: 10;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .header-content {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+
+            .header-actions {
+                flex-shrink: 0;
+            }
+
+            .export-header-btn {
+                position: relative;
+                z-index: 10;
+                min-width: auto;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="header-content">
                 <h1>Trading Diary</h1>
-                <div class="date-display" id="currentDate"></div>
+                <div class="header-actions">
+                    <button class="export-header-btn" id="exportBtn" title="Export to Excel">Export</button>
+                </div>
             </div>
         </header>
         
@@ -1955,6 +2165,31 @@
         </div>
     </div>
 
+    <!-- Modal for export -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Export to Excel</h2>
+            <div class="export-period">
+                <div class="period-row">
+                    <label>From:</label>
+                    <input type="date" id="exportStartDate" class="date-input">
+                </div>
+                <div class="period-row">
+                    <label>To:</label>
+                    <input type="date" id="exportEndDate" class="date-input">
+                </div>
+            </div>
+            <div class="export-tabs">
+                <div class="export-tab active" data-tab="table">Table Data</div>
+                <div class="export-tab" data-tab="general">General Data</div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn profit-btn" id="saveExportBtn">Export</button>
+                <button class="modal-btn reset-btn" id="cancelExportBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <div id="notification" class="notification"></div>
     
     <script>
@@ -2009,7 +2244,6 @@
             }
             
             // Elements
-            const currentDateEl = document.getElementById('currentDate');
             const tradingTable = document.getElementById('tradingTable');
             const resultModal = document.getElementById('resultModal');
             const tradeAmountModal = document.getElementById('tradeAmountModal');
@@ -2144,8 +2378,7 @@
             // Initialize
             function init() {
                 console.log('Initializing trading diary app');
-                if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
-                
+
                 // Load balance settings
                 if (appSettings.startingBalance && balanceAmount) {
                     balanceAmount.textContent = formatNumber(appSettings.startingBalance);
@@ -2811,8 +3044,7 @@
                 }
                 
                 currentDate = date;
-                if (currentDateEl) currentDateEl.textContent = formatDate(currentDate);
-                
+
                 const dateKey = formatDateKey(currentDate);
                 
                 if (historyData[dateKey]) {
@@ -2990,12 +3222,29 @@
             
             function showNotification(message, type) {
                 if (!notification) return;
-                
-                notification.textContent = message;
+
+                // Disable all buttons during notification
+                const allButtons = document.querySelectorAll('button:not(.modal-btn)');
+                allButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                });
+
+                // Укоротить сообщение до 6-8 слов
+                const words = message.split(' ');
+                const shortMessage = words.length > 8 ? words.slice(0, 8).join(' ') + '...' : message;
+
+                notification.textContent = shortMessage;
                 notification.className = `notification ${type}`;
-                
+
                 setTimeout(() => {
                     notification.className = 'notification';
+
+                    // Re-enable all buttons after notification
+                    allButtons.forEach(btn => {
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                    });
                 }, 3000);
             }
             
@@ -4595,6 +4844,412 @@
                     setTimeout(logStartingBalanceStyles, 500);
                 }
             });
+
+            // ==================== EXPORT FUNCTIONALITY ====================
+
+            // Elements for export
+            let exportBtn = document.getElementById('exportBtn');
+            const exportModal = document.getElementById('exportModal');
+            const exportStartDate = document.getElementById('exportStartDate');
+            const exportEndDate = document.getElementById('exportEndDate');
+            const saveExportBtn = document.getElementById('saveExportBtn');
+            const cancelExportBtn = document.getElementById('cancelExportBtn');
+            const exportTabs = document.querySelectorAll('.export-tab');
+
+            // State for export
+            let currentExportType = 'table';
+            let isExportInProgress = false;
+
+            // Initialize export functionality
+            function initExport() {
+                console.log('initExport: Starting export initialization');
+
+                // Set default dates (last 30 days)
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(startDate.getDate() - 30);
+
+                if (exportStartDate) exportStartDate.value = formatDateForInput(startDate);
+                if (exportEndDate) exportEndDate.value = formatDateForInput(endDate);
+
+                // Export tab handling
+                if (exportTabs) {
+                    exportTabs.forEach(tab => {
+                        tab.addEventListener('click', () => {
+                            exportTabs.forEach(t => t.classList.remove('active'));
+                            tab.classList.add('active');
+                            currentExportType = tab.dataset.tab;
+                        });
+                    });
+                }
+
+                // Убедимся, что кнопка экспорта всегда работает
+                if (exportBtn) {
+                    // Гарантируем начальное состояние кнопки
+                    exportBtn.disabled = false;
+                    isExportInProgress = false;
+
+                    // Добавляем обработчик клика (только один раз)
+                    exportBtn.addEventListener('click', handleExportClick);
+                    console.log('initExport: Export button initialized successfully');
+                } else {
+                    console.error('initExport: exportBtn not found');
+                }
+            }
+
+            // Функция для безопасного управления состоянием кнопки экспорта
+            function setExportButtonState(disabled, reason = '') {
+                if (!exportBtn) {
+                    console.error('setExportButtonState: exportBtn not found');
+                    return;
+                }
+
+                const wasDisabled = exportBtn.disabled;
+                exportBtn.disabled = disabled;
+                isExportInProgress = disabled;
+
+                console.log(`setExportButtonState: Button ${disabled ? 'disabled' : 'enabled'} (${reason})`);
+                console.log(`setExportButtonState: Previous state: ${wasDisabled}, New state: ${disabled}`);
+                console.log(`setExportButtonState: Current exportBtn reference:`, exportBtn);
+            }
+
+            // Обработчик клика по кнопке экспорта
+            function handleExportClick() {
+                console.log('handleExportClick: Export button clicked');
+
+                // Проверяем состояние экспорта
+                if (isExportInProgress) {
+                    console.log('handleExportClick: Export already in progress, ignoring click');
+                    return;
+                }
+
+                // Проверяем существование элементов
+                if (!exportBtn) {
+                    console.error('handleExportClick: exportBtn not found');
+                    return;
+                }
+
+                if (!exportModal) {
+                    console.error('handleExportClick: exportModal not found');
+                    return;
+                }
+
+                console.log('handleExportClick: Opening export modal');
+
+                // Открываем модальное окно
+                exportModal.style.display = 'flex';
+
+                // Сбрасываем даты при каждом открытии
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(startDate.getDate() - 30);
+
+                if (exportStartDate) exportStartDate.value = formatDateForInput(startDate);
+                if (exportEndDate) exportEndDate.value = formatDateForInput(endDate);
+
+                console.log('handleExportClick: Export modal opened successfully');
+            }
+
+            // Format date for input[type="date"]
+            function formatDateForInput(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            // Parse date from input
+            function parseExportDate(dateString) {
+                const [year, month, day] = dateString.split('-').map(Number);
+                return new Date(year, month - 1, day);
+            }
+
+            // Export data to Excel
+            function exportToExcel() {
+                console.log('exportToExcel: Starting export process');
+
+                // Проверяем, что экспорт не выполняется
+                if (isExportInProgress) {
+                    console.log('exportToExcel: Export already in progress');
+                    return;
+                }
+
+                try {
+                    // Отключаем кнопку экспорта
+                    setExportButtonState(true, 'starting export');
+
+                    const startDate = parseExportDate(exportStartDate.value);
+                    const endDate = parseExportDate(exportEndDate.value);
+
+                    if (startDate > endDate) {
+                        showNotification('Start date cannot be after end date', 'error');
+                        // Восстанавливаем состояние кнопки при ошибке валидации
+                        setExportButtonState(false, 'validation error');
+                        return;
+                    }
+
+                    let data;
+                    let filename;
+
+                    if (currentExportType === 'table') {
+                        data = prepareTableDataForExport(startDate, endDate);
+                        filename = `trading_diary_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
+                    } else {
+                        data = prepareGeneralDataForExport(startDate, endDate);
+                        filename = `trading_general_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
+                    }
+
+                    // Create workbook and worksheet
+                    const wb = XLSX.utils.book_new();
+                    const ws = XLSX.utils.json_to_sheet(data);
+
+                    // Add worksheet to workbook
+                    XLSX.utils.book_append_sheet(wb, ws, 'Trading Data');
+
+                    // Export to file
+                    XLSX.writeFile(wb, filename);
+
+                    // Close modal after successful export
+                    closeModal();
+
+                    // Show success notification
+                    showNotification('Excel file downloaded successfully', 'success');
+                    console.log('exportToExcel: Export completed successfully');
+
+                } catch (error) {
+                    console.error('Export error:', error);
+                    showNotification('Export error occurred', 'error');
+                } finally {
+                    // ВСЕГДА восстанавливаем состояние кнопки экспорта
+                    setExportButtonState(false, 'export finished');
+                    console.log('exportToExcel: Finally block executed, button state restored');
+                }
+            }
+
+            // Prepare table data for export
+            function prepareTableDataForExport(startDate, endDate) {
+                const exportData = [];
+
+                // Get all dates in range
+                const datesInRange = getDatesInRange(startDate, endDate);
+
+                datesInRange.forEach(date => {
+                    const dateKey = formatDateKey(date);
+                    const dayData = historyData[dateKey];
+
+                    if (dayData && dayData.trades) {
+                        dayData.trades.forEach((trade, tradeIndex) => {
+                            // Only export trades with data
+                            if (trade.tradeAmount || trade.result || trade.emotion || trade.comment) {
+                                const rowData = {
+                                    'Date': formatDate(date),
+                                    'Trade Number': tradeIndex + 1,
+                                    'Trade Amount': trade.tradeAmount || 0,
+                                    'Result Type': trade.result ? trade.result.type : '',
+                                    'Result Amount': trade.result ? trade.result.amount : 0,
+                                    'Emotional State': trade.emotion || '',
+                                    'Comments': trade.comment || ''
+                                };
+                                exportData.push(rowData);
+                            }
+                        });
+                    }
+                });
+
+                return exportData;
+            }
+
+            // Prepare general data for export
+            function prepareGeneralDataForExport(startDate, endDate) {
+                const exportData = [];
+
+                // Get all dates in range
+                const datesInRange = getDatesInRange(startDate, endDate);
+
+                datesInRange.forEach(date => {
+                    const dateKey = formatDateKey(date);
+                    const dayData = historyData[dateKey];
+                    const generalDayData = generalData[dateKey] || {};
+
+                    // Calculate withdrawals for this date
+                    const dayWithdrawals = withdrawalData[dateKey] || [];
+                    const totalWithdrawal = dayWithdrawals.reduce((sum, withdrawal) => sum + withdrawal.amount, 0);
+
+                    if (dayData && dayData.trades) {
+                        // Calculate day totals
+                        let dayProfit = 0;
+                        let dayLoss = 0;
+                        let winTrades = 0;
+                        let lossTrades = 0;
+                        let totalTrades = 0;
+
+                        dayData.trades.forEach(trade => {
+                            if (trade.result) {
+                                totalTrades++;
+                                if (trade.result.type === 'profit') {
+                                    dayProfit += trade.result.amount;
+                                    winTrades++;
+                                } else if (trade.result.type === 'loss') {
+                                    dayLoss += trade.result.amount;
+                                    lossTrades++;
+                                }
+                            }
+                        });
+
+                        const netResult = dayProfit - dayLoss;
+                        const rowData = {
+                            'Date': formatDate(date),
+                            'Profit Target (%)': generalDayData.profitTarget || '',
+                            'Loss Target (%)': generalDayData.lossTarget || '',
+                            'Actual P/L (%)': generalDayData.actualProfitLoss || 0,
+                            'Total Profit': dayProfit,
+                            'Total Loss': dayLoss,
+                            'Net Result': netResult,
+                            'Withdrawals': totalWithdrawal,
+                            'Total (Net - Withdrawals)': netResult - totalWithdrawal, // Новая колонка
+                            'Winning Trades': winTrades,
+                            'Losing Trades': lossTrades,
+                            'Total Trades': totalTrades,
+                            'Win Rate (%)': totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(2) : 0
+                        };
+
+                        exportData.push(rowData);
+                    } else if (totalWithdrawal > 0) {
+                        // Если нет торгов, но есть выводы - все равно экспортируем
+                        const rowData = {
+                            'Date': formatDate(date),
+                            'Profit Target (%)': generalDayData.profitTarget || '',
+                            'Loss Target (%)': generalDayData.lossTarget || '',
+                            'Actual P/L (%)': generalDayData.actualProfitLoss || 0,
+                            'Total Profit': 0,
+                            'Total Loss': 0,
+                            'Net Result': 0,
+                            'Withdrawals': totalWithdrawal,
+                            'Total (Net - Withdrawals)': -totalWithdrawal,
+                            'Winning Trades': 0,
+                            'Losing Trades': 0,
+                            'Total Trades': 0,
+                            'Win Rate (%)': 0
+                        };
+                        exportData.push(rowData);
+                    }
+                });
+
+                return exportData;
+            }
+
+            // Get all dates in a range
+            function getDatesInRange(startDate, endDate) {
+                const dates = [];
+                const currentDate = new Date(startDate);
+
+                while (currentDate <= endDate) {
+                    dates.push(new Date(currentDate));
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+
+                return dates;
+            }
+
+            // Event listeners for export
+            if (saveExportBtn) {
+                saveExportBtn.addEventListener('click', () => {
+                    console.log('saveExportBtn: clicked');
+                    if (!isExportInProgress) {
+                        exportToExcel();
+                    } else {
+                        console.log('saveExportBtn: Export already in progress');
+                    }
+                });
+            }
+
+            if (cancelExportBtn) {
+                cancelExportBtn.addEventListener('click', () => {
+                    console.log('cancelExportBtn: clicked');
+                    closeModal();
+                });
+            }
+
+            if (exportModal) {
+                exportModal.addEventListener('click', (e) => {
+                    if (e.target === exportModal) {
+                        console.log('exportModal: clicked outside');
+                        closeModal();
+                    }
+                });
+            }
+
+            // Close export modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && exportModal && exportModal.style.display === 'flex') {
+                    console.log('Escape key pressed in export modal');
+                    closeModal();
+                }
+            });
+
+            // Update closeModal function to include export modal
+            function closeModal() {
+                console.log('closeModal: Closing all modals');
+
+                const modals = [
+                    resultModal,
+                    tradeAmountModal,
+                    withdrawalModal,
+                    withdrawalActionModal,
+                    emotionModal,
+                    commentsModal,
+                    balanceModal,
+                    targetModal,
+                    exportModal  // Add export modal to the list
+                ];
+
+                modals.forEach(modal => {
+                    if (modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+
+                // Reset state variables
+                currentCell = null;
+                currentTradeIndex = null;
+                currentColumnType = null;
+                currentTargetDay = null;
+                currentTargetType = null;
+                currentWithdrawalDate = null;
+                currentWithdrawalIndex = null;
+
+                // Reset input fields
+                if (amountInput) amountInput.value = '';
+                if (tradeAmountInput) tradeAmountInput.value = '';
+                if (withdrawalAmountInput) withdrawalAmountInput.value = '';
+                if (balanceInput) balanceInput.value = '';
+                if (targetInput) targetInput.value = '';
+                if (commentsInput) commentsInput.value = '';
+
+                // Гарантированное восстановление состояния кнопки экспорта при закрытии любого модального окна
+                setExportButtonState(false, 'modal closed');
+            }
+
+            // Initialize export when app starts
+            initExport();
+
+            // Debug function for Telegram
+            function checkTelegramEnvironment() {
+                const isTelegram = window.Telegram && Telegram.WebApp;
+                const platform = isTelegram ? Telegram.WebApp.platform : 'browser';
+    
+                console.log('Environment check:', {
+                    isTelegram: isTelegram,
+                    platform: platform,
+                    userAgent: navigator.userAgent,
+                    exportSupported: typeof XLSX !== 'undefined'
+                });
+    
+                return isTelegram;
+            }
+
+            // Call this on startup
+            setTimeout(checkTelegramEnvironment, 500);
         });
     </script>
 </body>
