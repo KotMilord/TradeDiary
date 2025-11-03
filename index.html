@@ -5336,30 +5336,31 @@
 
             // Function to open export in external browser
             function openInExternalBrowser() {
+                console.log('openInExternalBrowser: Starting browser export process');
+
                 // Get current export dates
                 const startDate = parseExportDate(exportStartDate.value);
                 const endDate = parseExportDate(exportEndDate.value);
+
+                console.log('openInExternalBrowser: Dates parsed:', { startDate, endDate });
 
                 // Create URL with parameters for the app
                 const appUrl = window.location.href.split('?')[0];
                 const exportUrl = `${appUrl}?export=true&start=${formatDateForInput(startDate)}&end=${formatDateForInput(endDate)}&type=${currentExportType}`;
 
+                console.log('openInExternalBrowser: Export URL created:', exportUrl);
+
                 // Open in browser
                 if (tg && tg.openLink) {
+                    console.log('openInExternalBrowser: Using Telegram openLink');
                     tg.openLink(exportUrl);
                 } else {
+                    console.log('openInExternalBrowser: Using window.open');
                     window.open(exportUrl, '_blank');
                 }
 
                 showNotification('Opening in browser for better download support', 'success');
                 closeModal();
-
-                // Automatically trigger export after opening in browser
-                setTimeout(() => {
-                    if (window.location.search.includes('export=true')) {
-                        exportToExcel();
-                    }
-                }, 2000);
             }
 
             // Function to check URL parameters for automatic export
@@ -5371,6 +5372,7 @@
                 const typeParam = urlParams.get('type');
 
                 if (exportParam === 'true' && startParam && endParam) {
+                    console.log('checkUrlParameters: Export parameters detected, starting automatic export');
                     // Set export parameters
                     if (exportStartDate) exportStartDate.value = startParam;
                     if (exportEndDate) exportEndDate.value = endParam;
@@ -5378,8 +5380,9 @@
 
                     // Automatically start export
                     setTimeout(() => {
+                        console.log('checkUrlParameters: Starting automatic export');
                         exportToExcel();
-                    }, 1000); // Small delay to ensure everything is loaded
+                    }, 500); // Reduced delay for faster execution
                 }
             }
 
