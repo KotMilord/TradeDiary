@@ -5353,6 +5353,13 @@
 
                 showNotification('Opening in browser for better download support', 'success');
                 closeModal();
+
+                // Automatically trigger export after opening in browser
+                setTimeout(() => {
+                    if (window.location.search.includes('export=true')) {
+                        exportToExcel();
+                    }
+                }, 2000);
             }
 
             // Function to check URL parameters for automatic export
@@ -5393,6 +5400,7 @@
 
             // Call this on startup
             setTimeout(checkTelegramEnvironment, 500);
+            checkUrlParameters();
         });
     </script>
 </body>
