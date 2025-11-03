@@ -2186,6 +2186,7 @@
             <div class="modal-buttons">
                 <button class="modal-btn profit-btn" id="saveExportBtn">Export</button>
                 <button class="modal-btn reset-btn" id="cancelExportBtn">Cancel</button>
+                <button class="modal-btn profit-btn" id="browserExportBtn" style="background: #ff9800;">Open in Browser</button>
             </div>
         </div>
     </div>
@@ -5319,18 +5320,74 @@
             // Initialize export when app starts
             initExport();
 
+            // Add browser export option to modal
+            addBrowserExportOption();
+
+            // Check URL parameters for automatic export
+            checkUrlParameters();
+
+            // Function to add browser export button to modal
+            function addBrowserExportOption() {
+                const browserBtn = document.getElementById('browserExportBtn');
+                if (browserBtn) {
+                    browserBtn.addEventListener('click', openInExternalBrowser);
+                }
+            }
+
+            // Function to open export in external browser
+            function openInExternalBrowser() {
+                // Get current export dates
+                const startDate = parseExportDate(exportStartDate.value);
+                const endDate = parseExportDate(exportEndDate.value);
+
+                // Create URL with parameters for the app
+                const appUrl = window.location.href.split('?')[0];
+                const exportUrl = `${appUrl}?export=true&start=${formatDateForInput(startDate)}&end=${formatDateForInput(endDate)}&type=${currentExportType}`;
+
+                // Open in browser
+                if (tg && tg.openLink) {
+                    tg.openLink(exportUrl);
+                } else {
+                    window.open(exportUrl, '_blank');
+                }
+
+                showNotification('Opening in browser for better download support', 'success');
+                closeModal();
+            }
+
+            // Function to check URL parameters for automatic export
+            function checkUrlParameters() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const exportParam = urlParams.get('export');
+                const startParam = urlParams.get('start');
+                const endParam = urlParams.get('end');
+                const typeParam = urlParams.get('type');
+
+                if (exportParam === 'true' && startParam && endParam) {
+                    // Set export parameters
+                    if (exportStartDate) exportStartDate.value = startParam;
+                    if (exportEndDate) exportEndDate.value = endParam;
+                    if (typeParam) currentExportType = typeParam;
+
+                    // Automatically start export
+                    setTimeout(() => {
+                        exportToExcel();
+                    }, 1000); // Small delay to ensure everything is loaded
+                }
+            }
+
             // Debug function for Telegram
             function checkTelegramEnvironment() {
                 const isTelegram = window.Telegram && Telegram.WebApp;
                 const platform = isTelegram ? Telegram.WebApp.platform : 'browser';
-    
+
                 console.log('Environment check:', {
                     isTelegram: isTelegram,
                     platform: platform,
                     userAgent: navigator.userAgent,
                     exportSupported: typeof XLSX !== 'undefined'
                 });
-    
+
                 return isTelegram;
             }
 
