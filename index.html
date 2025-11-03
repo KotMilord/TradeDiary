@@ -2186,7 +2186,6 @@
             <div class="modal-buttons">
                 <button class="modal-btn profit-btn" id="saveExportBtn">Export</button>
                 <button class="modal-btn reset-btn" id="cancelExportBtn">Cancel</button>
-                <button class="modal-btn profit-btn" id="browserExportBtn" style="background: #ff9800;">Open in Browser</button>
             </div>
         </div>
     </div>
@@ -2194,14 +2193,6 @@
     <div id="notification" class="notification"></div>
     
     <script>
-        function s2ab(s) {
-            const buf = new ArrayBuffer(s.length);
-            const view = new Uint8Array(buf);
-            for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-            return buf;
-        }
-
-
         console.log('Trading Diary script loaded');
         // Initialize Telegram Web App
         let tg = window.Telegram?.WebApp;
@@ -4973,469 +4964,67 @@
                 return new Date(year, month - 1, day);
             }
 
-async function exportToExcel() {
-    console.log('exportToExcel: Starting export process');
+            // Export data to Excel
+            function exportToExcel() {
+                console.log('exportToExcel: Starting export process');
 
-    if (isExportInProgress) {
-        console.log('exportToExcel: Export already in progress');
-        return;
-    }
+                // Проверяем, что экспорт не выполняется
+                if (isExportInProgress) {
+                    console.log('exportToExcel: Export already in progress');
+                    return;
+                }
 
-    try {
-        setExportButtonState(true, 'starting export');
-        showNotification('Preparing data for export...', 'success');
+                try {
+                    // Отключаем кнопку экспорта
+                    setExportButtonState(true, 'starting export');
 
-        const startDate = parseExportDate(exportStartDate.value);
-        const endDate = parseExportDate(exportEndDate.value);
+                    const startDate = parseExportDate(exportStartDate.value);
+                    const endDate = parseExportDate(exportEndDate.value);
 
-        if (startDate > endDate) {
-            showNotification('Start date cannot be after end date', 'error');
-            setExportButtonState(false, 'validation error');
-            return;
-        }
+                    if (startDate > endDate) {
+                        showNotification('Start date cannot be after end date', 'error');
+                        // Восстанавливаем состояние кнопки при ошибке валидации
+                        setExportButtonState(false, 'validation error');
+                        return;
+                    }
 
-        let data;
-        let filename;
+                    let data;
+                    let filename;
 
-        if (currentExportType === 'table') {
-            data = prepareTableDataForExport(startDate, endDate);
-            filename = `trading_diary_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}`;
-        } else {
-            data = prepareGeneralDataForExport(startDate, endDate);
-            filename = `trading_general_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}`;
-        }
+                    if (currentExportType === 'table') {
+                        data = prepareTableDataForExport(startDate, endDate);
+                        filename = `trading_diary_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
+                    } else {
+                        data = prepareGeneralDataForExport(startDate, endDate);
+                        filename = `trading_general_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
+                    }
 
-        if (!data || data.length === 0) {
-            showNotification('No data found for the selected period', 'error');
-            setExportButtonState(false, 'no data');
-            return;
-        }
+                    // Create workbook and worksheet
+                    const wb = XLSX.utils.book_new();
+                    const ws = XLSX.utils.json_to_sheet(data);
 
-        // Определяем тип устройства
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        const isTelegramMobile = window.Telegram?.WebApp && isMobile;
+                    // Add worksheet to workbook
+                    XLSX.utils.book_append_sheet(wb, ws, 'Trading Data');
 
-        if (isTelegramMobile) {
-            // Для мобильного Telegram предлагаем multiple форматы
-            await showMobileExportOptions(data, filename);
-        } else {
-            // Для ПК и браузеров - стандартный Excel экспорт
-            await downloadExcel(data, filename + '.xlsx');
-        }
+                    // Export to file
+                    XLSX.writeFile(wb, filename);
 
-        closeModal();
-        console.log('exportToExcel: Export completed successfully');
+                    // Close modal after successful export
+                    closeModal();
 
-    } catch (error) {
-        console.error('Export error:', error);
-        showNotification('Export error: ' + error.message, 'error');
-    } finally {
-        setExportButtonState(false, 'export finished');
-    }
-}
+                    // Show success notification
+                    showNotification('Excel file downloaded successfully', 'success');
+                    console.log('exportToExcel: Export completed successfully');
 
-// Функция для показа опций экспорта на мобильных устройствах
-async function showMobileExportOptions(data, filename) {
-    // Создаем модальное окно с выбором формата
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.7);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-    `;
-
-    const modalContent = document.createElement('div');
-    modalContent.style.cssText = `
-        background: var(--modal-bg);
-        color: var(--text-color);
-        padding: 20px;
-        border-radius: 12px;
-        width: 90%;
-        max-width: 300px;
-        text-align: center;
-    `;
-
-    modalContent.innerHTML = `
-        <h3>Choose Export Format</h3>
-        <p style="margin: 15px 0; font-size: 0.9rem;">Select format for mobile device:</p>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            <button id="exportCsvBtn" style="padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                📊 CSV File (Recommended)
-            </button>
-            <button id="exportJsonBtn" style="padding: 12px; background: #2196F3; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                📁 JSON Data
-            </button>
-            <button id="exportTextBtn" style="padding: 12px; background: #FF9800; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                📝 Text Report
-            </button>
-            <button id="exportExcelBtn" style="padding: 12px; background: #9C27B0; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                📈 Excel (Try)
-            </button>
-            <button id="cancelExportBtn" style="padding: 12px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                Cancel
-            </button>
-        </div>
-    `;
-
-    modal.appendChild(modalContent);
-    document.body.appendChild(modal);
-
-    return new Promise((resolve) => {
-        // Обработчики для разных форматов
-        document.getElementById('exportCsvBtn').onclick = () => {
-            document.body.removeChild(modal);
-            downloadCSV(data, filename + '.csv');
-            resolve();
-        };
-
-        document.getElementById('exportJsonBtn').onclick = () => {
-            document.body.removeChild(modal);
-            downloadJSON(data, filename + '.json');
-            resolve();
-        };
-
-        document.getElementById('exportTextBtn').onclick = () => {
-            document.body.removeChild(modal);
-            downloadTextReport(data, filename + '.txt');
-            resolve();
-        };
-
-        document.getElementById('exportExcelBtn').onclick = () => {
-            document.body.removeChild(modal);
-            downloadExcel(data, filename + '.xlsx');
-            resolve();
-        };
-
-        document.getElementById('cancelExportBtn').onclick = () => {
-            document.body.removeChild(modal);
-            resolve();
-        };
-
-        // Закрытие по клику вне модального окна
-        modal.onclick = (e) => {
-            if (e.target === modal) {
-                document.body.removeChild(modal);
-                resolve();
+                } catch (error) {
+                    console.error('Export error:', error);
+                    showNotification('Export error occurred', 'error');
+                } finally {
+                    // ВСЕГДА восстанавливаем состояние кнопки экспорта
+                    setExportButtonState(false, 'export finished');
+                    console.log('exportToExcel: Finally block executed, button state restored');
+                }
             }
-        };
-    });
-}
-
-// Функция для скачивания CSV (лучшая поддержка на мобильных)
-function downloadCSV(data, filename) {
-    if (!data || data.length === 0) {
-        showNotification('No data to export', 'error');
-        return;
-    }
-
-    try {
-        // Получаем заголовки из первого объекта
-        const headers = Object.keys(data[0]);
-        const csvHeaders = headers.map(header => `"${header}"`).join(',');
-        
-        // Конвертируем данные в CSV
-        const csvRows = data.map(row => {
-            return headers.map(header => {
-                const value = row[header];
-                // Экранируем кавычки и специальные символы
-                const escapedValue = String(value || '').replace(/"/g, '""');
-                return `"${escapedValue}"`;
-            }).join(',');
-        });
-
-        const csvContent = [csvHeaders, ...csvRows].join('\n');
-        
-        // Создаем Blob с CSV
-        const blob = new Blob([csvContent], {
-            type: 'text/csv;charset=utf-8;'
-        });
-
-        // Пытаемся скачать разными способами
-        if (window.Telegram?.WebApp?.openDocument) {
-            const file = new File([blob], filename, { type: 'text/csv' });
-            Telegram.WebApp.openDocument(file, { filename: filename });
-            showNotification('CSV file opened in Telegram', 'success');
-        } else {
-            fallbackDownload(blob, filename, 'text/csv');
-        }
-
-    } catch (error) {
-        console.error('CSV export error:', error);
-        showNotification('CSV export failed', 'error');
-    }
-}
-
-// Функция для скачивания JSON
-function downloadJSON(data, filename) {
-    try {
-        const jsonContent = JSON.stringify(data, null, 2);
-        const blob = new Blob([jsonContent], {
-            type: 'application/json'
-        });
-
-        if (window.Telegram?.WebApp?.openDocument) {
-            const file = new File([blob], filename, { type: 'application/json' });
-            Telegram.WebApp.openDocument(file, { filename: filename });
-            showNotification('JSON data opened in Telegram', 'success');
-        } else {
-            fallbackDownload(blob, filename, 'application/json');
-        }
-
-        // Также сохраняем в localStorage как резервную копию
-        saveToLocalStorage(filename, data);
-        
-    } catch (error) {
-        console.error('JSON export error:', error);
-        showNotification('JSON export failed', 'error');
-    }
-}
-
-// Функция для текстового отчета
-function downloadTextReport(data, filename) {
-    try {
-        let textContent = 'TRADING DIARY EXPORT REPORT\n';
-        textContent += 'Generated: ' + new Date().toLocaleString() + '\n';
-        textContent += '='.repeat(50) + '\n\n';
-
-        if (data.length > 0) {
-            const headers = Object.keys(data[0]);
-            
-            data.forEach((row, index) => {
-                textContent += `Record ${index + 1}:\n`;
-                headers.forEach(header => {
-                    textContent += `  ${header}: ${row[header]}\n`;
-                });
-                textContent += '\n';
-            });
-        }
-
-        const blob = new Blob([textContent], {
-            type: 'text/plain'
-        });
-
-        if (window.Telegram?.WebApp?.openDocument) {
-            const file = new File([blob], filename, { type: 'text/plain' });
-            Telegram.WebApp.openDocument(file, { filename: filename });
-            showNotification('Text report opened in Telegram', 'success');
-        } else {
-            fallbackDownload(blob, filename, 'text/plain');
-        }
-
-    } catch (error) {
-        console.error('Text export error:', error);
-        showNotification('Text export failed', 'error');
-    }
-}
-
-// Улучшенная функция для Excel
-async function downloadExcel(data, filename) {
-    try {
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(data);
-        XLSX.utils.book_append_sheet(wb, ws, 'Trading Data');
-
-        const wbout = XLSX.write(wb, {
-            bookType: 'xlsx',
-            type: 'binary'
-        });
-
-        const blob = new Blob([s2ab(wbout)], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        });
-
-        if (window.Telegram?.WebApp?.openDocument) {
-            const file = new File([blob], filename, {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            });
-            
-            Telegram.WebApp.openDocument(file, {
-                filename: filename,
-                mime_type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            });
-            showNotification('Excel file opened in Telegram', 'success');
-        } else {
-            fallbackDownload(blob, filename, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        }
-
-    } catch (error) {
-        console.error('Excel export error:', error);
-        showNotification('Excel export failed, try CSV format', 'error');
-        
-        // Fallback to CSV если Excel не работает
-        downloadCSV(data, filename.replace('.xlsx', '.csv'));
-    }
-}
-
-// Сохранение в Local Storage как резервная копия
-function saveToLocalStorage(key, data) {
-    try {
-        const timestamp = new Date().toISOString();
-        const backupData = {
-            data: data,
-            exportedAt: timestamp,
-            recordCount: data.length
-        };
-
-        localStorage.setItem(`backup_${key}`, JSON.stringify(backupData));
-        console.log('Data backed up to localStorage:', key);
-    } catch (error) {
-        console.error('LocalStorage backup failed:', error);
-    }
-}
-
-// Улучшенная функция fallbackDownload с поддержкой Web Share API и мобильных устройств
-function fallbackDownload(blob, filename, mimeType = 'application/octet-stream') {
-    // Создаем URL для Blob
-    const url = URL.createObjectURL(blob);
-
-    // Пытаемся использовать API скачивания
-    if (navigator.msSaveBlob) {
-        // Для IE
-        navigator.msSaveBlob(blob, filename);
-    } else if (navigator.share && /Mobile|Android/i.test(navigator.userAgent)) {
-        // Для мобильных устройств с поддержкой Web Share API
-        navigator.share({
-            files: [new File([blob], filename, { type: mimeType })],
-            title: 'Trading Diary Export'
-        }).catch(() => {
-            // Fallback если Web Share API не поддерживается
-            openInNewTab(url, filename);
-        });
-    } else {
-        // Стандартный метод
-        openInNewTab(url, filename);
-    }
-
-    // Очистка памяти
-    setTimeout(() => {
-        URL.revokeObjectURL(url);
-    }, 1000);
-}
-
-function openInNewTab(url, filename) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-
-    try {
-        a.click();
-        showNotification(`Downloading ${filename}`, 'success');
-    } catch (error) {
-        // Если клик не сработал, открываем в новой вкладке
-        window.open(url, '_blank');
-        showNotification(`File opened in new tab. Please save it manually.`, 'success');
-    }
-
-    setTimeout(() => {
-        if (document.body.contains(a)) {
-            document.body.removeChild(a);
-        }
-    }, 100);
-}
-
-// Функция для просмотра резервных копий
-window.showBackupManager = function() {
-    const backups = [];
-    
-    // Собираем все резервные копии
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith('backup_')) {
-            try {
-                const data = JSON.parse(localStorage.getItem(key));
-                backups.push({
-                    key: key,
-                    name: key.replace('backup_', ''),
-                    timestamp: data.exportedAt,
-                    recordCount: data.recordCount
-                });
-            } catch (e) {
-                console.error('Error parsing backup:', key, e);
-            }
-        }
-    }
-    
-    if (backups.length === 0) {
-        showNotification('No backups found', 'error');
-        return;
-    }
-    
-    // Показываем менеджер резервных копий
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.7);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-    `;
-
-    let modalContent = `
-        <div style="background: var(--modal-bg); color: var(--text-color); padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto;">
-            <h3>📁 Data Backups</h3>
-            <p style="margin: 10px 0; font-size: 0.9rem;">Your exported data backups:</p>
-            <div style="max-height: 300px; overflow-y: auto; margin: 15px 0;">
-    `;
-    
-    backups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-    
-    backups.forEach(backup => {
-        const date = new Date(backup.timestamp).toLocaleString();
-        modalContent += `
-            <div style="padding: 10px; border-bottom: 1px solid var(--border-color);">
-                <strong>${backup.name}</strong><br>
-                <small>${date} • ${backup.recordCount} records</small>
-                <button onclick="restoreBackup('${backup.key}')" style="margin-left: 10px; padding: 5px 10px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
-                    Restore
-                </button>
-            </div>
-        `;
-    });
-    
-    modalContent += `
-            </div>
-            <button onclick="closeBackupManager()" style="padding: 10px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; width: 100%;">
-                Close
-            </button>
-        </div>
-    `;
-    
-    modal.innerHTML = modalContent;
-    document.body.appendChild(modal);
-}
-
-// Глобальные функции для работы с резервными копиями
-window.restoreBackup = function(backupKey) {
-    try {
-        const backupData = JSON.parse(localStorage.getItem(backupKey));
-        showNotification(`Backup restored: ${backupData.recordCount} records`, 'success');
-        // Здесь можно добавить логику восстановления данных
-        console.log('Restored backup:', backupData);
-    } catch (error) {
-        showNotification('Failed to restore backup', 'error');
-    }
-};
-
-window.closeBackupManager = function() {
-    const modal = document.querySelector('div[style*="z-index: 10000"]');
-    if (modal) {
-        document.body.removeChild(modal);
-    }
-};
 
             // Prepare table data for export
             function prepareTableDataForExport(startDate, endDate) {
@@ -5567,10 +5156,7 @@ window.closeBackupManager = function() {
                 saveExportBtn.addEventListener('click', () => {
                     console.log('saveExportBtn: clicked');
                     if (!isExportInProgress) {
-                        // Добавляем небольшую задержку для стабильности
-                        setTimeout(() => {
-                            exportToExcel();
-                        }, 100);
+                        exportToExcel();
                     } else {
                         console.log('saveExportBtn: Export already in progress');
                     }
@@ -5647,231 +5233,24 @@ window.closeBackupManager = function() {
             // Initialize export when app starts
             initExport();
 
-            // Add browser export option to modal
-            addBrowserExportOption();
-
-            // Check URL parameters for automatic export
-            checkUrlParameters();
-
-            // Function to add browser export button to modal
-            function addBrowserExportOption() {
-                const browserBtn = document.getElementById('browserExportBtn');
-                if (browserBtn) {
-                    browserBtn.addEventListener('click', openInExternalBrowser);
-                }
-            }
-
-            function openInExternalBrowser() {
-                // Get current export dates
-                const startDate = parseExportDate(exportStartDate.value);
-                const endDate = parseExportDate(exportEndDate.value);
-
-                // Create URL with parameters for the app
-                const appUrl = window.location.href.split('?')[0];
-                const exportUrl = `${appUrl}?export=true&start=${formatDateForInput(startDate)}&end=${formatDateForInput(endDate)}&type=${currentExportType}`;
-
-                // Open in browser
-                if (tg && tg.openLink) {
-                    tg.openLink(exportUrl);
-                } else {
-                    window.open(exportUrl, '_blank');
-                }
-
-                showNotification('Opening in browser for better download support', 'success');
-                closeModal();
-            }
-
-            // Function to check URL parameters for automatic export
-            function checkUrlParameters() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const exportParam = urlParams.get('export');
-                const startParam = urlParams.get('start');
-                const endParam = urlParams.get('end');
-                const typeParam = urlParams.get('type');
-
-                if (exportParam === 'true' && startParam && endParam) {
-                    console.log('checkUrlParameters: Export parameters detected, starting automatic export');
-                    console.log('checkUrlParameters: Parameters:', { startParam, endParam, typeParam });
-
-                    // Set export parameters
-                    if (exportStartDate) exportStartDate.value = startParam;
-                    if (exportEndDate) exportEndDate.value = endParam;
-                    if (typeParam) currentExportType = typeParam;
-
-                    // Automatically start export
-                    setTimeout(() => {
-                        console.log('checkUrlParameters: Starting automatic export');
-                        exportToExcel();
-                    }, 500); // Reduced delay for faster execution
-                }
-            }
-
             // Debug function for Telegram
             function checkTelegramEnvironment() {
                 const isTelegram = window.Telegram && Telegram.WebApp;
                 const platform = isTelegram ? Telegram.WebApp.platform : 'browser';
-
+    
                 console.log('Environment check:', {
                     isTelegram: isTelegram,
                     platform: platform,
                     userAgent: navigator.userAgent,
                     exportSupported: typeof XLSX !== 'undefined'
                 });
-
+    
                 return isTelegram;
             }
 
             // Call this on startup
             setTimeout(checkTelegramEnvironment, 500);
-
-            // Check URL parameters for automatic export (call after a short delay to ensure DOM is ready)
-            setTimeout(checkUrlParameters, 100);
         });
-
-        // В начале скрипта добавьте
-        console.log('Telegram WebApp available:', !!window.Telegram?.WebApp);
-        if (window.Telegram?.WebApp) {
-            console.log('Telegram WebApp version:', Telegram.WebApp.version);
-            console.log('OpenDocument support:', !!Telegram.WebApp.openDocument);
-        }
-
-        // В раздел Settings добавьте эту кнопку
-        function addBackupManagerToSettings() {
-            console.log('addBackupManagerToSettings: Starting...');
-
-            // Wait for settings tab to be visible
-            const settingsTab = document.getElementById('settings-tab');
-            if (!settingsTab) {
-                console.log('addBackupManagerToSettings: Settings tab not found, retrying...');
-                setTimeout(addBackupManagerToSettings, 100);
-                return;
-            }
-
-            const settingsPanels = settingsTab.querySelectorAll('.settings-panel');
-            console.log('addBackupManagerToSettings: Found panels:', settingsPanels.length);
-
-            if (settingsPanels.length > 0) {
-                // Add to the first settings panel (Data Management)
-                const settingsPanel = settingsPanels[0];
-                console.log('addBackupManagerToSettings: Using first panel');
-
-                // Check if button already exists
-                const existingButton = settingsPanel.querySelector('button[onclick="showBackupManager()"]');
-                if (existingButton) {
-                    console.log('addBackupManagerToSettings: Button already exists');
-                    return;
-                }
-
-                const backupButton = document.createElement('button');
-                backupButton.className = 'btn settings-btn';
-                backupButton.style.background = '#FF9800';
-                backupButton.innerHTML = '📁 Manage Data Backups';
-                backupButton.onclick = showBackupManager;
-
-                settingsPanel.appendChild(backupButton);
-                console.log('addBackupManagerToSettings: Button added successfully');
-            } else {
-                console.log('addBackupManagerToSettings: No settings panels found');
-            }
-        }
-
-        // Вызовите эту функцию при инициализации
-        setTimeout(addBackupManagerToSettings, 1000);
-
-        // Функция для просмотра резервных копий
-        function showBackupManager() {
-            const backups = [];
-
-            // Собираем все резервные копии
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith('backup_')) {
-                    try {
-                        const data = JSON.parse(localStorage.getItem(key));
-                        backups.push({
-                            key: key,
-                            name: key.replace('backup_', ''),
-                            timestamp: data.exportedAt,
-                            recordCount: data.recordCount
-                        });
-                    } catch (e) {
-                        console.error('Error parsing backup:', key, e);
-                    }
-                }
-            }
-
-            if (backups.length === 0) {
-                showNotification('No backups found', 'error');
-                return;
-            }
-
-            // Показываем менеджер резервных копий
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.7);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 10000;
-            `;
-
-            let modalContent = `
-                <div style="background: var(--modal-bg); color: var(--text-color); padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto;">
-                    <h3>📁 Data Backups</h3>
-                    <p style="margin: 10px 0; font-size: 0.9rem;">Your exported data backups:</p>
-                    <div style="max-height: 300px; overflow-y: auto; margin: 15px 0;">
-            `;
-
-            backups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-            backups.forEach(backup => {
-                const date = new Date(backup.timestamp).toLocaleString();
-                modalContent += `
-                    <div style="padding: 10px; border-bottom: 1px solid var(--border-color);">
-                        <strong>${backup.name}</strong><br>
-                        <small>${date} • ${backup.recordCount} records</small>
-                        <button onclick="restoreBackup('${backup.key}')" style="margin-left: 10px; padding: 5px 10px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
-                            Restore
-                        </button>
-                    </div>
-                `;
-            });
-
-            modalContent += `
-                    </div>
-                    <button onclick="closeBackupManager()" style="padding: 10px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; width: 100%;">
-                        Close
-                    </button>
-                </div>
-            `;
-
-            modal.innerHTML = modalContent;
-            document.body.appendChild(modal);
-        }
-
-        // Глобальные функции для работы с резервными копиями
-        window.restoreBackup = function(backupKey) {
-            try {
-                const backupData = JSON.parse(localStorage.getItem(backupKey));
-                showNotification(`Backup restored: ${backupData.recordCount} records`, 'success');
-                // Здесь можно добавить логику восстановления данных
-                console.log('Restored backup:', backupData);
-            } catch (error) {
-                showNotification('Failed to restore backup', 'error');
-            }
-        };
-
-        window.closeBackupManager = function() {
-            const modal = document.querySelector('div[style*="z-index: 10000"]');
-            if (modal) {
-                document.body.removeChild(modal);
-            }
-        };
     </script>
 </body>
 </html>
