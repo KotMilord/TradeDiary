@@ -2193,6 +2193,39 @@
     <div id="notification" class="notification"></div>
     
     <script>
+        function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+
+        function exportExcel(data, filename = 'export.xlsx') {
+            // Создаем книгу и лист с данными
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'Export');
+
+            // Записываем книгу в бинарный формат
+            const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+            // Создаем Blob из бинарных данных
+            const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+
+            // Создаем ссылку на скачивание
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            // Удаляем ссылку и освобождаем память
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+
         console.log('Trading Diary script loaded');
         // Initialize Telegram Web App
         let tg = window.Telegram?.WebApp;
@@ -4978,6 +5011,9 @@
                     // Отключаем кнопку экспорта
                     setExportButtonState(true, 'starting export');
 
+                    // Показываем уведомление о начале экспорта
+                    showNotification('Starting export...', 'success');
+
                     const startDate = parseExportDate(exportStartDate.value);
                     const endDate = parseExportDate(exportEndDate.value);
 
@@ -4999,6 +5035,13 @@
                         filename = `trading_general_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
                     }
 
+                    // Проверяем, есть ли данные для экспорта
+                    if (!data || data.length === 0) {
+                        showNotification('No data found for the selected period', 'error');
+                        setExportButtonState(false, 'no data');
+                        return;
+                    }
+
                     // Create workbook and worksheet
                     const wb = XLSX.utils.book_new();
                     const ws = XLSX.utils.json_to_sheet(data);
@@ -5006,8 +5049,45 @@
                     // Add worksheet to workbook
                     XLSX.utils.book_append_sheet(wb, ws, 'Trading Data');
 
-                    // Export to file
-                    XLSX.writeFile(wb, filename);
+                    // Записываем книгу в бинарный формат
+                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+                    // Создаем Blob из бинарных данных
+                    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+
+                    // Создаем ссылку на скачивание
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+
+                    // Пытаемся инициировать скачивание
+                    try {
+                        a.click();
+                        console.log('exportToExcel: Download link clicked');
+
+                        // Проверяем, поддерживается ли скачивание (для случаев блокировки браузером)
+                        setTimeout(() => {
+                            // Если браузер блокирует автоматическое скачивание, показываем инструкции
+                            if (document.body.contains(a)) {
+                                showNotification('Download blocked by browser. Please check your browser settings or try again.', 'error');
+                            }
+                        }, 1000);
+
+                    } catch (downloadError) {
+                        console.error('Download initiation error:', downloadError);
+                        showNotification('Download failed. Please try again or check browser settings.', 'error');
+                        throw downloadError; // Перебрасываем ошибку для обработки в catch
+                    }
+
+                    // Удаляем ссылку и освобождаем память
+                    setTimeout(() => {
+                        if (document.body.contains(a)) {
+                            document.body.removeChild(a);
+                        }
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
 
                     // Close modal after successful export
                     closeModal();
@@ -5018,7 +5098,13 @@
 
                 } catch (error) {
                     console.error('Export error:', error);
-                    showNotification('Export error occurred', 'error');
+                    let errorMessage = 'Export error occurred';
+                    if (error.name === 'SecurityError') {
+                        errorMessage = 'Download blocked by browser security. Please allow downloads or try a different browser.';
+                    } else if (error.message) {
+                        errorMessage = `Export failed: ${error.message}`;
+                    }
+                    showNotification(errorMessage, 'error');
                 } finally {
                     // ВСЕГДА восстанавливаем состояние кнопки экспорта
                     setExportButtonState(false, 'export finished');
