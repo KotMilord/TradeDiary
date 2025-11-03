@@ -4998,21 +4998,17 @@
                 return new Date(year, month - 1, day);
             }
 
-            // Export data to Excel
+            // Новая исправленная функция экспорта
             function exportToExcel() {
                 console.log('exportToExcel: Starting export process');
 
-                // Проверяем, что экспорт не выполняется
                 if (isExportInProgress) {
                     console.log('exportToExcel: Export already in progress');
                     return;
                 }
 
                 try {
-                    // Отключаем кнопку экспорта
                     setExportButtonState(true, 'starting export');
-
-                    // Показываем уведомление о начале экспорта
                     showNotification('Starting export...', 'success');
 
                     const startDate = parseExportDate(exportStartDate.value);
@@ -5020,7 +5016,6 @@
 
                     if (startDate > endDate) {
                         showNotification('Start date cannot be after end date', 'error');
-                        // Восстанавливаем состояние кнопки при ошибке валидации
                         setExportButtonState(false, 'validation error');
                         return;
                     }
@@ -5036,80 +5031,110 @@
                         filename = `trading_general_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
                     }
 
-                    // Проверяем, есть ли данные для экспорта
                     if (!data || data.length === 0) {
                         showNotification('No data found for the selected period', 'error');
                         setExportButtonState(false, 'no data');
                         return;
                     }
 
-                    // Create workbook and worksheet
+                    // Создаем книгу и лист
                     const wb = XLSX.utils.book_new();
                     const ws = XLSX.utils.json_to_sheet(data);
-
-                    // Add worksheet to workbook
                     XLSX.utils.book_append_sheet(wb, ws, 'Trading Data');
 
-                    // Записываем книгу в бинарный формат
-                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+                    // Генерируем бинарные данные
+                    const wbout = XLSX.write(wb, {
+                        bookType: 'xlsx',
+                        type: 'binary',
+                        bookSST: false
+                    });
 
-                    // Создаем Blob из бинарных данных
-                    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+                    // Конвертируем в Blob
+                    const blob = new Blob([s2ab(wbout)], {
+                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    });
 
-                    // Создаем ссылку на скачивание
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = filename;
-                    document.body.appendChild(a);
+                    // Используем подход совместимый с Telegram Mini Apps
+                    if (window.Telegram && Telegram.WebApp) {
+                        // Для Telegram Mini Apps используем openDocument
+                        const file = new File([blob], filename, {
+                            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        });
 
-                    // Пытаемся инициировать скачивание
-                    try {
-                        a.click();
-                        console.log('exportToExcel: Download link clicked');
-
-                        // Проверяем, поддерживается ли скачивание (для случаев блокировки браузером)
-                        setTimeout(() => {
-                            // Если браузер блокирует автоматическое скачивание, показываем инструкции
-                            if (document.body.contains(a)) {
-                                showNotification('Download blocked by browser. Please check your browser settings or try again.', 'error');
-                            }
-                        }, 1000);
-
-                    } catch (downloadError) {
-                        console.error('Download initiation error:', downloadError);
-                        showNotification('Download failed. Please try again or check browser settings.', 'error');
-                        throw downloadError; // Перебрасываем ошибку для обработки в catch
+                        // Пытаемся использовать метод Telegram WebApp для открытия документа
+                        if (Telegram.WebApp.openDocument) {
+                            Telegram.WebApp.openDocument(blob, {
+                                filename: filename,
+                                mime_type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                            });
+                            showNotification('File ready for download in Telegram', 'success');
+                        } else {
+                            // Fallback для старых версий Telegram
+                            fallbackDownload(blob, filename);
+                        }
+                    } else {
+                        // Для обычных браузеров
+                        fallbackDownload(blob, filename);
                     }
 
-                    // Удаляем ссылку и освобождаем память
-                    setTimeout(() => {
-                        if (document.body.contains(a)) {
-                            document.body.removeChild(a);
-                        }
-                        window.URL.revokeObjectURL(url);
-                    }, 100);
-
-                    // Close modal after successful export
                     closeModal();
-
-                    // Show success notification
-                    showNotification('Excel file downloaded successfully', 'success');
                     console.log('exportToExcel: Export completed successfully');
 
                 } catch (error) {
                     console.error('Export error:', error);
-                    let errorMessage = 'Export error occurred';
-                    if (error.name === 'SecurityError') {
-                        errorMessage = 'Download blocked by browser security. Please allow downloads or try a different browser.';
-                    } else if (error.message) {
-                        errorMessage = `Export failed: ${error.message}`;
-                    }
-                    showNotification(errorMessage, 'error');
+                    showNotification('Export error occurred: ' + error.message, 'error');
                 } finally {
-                    // ВСЕГДА восстанавливаем состояние кнопки экспорта
                     setExportButtonState(false, 'export finished');
-                    console.log('exportToExcel: Finally block executed, button state restored');
+                }
+            }
+
+            // Функция fallback для скачивания
+            function fallbackDownload(blob, filename) {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+
+                // Пытаемся использовать download attribute
+                if (typeof a.download !== 'undefined') {
+                    a.href = url;
+                    a.download = filename;
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+
+                    // Используем прямой клик
+                    const event = new MouseEvent('click', {
+                        view: window,
+                        bubbles: true,
+                        cancelable: true
+                    });
+
+                    a.dispatchEvent(event);
+
+                    // Очистка
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+
+                    showNotification('Excel file download started', 'success');
+                } else {
+                    // Для браузеров без поддержки download attribute
+                    window.open(url, '_blank');
+                    showNotification('File opened in new window. Use "Save as" to download.', 'success');
+                }
+            }
+
+            // Улучшенная функция s2ab
+            function s2ab(s) {
+                try {
+                    const buf = new ArrayBuffer(s.length);
+                    const view = new Uint8Array(buf);
+                    for (let i = 0; i < s.length; i++) {
+                        view[i] = s.charCodeAt(i) & 0xFF;
+                    }
+                    return buf;
+                } catch (error) {
+                    console.error('Error in s2ab:', error);
+                    throw error;
                 }
             }
 
@@ -5243,7 +5268,10 @@
                 saveExportBtn.addEventListener('click', () => {
                     console.log('saveExportBtn: clicked');
                     if (!isExportInProgress) {
-                        exportToExcel();
+                        // Добавляем небольшую задержку для стабильности
+                        setTimeout(() => {
+                            exportToExcel();
+                        }, 100);
                     } else {
                         console.log('saveExportBtn: Export already in progress');
                     }
@@ -5334,34 +5362,10 @@
                 }
             }
 
-            // Function to open export in external browser
             function openInExternalBrowser() {
-                console.log('openInExternalBrowser: Starting direct export process');
-
-                // Get current export dates
-                const startDate = parseExportDate(exportStartDate.value);
-                const endDate = parseExportDate(exportEndDate.value);
-
-                console.log('openInExternalBrowser: Dates parsed:', { startDate, endDate });
-
-                // Create URL with parameters for direct export
-                const appUrl = window.location.href.split('?')[0];
-                const exportUrl = `${appUrl}?export=true&start=${formatDateForInput(startDate)}&end=${formatDateForInput(endDate)}&type=${currentExportType}`;
-
-                console.log('openInExternalBrowser: Export URL created:', exportUrl);
-
-                // For Telegram Mini App, use tg.openLink to open external browser for direct download
-                if (tg && tg.openLink) {
-                    console.log('openInExternalBrowser: Using Telegram openLink for direct download');
-                    tg.openLink(exportUrl);
-                    showNotification('Starting download in external browser', 'success');
-                } else {
-                    console.log('openInExternalBrowser: Using window.open for direct download');
-                    window.open(exportUrl, '_blank');
-                    showNotification('Starting download in browser', 'success');
-                }
-
-                closeModal();
+                // Вместо открытия в браузере, используем основной метод экспорта
+                console.log('Using main export method instead of external browser');
+                exportToExcel();
             }
 
             // Function to check URL parameters for automatic export
@@ -5373,95 +5377,19 @@
                 const typeParam = urlParams.get('type');
 
                 if (exportParam === 'true' && startParam && endParam) {
-                    console.log('checkUrlParameters: Export parameters detected, starting direct export');
+                    console.log('checkUrlParameters: Export parameters detected, starting automatic export');
                     console.log('checkUrlParameters: Parameters:', { startParam, endParam, typeParam });
 
-                    // For direct export, we don't need to show the UI, just export and close
-                    const startDate = parseExportDate(startParam);
-                    const endDate = parseExportDate(endParam);
-                    const exportType = typeParam || 'table';
+                    // Set export parameters
+                    if (exportStartDate) exportStartDate.value = startParam;
+                    if (exportEndDate) exportEndDate.value = endParam;
+                    if (typeParam) currentExportType = typeParam;
 
-                    console.log('checkUrlParameters: Parsed dates:', { startDate, endDate, exportType });
-
-                    // Start export immediately without UI interaction
+                    // Automatically start export
                     setTimeout(() => {
-                        console.log('checkUrlParameters: Starting direct export');
-                        performDirectExport(startDate, endDate, exportType);
-                    }, 500);
-                }
-            }
-
-            // Function to perform direct export without UI
-            function performDirectExport(startDate, endDate, exportType) {
-                console.log('performDirectExport: Starting direct export process');
-
-                try {
-                    let data;
-                    let filename;
-
-                    if (exportType === 'table') {
-                        data = prepareTableDataForExport(startDate, endDate);
-                        filename = `trading_diary_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
-                    } else {
-                        data = prepareGeneralDataForExport(startDate, endDate);
-                        filename = `trading_general_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
-                    }
-
-                    console.log('performDirectExport: Data prepared, length:', data ? data.length : 0);
-
-                    if (!data || data.length === 0) {
-                        console.log('performDirectExport: No data to export');
-                        // Close the window if no data
-                        if (window.history.length > 1) {
-                            window.close();
-                        }
-                        return;
-                    }
-
-                    // Create workbook and worksheet
-                    const wb = XLSX.utils.book_new();
-                    const ws = XLSX.utils.json_to_sheet(data);
-                    XLSX.utils.book_append_sheet(wb, ws, 'Trading Data');
-
-                    // Write to binary format
-                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-                    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-
-                    // Create download link
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = filename;
-                    document.body.appendChild(a);
-
-                    console.log('performDirectExport: Download link created, initiating download');
-
-                    // Trigger download
-                    a.click();
-
-                    // Clean up
-                    setTimeout(() => {
-                        if (document.body.contains(a)) {
-                            document.body.removeChild(a);
-                        }
-                        window.URL.revokeObjectURL(url);
-
-                        // Close the window after successful download
-                        setTimeout(() => {
-                            if (window.history.length > 1) {
-                                window.close();
-                            }
-                        }, 1000);
-                    }, 100);
-
-                    console.log('performDirectExport: Direct export completed successfully');
-
-                } catch (error) {
-                    console.error('performDirectExport: Error during direct export:', error);
-                    // Close the window on error
-                    if (window.history.length > 1) {
-                        window.close();
-                    }
+                        console.log('checkUrlParameters: Starting automatic export');
+                        exportToExcel();
+                    }, 500); // Reduced delay for faster execution
                 }
             }
 
@@ -5486,6 +5414,13 @@
             // Check URL parameters for automatic export (call after a short delay to ensure DOM is ready)
             setTimeout(checkUrlParameters, 100);
         });
+
+        // В начале скрипта добавьте
+        console.log('Telegram WebApp available:', !!window.Telegram?.WebApp);
+        if (window.Telegram?.WebApp) {
+            console.log('Telegram WebApp version:', Telegram.WebApp.version);
+            console.log('OpenDocument support:', !!Telegram.WebApp.openDocument);
+        }
     </script>
 </body>
 </html>
