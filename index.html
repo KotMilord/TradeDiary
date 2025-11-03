@@ -5336,7 +5336,7 @@
 
             // Function to open export in external browser
             function openInExternalBrowser() {
-                console.log('openInExternalBrowser: Starting browser export process');
+                console.log('openInExternalBrowser: Starting direct export process');
 
                 // Get current export dates
                 const startDate = parseExportDate(exportStartDate.value);
@@ -5344,21 +5344,21 @@
 
                 console.log('openInExternalBrowser: Dates parsed:', { startDate, endDate });
 
-                // Create URL with parameters for the app
+                // Create URL with parameters for direct export
                 const appUrl = window.location.href.split('?')[0];
                 const exportUrl = `${appUrl}?export=true&start=${formatDateForInput(startDate)}&end=${formatDateForInput(endDate)}&type=${currentExportType}`;
 
                 console.log('openInExternalBrowser: Export URL created:', exportUrl);
 
-                // For Telegram Mini App, we need to use tg.openLink to open external browser
+                // For Telegram Mini App, use tg.openLink to open external browser for direct download
                 if (tg && tg.openLink) {
-                    console.log('openInExternalBrowser: Using Telegram openLink');
+                    console.log('openInExternalBrowser: Using Telegram openLink for direct download');
                     tg.openLink(exportUrl);
-                    showNotification('Opening in external browser for download', 'success');
+                    showNotification('Starting download in external browser', 'success');
                 } else {
-                    console.log('openInExternalBrowser: Using window.open');
+                    console.log('openInExternalBrowser: Using window.open for direct download');
                     window.open(exportUrl, '_blank');
-                    showNotification('Opening in browser for better download support', 'success');
+                    showNotification('Starting download in browser', 'success');
                 }
 
                 closeModal();
@@ -5373,31 +5373,95 @@
                 const typeParam = urlParams.get('type');
 
                 if (exportParam === 'true' && startParam && endParam) {
-                    console.log('checkUrlParameters: Export parameters detected, starting automatic export');
+                    console.log('checkUrlParameters: Export parameters detected, starting direct export');
                     console.log('checkUrlParameters: Parameters:', { startParam, endParam, typeParam });
 
-                    // Set export parameters
-                    if (exportStartDate) {
-                        exportStartDate.value = startParam;
-                        console.log('checkUrlParameters: Set start date:', startParam);
-                    }
-                    if (exportEndDate) {
-                        exportEndDate.value = endParam;
-                        console.log('checkUrlParameters: Set end date:', endParam);
-                    }
-                    if (typeParam) {
-                        currentExportType = typeParam;
-                        console.log('checkUrlParameters: Set export type:', typeParam);
-                    }
+                    // For direct export, we don't need to show the UI, just export and close
+                    const startDate = parseExportDate(startParam);
+                    const endDate = parseExportDate(endParam);
+                    const exportType = typeParam || 'table';
 
-                    // Show notification that export is starting
-                    showNotification('Starting automatic export...', 'success');
+                    console.log('checkUrlParameters: Parsed dates:', { startDate, endDate, exportType });
 
-                    // Automatically start export
+                    // Start export immediately without UI interaction
                     setTimeout(() => {
-                        console.log('checkUrlParameters: Starting automatic export');
-                        exportToExcel();
-                    }, 1000); // Give more time for UI to update
+                        console.log('checkUrlParameters: Starting direct export');
+                        performDirectExport(startDate, endDate, exportType);
+                    }, 500);
+                }
+            }
+
+            // Function to perform direct export without UI
+            function performDirectExport(startDate, endDate, exportType) {
+                console.log('performDirectExport: Starting direct export process');
+
+                try {
+                    let data;
+                    let filename;
+
+                    if (exportType === 'table') {
+                        data = prepareTableDataForExport(startDate, endDate);
+                        filename = `trading_diary_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
+                    } else {
+                        data = prepareGeneralDataForExport(startDate, endDate);
+                        filename = `trading_general_${formatDateForInput(startDate)}_to_${formatDateForInput(endDate)}.xlsx`;
+                    }
+
+                    console.log('performDirectExport: Data prepared, length:', data ? data.length : 0);
+
+                    if (!data || data.length === 0) {
+                        console.log('performDirectExport: No data to export');
+                        // Close the window if no data
+                        if (window.history.length > 1) {
+                            window.close();
+                        }
+                        return;
+                    }
+
+                    // Create workbook and worksheet
+                    const wb = XLSX.utils.book_new();
+                    const ws = XLSX.utils.json_to_sheet(data);
+                    XLSX.utils.book_append_sheet(wb, ws, 'Trading Data');
+
+                    // Write to binary format
+                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+                    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+
+                    // Create download link
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+
+                    console.log('performDirectExport: Download link created, initiating download');
+
+                    // Trigger download
+                    a.click();
+
+                    // Clean up
+                    setTimeout(() => {
+                        if (document.body.contains(a)) {
+                            document.body.removeChild(a);
+                        }
+                        window.URL.revokeObjectURL(url);
+
+                        // Close the window after successful download
+                        setTimeout(() => {
+                            if (window.history.length > 1) {
+                                window.close();
+                            }
+                        }, 1000);
+                    }, 100);
+
+                    console.log('performDirectExport: Direct export completed successfully');
+
+                } catch (error) {
+                    console.error('performDirectExport: Error during direct export:', error);
+                    // Close the window on error
+                    if (window.history.length > 1) {
+                        window.close();
+                    }
                 }
             }
 
@@ -5419,8 +5483,8 @@
             // Call this on startup
             setTimeout(checkTelegramEnvironment, 500);
 
-            // Check URL parameters for automatic export (call immediately)
-            checkUrlParameters();
+            // Check URL parameters for automatic export (call after a short delay to ensure DOM is ready)
+            setTimeout(checkUrlParameters, 100);
         });
     </script>
 </body>
