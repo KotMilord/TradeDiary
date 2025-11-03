@@ -5350,16 +5350,17 @@
 
                 console.log('openInExternalBrowser: Export URL created:', exportUrl);
 
-                // Open in browser
+                // For Telegram Mini App, we need to use tg.openLink to open external browser
                 if (tg && tg.openLink) {
                     console.log('openInExternalBrowser: Using Telegram openLink');
                     tg.openLink(exportUrl);
+                    showNotification('Opening in external browser for download', 'success');
                 } else {
                     console.log('openInExternalBrowser: Using window.open');
                     window.open(exportUrl, '_blank');
+                    showNotification('Opening in browser for better download support', 'success');
                 }
 
-                showNotification('Opening in browser for better download support', 'success');
                 closeModal();
             }
 
@@ -5373,16 +5374,30 @@
 
                 if (exportParam === 'true' && startParam && endParam) {
                     console.log('checkUrlParameters: Export parameters detected, starting automatic export');
+                    console.log('checkUrlParameters: Parameters:', { startParam, endParam, typeParam });
+
                     // Set export parameters
-                    if (exportStartDate) exportStartDate.value = startParam;
-                    if (exportEndDate) exportEndDate.value = endParam;
-                    if (typeParam) currentExportType = typeParam;
+                    if (exportStartDate) {
+                        exportStartDate.value = startParam;
+                        console.log('checkUrlParameters: Set start date:', startParam);
+                    }
+                    if (exportEndDate) {
+                        exportEndDate.value = endParam;
+                        console.log('checkUrlParameters: Set end date:', endParam);
+                    }
+                    if (typeParam) {
+                        currentExportType = typeParam;
+                        console.log('checkUrlParameters: Set export type:', typeParam);
+                    }
+
+                    // Show notification that export is starting
+                    showNotification('Starting automatic export...', 'success');
 
                     // Automatically start export
                     setTimeout(() => {
                         console.log('checkUrlParameters: Starting automatic export');
                         exportToExcel();
-                    }, 500); // Reduced delay for faster execution
+                    }, 1000); // Give more time for UI to update
                 }
             }
 
@@ -5403,6 +5418,8 @@
 
             // Call this on startup
             setTimeout(checkTelegramEnvironment, 500);
+
+            // Check URL parameters for automatic export (call immediately)
             checkUrlParameters();
         });
     </script>
