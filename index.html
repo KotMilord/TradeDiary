@@ -956,7 +956,8 @@
             background: var(--button-color);
             color: var(--button-text-color);
             border: none;
-            padding: 10px 16px;
+            padding: 10px;
+            width: 100%;
             border-radius: 20px;
             cursor: pointer;
             font-size: 1rem;
@@ -1037,7 +1038,7 @@
             overflow-x: auto;
             margin-bottom: 10px;
             border: 1px solid var(--hint-color);
-            border-radius: 6px;
+            border-radius: 10px;
         }
         
         .general-table {
@@ -1083,7 +1084,7 @@
             margin-top: 15px;
             overflow-x: auto;
             border: 1px solid var(--hint-color);
-            border-radius: 6px;
+            border-radius: 10px;
         }
         
         .withdrawal-table {
@@ -1710,6 +1711,28 @@
         #startingBalanceValue {
             background-color: #0091ca5e !important; /*  blue background */
         }
+
+        /* Добавьте этот CSS в раздел с другими стилями кнопок настроек */
+        #exportSettingsBtn {
+            background: #28a745 !important;
+            color: #fff !important;
+            border: 2px solid #28a745 !important;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            cursor: pointer;
+            opacity: 0.7;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        #exportSettingsBtn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
         
         /* Header actions */
         .header-actions {
@@ -1718,31 +1741,6 @@
             gap: 10px;
             flex-shrink: 0;
             white-space: nowrap;
-        }
-
-        .export-header-btn {
-            background: var(--button-color);
-            color: var(--button-text-color);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            white-space: nowrap; /* Запрещаем перенос текста */
-            flex-shrink: 0;
-            transition: all 0.3s;
-            white-space: nowrap;
-            box-shadow: 0 2px 4px var(--shadow-color);
-            position: relative;
-            z-index: 10;
-        }
-
-        .export-header-btn:hover {
-            opacity: 1;
-            background: #27ae60; /* Зеленый вместо синего */
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px var(--shadow-color);
         }
 
         /* Export modal styles */
@@ -1796,58 +1794,31 @@
             color: var(--button-text-color);
         }
 
-        /* Mobile responsiveness for header */
-        @media (max-width: 480px) {
-            .header-actions {
-                flex-direction: column;
-                gap: 5px;
-                align-items: flex-end;
-            }
-
-            .export-header-btn {
-                font-size: 0.7rem;
-                padding: 4px 8px;
-                position: relative;
-                z-index: 10;
-            }
+        .export-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #856404;
+            font-weight: 500;
         }
 
-        @media (max-width: 360px) {
-            .header-content {
-                flex-wrap: wrap;
-                gap: 5px;
-            }
-
-            .header-actions {
-                flex-direction: row;
-                width: auto;
-                justify-content: flex-end;
-                margin-top: 0;
-                flex-shrink: 0;
-            }
-
-            .export-header-btn {
-                position: relative;
-                z-index: 10;
-            }
+        [data-theme="dark"] .export-warning {
+            background: #332701;
+            border-color: #665c00;
+            color: #f1c40f;
         }
 
-        @media (max-width: 320px) {
-            .header-content {
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-
-            .header-actions {
-                flex-shrink: 0;
-            }
-
-            .export-header-btn {
-                position: relative;
-                z-index: 10;
-                min-width: auto;
-            }
+        .export-warning span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
+
     </style>
 </head>
 <body>
@@ -1855,21 +1826,70 @@
         <header>
             <div class="header-content">
                 <h1>Trading Diary</h1>
-                <div class="header-actions">
-                    <button class="export-header-btn" id="exportBtn" title="Export to Excel">Export</button>
-                </div>
             </div>
         </header>
         
         <div class="tabs">
-            <div class="tab active" data-tab="table">Table</div>
-            <div class="tab" data-tab="general">General</div>
+            <div class="tab active" data-tab="general">General</div>
+            <div class="tab" data-tab="table">Table</div>
             <div class="tab" data-tab="history">History</div>
             <div class="tab" data-tab="settings">Settings</div>
         </div>
         
         <div class="main-content">
-            <div class="tab-content active" id="table-tab">
+            <!-- General Tab -->
+            <div class="tab-content active" id="general-tab">
+                <div class="general-header">
+                    <div class="current-date" id="currentGeneralDate"></div>
+                </div>
+                
+                <div class="date-navigation">
+                    <button class="date-btn" id="prevMonthBtn">←</button>
+                    <div class="date-label" id="currentMonthLabel">Month Year</div>
+                    <button class="date-btn" id="nextMonthBtn" disabled>→</button>
+                </div>
+                
+                <div class="general-table-container">
+                    <table class="general-table" id="generalTable">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Profit Target</th>
+                                <th>Loss Target</th>
+                                <th>Actual P/L</th>
+                                <th>Winning Trades</th>
+                                <th>Losing Trades</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table rows will be generated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="withdrawal-table-container">
+                    <table class="withdrawal-table" id="withdrawalTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Withdrawal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Withdrawal rows will be generated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <button class="btn add-withdrawal-btn" id="addWithdrawalBtn">+ Add Withdrawal</button>
+                
+                <div class="month-comments">
+                    <h3>Month Comments</h3>
+                    <textarea id="monthCommentsInput" placeholder="Enter comments for the current month..."></textarea>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="table-tab">
                 <div class="balance-container">
                     <div class="balance-item">
                         <div class="balance-label">Starting Balance</div>
@@ -1929,58 +1949,6 @@
                 <button class="btn add-trade-btn" id="addTradeBtn" aria-label="Add new trade">+ Add Trade</button>
             </div>
             
-            <!-- General Tab -->
-            <div class="tab-content" id="general-tab">
-                <div class="general-header">
-                    <div class="current-date" id="currentGeneralDate"></div>
-                </div>
-                
-                <div class="date-navigation">
-                    <button class="date-btn" id="prevMonthBtn">←</button>
-                    <div class="date-label" id="currentMonthLabel">Month Year</div>
-                    <button class="date-btn" id="nextMonthBtn" disabled>→</button>
-                </div>
-                
-                <div class="general-table-container">
-                    <table class="general-table" id="generalTable">
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Profit Target</th>
-                                <th>Loss Target</th>
-                                <th>Actual P/L</th>
-                                <th>Winning Trades</th>
-                                <th>Losing Trades</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Table rows will be generated here -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="withdrawal-table-container">
-                    <table class="withdrawal-table" id="withdrawalTable">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Withdrawal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Withdrawal rows will be generated here -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <button class="btn add-withdrawal-btn" id="addWithdrawalBtn">+ Add Withdrawal</button>
-                
-                <div class="month-comments">
-                    <h3>Month Comments</h3>
-                    <textarea id="monthCommentsInput" placeholder="Enter comments for the current month..."></textarea>
-                </div>
-            </div>
-            
             <div class="tab-content" id="history-tab">
                 <h2>Trading Days History</h2>
                 <div class="table-container">
@@ -2003,6 +1971,7 @@
                 
                 <div class="settings-panel">
                     <h3>Data Management</h3>
+                    <button class="btn btn-success settings-btn" id="exportSettingsBtn">Export to Excel</button>
                     <button class="btn btn-warning settings-btn" id="clearCurrentDayBtn">Clear Current Day</button>
                     <button class="btn btn-danger settings-btn" id="clearAllDataBtn">Delete all history</button>
                 </div>
@@ -2169,6 +2138,9 @@
     <div class="modal" id="exportModal">
         <div class="modal-content">
             <h2 class="modal-title">Export to Excel</h2>
+            <div class="export-warning">
+                <span>⚠️ Export works only on Telegram Desktop</span>
+            </div>
             <div class="export-period">
                 <div class="period-row">
                     <label>From:</label>
@@ -2379,6 +2351,9 @@
             function init() {
                 console.log('Initializing trading diary app');
 
+                // Initialize General tab
+                initGeneralTab();
+
                 // Load balance settings
                 if (appSettings.startingBalance && balanceAmount) {
                     balanceAmount.textContent = formatNumber(appSettings.startingBalance);
@@ -2408,8 +2383,6 @@
                     renderTable();
                 }
                 
-                // Initialize General tab
-                initGeneralTab();
                 
                 renderHistory();
                 
@@ -3240,12 +3213,22 @@
                 setTimeout(() => {
                     notification.className = 'notification';
 
-                    // Re-enable all buttons after notification
+                    // Re-enable all buttons after notification - восстанавливаем исходный opacity
                     allButtons.forEach(btn => {
-                        btn.disabled = false;
-                        btn.style.opacity = '1';
+                       btn.disabled = false;
+                       const originalOpacity = btn.getAttribute('data-original-opacity');
+                       if (originalOpacity !== null) {
+                           btn.style.opacity = originalOpacity;
+                           // Удаляем data-атрибут после восстановления
+                           if (originalOpacity === '') {
+                               btn.style.removeProperty('opacity');
+                            }
+                            btn.removeAttribute('data-original-opacity');
+                        } else {
+                            btn.style.opacity = ''; // Сбрасываем к CSS значению
+                        }
                     });
-                }, 3000);
+                }, 1000);
             }
             
             // Functions for General tab
@@ -4848,7 +4831,7 @@
             // ==================== EXPORT FUNCTIONALITY ====================
 
             // Elements for export
-            let exportBtn = document.getElementById('exportBtn');
+            const exportSettingsBtn = document.getElementById('exportSettingsBtn');
             const exportModal = document.getElementById('exportModal');
             const exportStartDate = document.getElementById('exportStartDate');
             const exportEndDate = document.getElementById('exportEndDate');
@@ -4883,34 +4866,28 @@
                     });
                 }
 
-                // Убедимся, что кнопка экспорта всегда работает
-                if (exportBtn) {
-                    // Гарантируем начальное состояние кнопки
-                    exportBtn.disabled = false;
-                    isExportInProgress = false;
-
-                    // Добавляем обработчик клика (только один раз)
-                    exportBtn.addEventListener('click', handleExportClick);
+                // Инициализируем только кнопку в настройках
+                if (exportSettingsBtn) {
+                    exportSettingsBtn.disabled = false;
+                    exportSettingsBtn.addEventListener('click', handleExportClick);
                     console.log('initExport: Export button initialized successfully');
                 } else {
-                    console.error('initExport: exportBtn not found');
+                    console.error('initExport: exportSettingsBtn not found');
                 }
+                
             }
 
             // Функция для безопасного управления состоянием кнопки экспорта
             function setExportButtonState(disabled, reason = '') {
-                if (!exportBtn) {
-                    console.error('setExportButtonState: exportBtn not found');
-                    return;
-                }
+                // Обновляем состояние только кнопки в настройках
+                if (!exportSettingsBtn) return;
 
-                const wasDisabled = exportBtn.disabled;
-                exportBtn.disabled = disabled;
+                const wasDisabled = exportSettingsBtn.disabled;
+                exportSettingsBtn.disabled = disabled;
+
+                console.log(`setExportButtonState: Button exportSettingsBtn ${disabled ? 'disabled' : 'enabled'} (${reason})`);
+
                 isExportInProgress = disabled;
-
-                console.log(`setExportButtonState: Button ${disabled ? 'disabled' : 'enabled'} (${reason})`);
-                console.log(`setExportButtonState: Previous state: ${wasDisabled}, New state: ${disabled}`);
-                console.log(`setExportButtonState: Current exportBtn reference:`, exportBtn);
             }
 
             // Обработчик клика по кнопке экспорта
@@ -4920,12 +4897,6 @@
                 // Проверяем состояние экспорта
                 if (isExportInProgress) {
                     console.log('handleExportClick: Export already in progress, ignoring click');
-                    return;
-                }
-
-                // Проверяем существование элементов
-                if (!exportBtn) {
-                    console.error('handleExportClick: exportBtn not found');
                     return;
                 }
 
