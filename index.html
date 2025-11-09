@@ -14,10 +14,10 @@
             --bg-color: #ffffff;
             --text-color: #252525;
             --secondary-bg: rgba(235, 232, 232, 0.95);
-            --hint-color: rgba(0, 0, 0, 0.3);
+            --hint-color: rgba(0, 0, 0, 0.445);
             --button-color: #3498dbb4;
-            --button-text-color: #dddddd;
-            --border-color: #bebebe;
+            --button-text-color: #f5f5f5;
+            --border-color: #c0c0c0;
             --shadow-color: rgba(0, 0, 0, 0.8);
             --positive-color: #2ecc71;
             --negative-color: #e74c3c;
@@ -43,7 +43,7 @@
             --bg-color: #242424;
             --text-color: #dddddd;
             --secondary-bg: #2d2d2d;
-            --hint-color: rgba(255, 255, 255, 0.3);
+            --hint-color: rgba(255, 255, 255, 0.40);
             --button-color: #3498dbb4;
             --button-text-color: #dddddd;
             --border-color: #444444;
@@ -79,7 +79,7 @@
         }
 
         [data-theme="dark"] .progress-stats {
-            color: var(--text-color);
+            color: var(--hint-color);
         }
         [data-theme="dark"] .progress-bar {
             background: var(--progress-bg);
@@ -295,7 +295,7 @@
             border-radius: 10px;
             border: 1px solid var(--hint-color);
             gap: 8px;
-            box-shadow: inset 0 1px 3px var(--shadow-color);
+            box-shadow: inset 0 2px 4px var(--shadow-color);
         }
         
         .balance-item {
@@ -308,11 +308,12 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
+            box-shadow: 0px 3px 6px var(--shadow-color)
         }
 
         .balance-label {
             font-size: 0.7rem;
-            color: var(--shadow-color);
+            color: var(--hint-color);
             line-height: 1.2;
             font-weight: 500;
             display: flex;
@@ -353,7 +354,7 @@
         .starting-balance:hover {
             opacity: 0.9;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 4px 8px rgb(123, 22, 255);
         }
 
         .starting-balance.balance-value {
@@ -423,7 +424,7 @@
 
         /* Цвета для положительной стрелки */
         .indicator-arrow.positive {
-            color: #00d909 !important;
+            color: #00a105 !important;
         }
 
         /* Цвета для отрицательной стрелки */
@@ -438,7 +439,7 @@
 
         /* Цвета для положительного процента */
         .indicator-percentage.positive {
-            color: #00d909 !important;
+            color: #00a105 !important;
         }
 
         /* Цвета для отрицательного процента */
@@ -604,7 +605,7 @@
             border: 1px solid var(--hint-color);
             border-radius: 10px;
             width: 100%;
-            box-shadow: 0 1px 3px var(--shadow-color);
+            box-shadow: 0 3px 6px var(--shadow-color);
         }
         
         table {
@@ -757,6 +758,16 @@
         }
 
         .modal-content {
+         .modal-btn {
+             padding: 6px 12px;
+             border: none;
+             border-radius: 4px;
+             cursor: pointer;
+             font-weight: bold;
+             font-size: 0.8rem;
+             flex: 1;
+             min-width: 80px;
+         }
             background: var(--modal-bg);
             color: var(--text-color);
             padding: 15px;
@@ -1040,7 +1051,7 @@
             border-radius: 12px;
             overflow: hidden;
             flex-wrap: wrap;
-            box-shadow: 0 2px 4px var(--shadow-color);
+            box-shadow: 0 3px 6px var(--shadow-color);
             border: 1px solid var(--border-color);
             position: relative;
             z-index: 2;
@@ -1466,7 +1477,7 @@
             background: var(--secondary-bg);
             border-radius: 12px;
             border: 1px solid var(--hint-color);
-            box-shadow: inset 0 1px 3px var(--shadow-color);
+            box-shadow: inset 0 3px 6px var(--shadow-color);
         }
 
 
@@ -1485,7 +1496,7 @@
             border-radius: 6px;
             overflow: hidden;
             position: relative;
-            box-shadow: inset 0 1px 3px var(--shadow-color);
+            box-shadow: inset 0 3px 6px var(--shadow-color);
         }
 
         .progress-fill {
@@ -1517,7 +1528,7 @@
             justify-content: space-between;
             margin-top: 6px;
             font-size: 0.75rem;
-            color: var(--shadow-color);
+            color: var(--hint-color);
             font-weight: 500;
         }
         
@@ -2041,36 +2052,36 @@
             <h2 class="modal-title">Select Emotional State</h2>
             <div class="emotion-options">
                 <div class="emotion-option" data-emotion="fear">
-                    <div class="emotion-emoji">😨</div>
+                    <div class="emotion-emoji">😰</div>
                     <div class="emotion-label">Fear</div>
                 </div>
                 <div class="emotion-option" data-emotion="greed">
-                    <div class="emotion-emoji">🤑</div>
+                    <div class="emotion-emoji">😵</div>
                     <div class="emotion-label">Greed</div>
                 </div>
                 <div class="emotion-option" data-emotion="joy">
-                    <div class="emotion-emoji">😁</div>
+                    <div class="emotion-emoji">🥳</div>
                     <div class="emotion-label">Joy</div>
                 </div>
-                <div class="emotion-option" data-emotion="uncertainty">
+                <div class="emotion-option" data-emotion="concentration">
+                    <div class="emotion-emoji">😌</div>
+                    <div class="emotion-label">Concentration</div>
+                </div>
+                <div class="emotion-option" data-emotion="sadness">
                     <div class="emotion-emoji">😕</div>
-                    <div class="emotion-label">Uncertainty</div>
+                    <div class="emotion-label">Sadness</div>
                 </div>
-                <div class="emotion-option" data-emotion="neutral">
-                    <div class="emotion-emoji">😐</div>
-                    <div class="emotion-label">Neutral</div>
+                <div class="emotion-option" data-emotion="excitement">
+                    <div class="emotion-emoji">🤩</div>
+                    <div class="emotion-label">Excitement</div>
                 </div>
-                <div class="emotion-option" data-emotion="frustration">
-                    <div class="emotion-emoji">😤</div>
-                    <div class="emotion-label">Frustration</div>
+                <div class="emotion-option" data-emotion="impulsiveness">
+                    <div class="emotion-emoji">🫨</div>
+                    <div class="emotion-label">Impulsiveness</div>
                 </div>
-                <div class="emotion-option" data-emotion="contemplation">
-                    <div class="emotion-emoji">🤔</div>
-                    <div class="emotion-label">Contemplation</div>
-                </div>
-                <div class="emotion-option" data-emotion="boredom">
-                    <div class="emotion-emoji">😴</div>
-                    <div class="emotion-label">Boredom</div>
+                <div class="emotion-option" data-emotion="anger">
+                    <div class="emotion-emoji">😡</div>
+                    <div class="emotion-label">Anger</div>
                 </div>
             </div>
             <div class="modal-buttons">
@@ -2140,6 +2151,17 @@
             <div class="modal-buttons">
                 <button class="modal-btn profit-btn" id="saveExportBtn">Export</button>
                 <button class="modal-btn reset-btn" id="cancelExportBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Monthly tab cells -->
+    <div class="modal" id="monthlyCellModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Information</h2>
+            <p>This cell is filled in automatically from the Daily tab based on trading statistics.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn profit-btn" id="monthlyModalOkBtn">OK</button>
+                <button class="modal-btn" id="monthlyModalDailyBtn" style="background: var(--button-color);">Daily</button>
             </div>
         </div>
     </div>
@@ -2302,14 +2324,14 @@
             
             // Emotion mapping
             const emotionMap = {
-                'fear': '😨 Fear',
-                'greed': '🤑 Greed',
-                'joy': '😁 Joy',
-                'uncertainty': '😕 Uncertainty',
-                'neutral': '😐 Neutral',
-                'frustration': '😤 Frustration',
-                'contemplation': '🤔 Contemplation',
-                'boredom': '😴 Boredom'
+                'fear': '😰 Fear',
+                'greed': '😵 Greed',
+                'joy': '🥳 Joy',
+                'concentration': '😌 concentration',
+                'sadness': '😕 sadness',
+                'excitement': '🤩  excitement',
+                'impulsiveness': '🫨 impulsiveness',
+                'anger': '😡 anger'
             };
             
             // UI Settings
@@ -3343,6 +3365,30 @@
                     
                     tbody.appendChild(row);
                 }
+                
+                // Set up event delegation for monthly cell modal on the tbody
+                // This ensures the event handlers work even for dynamically created cells
+                const monthlyCellModal = document.getElementById('monthlyCellModal');
+                
+                // Function to handle cell click with event delegation
+                function handleCellClick(e) {
+                    // Check if the clicked element is a cell in the 4th, 5th, or 6th column (Actual P/L, Winning Trades, Losing Trades)
+                    if (e.target.tagName === 'TD') {
+                        const cellIndex = e.target.cellIndex;
+                        if ((cellIndex === 3 || cellIndex === 4 || cellIndex === 5)) {
+                            e.stopPropagation(); // Prevent event bubbling
+                            if (monthlyCellModal) {
+                                monthlyCellModal.style.display = 'flex';
+                            }
+                        }
+                    }
+                }
+                
+                // Remove any existing event listener to avoid duplicates
+                tbody.removeEventListener('click', handleCellClick);
+                
+                // Add event listener to the tbody for event delegation
+                tbody.addEventListener('click', handleCellClick);
             }
             
             function getGeneralData(day, field) {
@@ -3782,9 +3828,9 @@
                         withdrawalData = {};
                         monthCommentsData = {};
                         appSettings = {
-                            initialBalance: 10000,
-                            startingBalance: 10000,
-                            currentBalance: 10000
+                            initialBalance: 0,
+                            startingBalance: 0,
+                            currentBalance: 0
                         };
 
                         saveTradeData();
@@ -4320,7 +4366,8 @@
                     emotionModal,
                     commentsModal,
                     balanceModal,
-                    targetModal
+                    targetModal,
+                    document.getElementById('monthlyCellModal') // Add monthly cell modal
                 ];
                 
                 modals.forEach(modal => {
@@ -4328,6 +4375,12 @@
                         modal.style.display = 'none';
                     }
                 });
+                
+                // Also close monthly cell modal if it exists
+                const monthlyCellModal = document.getElementById('monthlyCellModal');
+                if (monthlyCellModal) {
+                    monthlyCellModal.style.display = 'none';
+                }
                 
                 // Сбрасываем переменные состояния
                 currentCell = null;
@@ -5169,6 +5222,16 @@
                     closeModal();
                 }
             });
+            
+            // Monthly cell modal Escape key handling
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const monthlyCellModal = document.getElementById('monthlyCellModal');
+                    if (monthlyCellModal && monthlyCellModal.style.display === 'flex') {
+                        monthlyCellModal.style.display = 'none';
+                    }
+                }
+            });
 
             // Update closeModal function to include export modal
             function closeModal() {
@@ -5183,7 +5246,8 @@
                     commentsModal,
                     balanceModal,
                     targetModal,
-                    exportModal  // Add export modal to the list
+                    exportModal,  // Add export modal to the list
+                    document.getElementById('monthlyCellModal')  // Add monthly cell modal to the list
                 ];
 
                 modals.forEach(modal => {
@@ -5191,6 +5255,12 @@
                         modal.style.display = 'none';
                     }
                 });
+                
+                // Also close monthly cell modal if it exists
+                const monthlyCellModal = document.getElementById('monthlyCellModal');
+                if (monthlyCellModal) {
+                    monthlyCellModal.style.display = 'none';
+                }
 
                 // Reset state variables
                 currentCell = null;
@@ -5213,9 +5283,65 @@
                 setExportButtonState(false, 'modal closed');
             }
 
+            // Initialize monthly cell modal event handlers separately
+            // This needs to be done during initial app setup to ensure the modal works from the first open
+            function initMonthlyCellModal() {
+                const monthlyCellModal = document.getElementById('monthlyCellModal');
+                const monthlyModalOkBtn = document.getElementById('monthlyModalOkBtn');
+                const monthlyModalDailyBtn = document.getElementById('monthlyModalDailyBtn');
+                
+                // Set up event handlers for monthly cell modal
+                if (monthlyCellModal) {
+                    monthlyCellModal.addEventListener('click', function(e) {
+                        if (e.target === monthlyCellModal) {
+                            monthlyCellModal.style.display = 'none';
+                        }
+                    });
+                }
+                
+                if (monthlyModalOkBtn) {
+                    monthlyModalOkBtn.addEventListener('click', function() {
+                        const modal = document.getElementById('monthlyCellModal');
+                        if (modal) {
+                            modal.style.display = 'none';
+                        }
+                        // Also call the main closeModal function to ensure all state is properly reset
+                        closeModal();
+                    });
+                }
+                
+                if (monthlyModalDailyBtn) {
+                    monthlyModalDailyBtn.addEventListener('click', function() {
+                        const modal = document.getElementById('monthlyCellModal');
+                        if (modal) {
+                            modal.style.display = 'none';
+                        }
+                        // Also call the main closeModal function to ensure all state is properly reset
+                        closeModal();
+                        
+                        // Find and activate the Daily tab
+                        const dailyTab = document.querySelector('.tab[data-tab="table"]');
+                        const dailyTabContent = document.getElementById('table-tab');
+                        
+                        if (dailyTab && dailyTabContent) {
+                            // Remove active class from all tabs and contents
+                            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                            
+                            // Add active class to Daily tab and its content
+                            dailyTab.classList.add('active');
+                            dailyTabContent.classList.add('active');
+                        }
+                    });
+                }
+            }
+
             // Initialize export when app starts
             initExport();
-
+            
+            // Initialize monthly cell modal event handlers
+            initMonthlyCellModal();
+            
             // Debug function for Telegram
             function checkTelegramEnvironment() {
                 const isTelegram = window.Telegram && Telegram.WebApp;
@@ -5246,8 +5372,8 @@
             </header>
             
             <div class="tabs">
-                <div class="tab active" data-tab="general">General</div>
-                <div class="tab" data-tab="table">Table</div>
+                <div class="tab active" data-tab="general">Monthly</div>
+                <div class="tab" data-tab="table">Daily</div>
                 <div class="tab" data-tab="history">History</div>
                 <div class="tab" data-tab="settings">Settings</div>
             </div>
@@ -5447,11 +5573,11 @@
             <nav class="tab-navigation" role="tablist" aria-label="Trading diary guide sections">
                 <button class="tab-button active" id="general-button" data-tab="general" role="tab" aria-selected="true" aria-controls="general-content">
                     <span class="tab-icon">📈</span>
-                    <span class="tab-text" data-ru="General" data-en="General">General</span>
+                    <span class="tab-text" data-ru="Monthly" data-en="Monthly">Monthly</span>
                 </button>
                 <button class="tab-button" id="table-button" data-tab="table" role="tab" aria-selected="false" aria-controls="table-content">
                     <span class="tab-icon">📊</span>
-                    <span class="tab-text" data-ru="Table" data-en="Table">Table</span>
+                    <span class="tab-text" data-ru="Daily" data-en="Daily">Daily</span>
                 </button>
                 <button class="tab-button" id="history-button" data-tab="history" role="tab" aria-selected="false" aria-controls="history-content">
                     <span class="tab-icon">📚</span>
@@ -5477,8 +5603,8 @@
                             <!-- Card 1: Overview -->
                             <div class="content-section">
                                 <div class="content">
-                                    <h3 data-ru="Вкладка General - Общая статистика" data-en="General Tab - General Statistics">Вкладка General - Общая статистика</h3>
-                                    <p data-ru="Вкладка <strong>General</strong> предоставляет обзор торговой активности за месяц. Здесь вы можете устанавливать дневные цели, отслеживать достижения и управлять выводами средств." data-en="The <strong>General</strong> tab provides an overview of trading activity for the month. Here you can set daily goals, track achievements, and manage withdrawals.">Вкладка <strong>General</strong> предоставляет обзор торговой активности за месяц. Здесь вы можете устанавливать дневные цели, отслеживать достижения и управлять выводами средств.</p>
+                                    <h3 data-ru="Вкладка Monthly - Общая статистика" data-en="Monthly Tab - General Statistics">Вкладка Monthly - Общая статистика</h3>
+                                    <p data-ru="Вкладка <strong>Monthly</strong> предоставляет обзор торговой активности за месяц. Здесь вы можете устанавливать дневные цели, отслеживать достижения и управлять выводами средств." data-en="The <strong>Monthly</strong> tab provides an overview of trading activity for the month. Here you can set daily goals, track achievements, and manage withdrawals.">Вкладка <strong>Monthly</strong> предоставляет обзор торговой активности за месяц. Здесь вы можете устанавливать дневные цели, отслеживать достижения и управлять выводами средств.</p>
                                 </div>
                             </div>
 
@@ -5570,8 +5696,8 @@
                             <!-- Card 1: Overview -->
                             <div class="content-section">
                                 <div class="content">
-                                    <h3 data-ru="Вкладка Table - Таблица опционов" data-en="Table Tab - Options Table">Вкладка Table - Таблица опционов</h3>
-                                    <p data-ru="Вкладка <strong>Table</strong> является основной рабочей областью приложения. Здесь вы можете добавлять, редактировать и управлять своими торговыми опционами в реальном времени. Таблица автоматически рассчитывает прибыль/убыток и обновляет общую статистику." data-en="The <strong>Table</strong> tab is the main workspace of the application. Here you can add, edit and manage your trading options in real time. The table automatically calculates profit/loss and updates the overall statistics.">Вкладка <strong>Table</strong> является основной рабочей областью приложения. Здесь вы можете добавлять, редактировать и управлять своими торговыми опционами в реальном времени. Таблица автоматически рассчитывает прибыль/убыток и обновляет общую статистику.</p>
+                                    <h3 data-ru="Вкладка Daily - Таблица опционов" data-en="Daily Tab - Options Table">Вкладка Daily - Таблица опционов</h3>
+                                    <p data-ru="Вкладка <strong>Daily</strong> является основной рабочей областью приложения. Здесь вы можете добавлять, редактировать и управлять своими торговыми опционами в реальном времени. Таблица автоматически рассчитывает прибыль/убыток и обновляет общую статистику." data-en="The <strong>Daily</strong> tab is the main workspace of the application. Here you can add, edit and manage your trading options in real time. The table automatically calculates profit/loss and updates the overall statistics.">Вкладка <strong>Daily</strong> является основной рабочей областью приложения. Здесь вы можете добавлять, редактировать и управлять своими торговыми опционами в реальном времени. Таблица автоматически рассчитывает прибыль/убыток и обновляет общую статистику.</p>
 
                                     <h4 data-ru="Основные возможности" data-en="Main Features">Основные возможности</h4>
                                     <ul>
@@ -5736,7 +5862,7 @@
                                     <div class="example">
                                         <h4 data-ru="Пример 1: Добавление выигрышного опциона" data-en="Example 1: Adding a winning option">Пример 1: Добавление выигрышного опциона</h4>
                                         <ol class="step-list">
-                                            <li data-ru="Откройте вкладку <strong>Table</strong>" data-en='Open the <strong>Table</strong> tab'>Откройте вкладку <strong>Table</strong></li>
+                                            <li data-ru="Откройте вкладку <strong>Daily</strong>" data-en='Open the <strong>Daily</strong> tab'>Откройте вкладку <strong>Daily</strong></li>
                                             <li data-ru="Нажмите кнопку <strong>+ Add Trade</strong> в нижней части экрана" data-en='Click the <strong>"+ Add Trade"</strong> button at the bottom of the screen'>Нажмите кнопку <strong>"+ Add Trade"</strong> в нижней части экрана</li>
                                             <li data-ru='В новой строке нажмите на ячейку "Click to enter amount" в столбце <strong>Trade Amount</strong>' data-en='In the new row, click on the "Click to enter amount" cell in the <strong>Trade Amount</strong> column'>В новой строке нажмите на ячейку "Click to enter amount" в столбце <strong>Trade Amount</strong></li>
                                             <li data-ru='Введите сумму опциона, например <strong>100</strong>, и нажмите "Save"' data-en='Enter the option amount, for example <strong>100</strong>, and click "Save"'>Введите сумму опциона, например <strong>100</strong>, и нажмите "Save"</li>
@@ -5759,14 +5885,14 @@
                                     <div class="example">
                                         <h4 data-ru="Пример 2: Установка дневных целей" data-en="Example 2: Setting daily goals">Пример 2: Установка дневных целей</h4>
                                         <ol class="step-list">
-                                            <li data-ru="Перейдите на вкладку <strong>General</strong>" data-en="Go to the <strong>General</strong> tab">Перейдите на вкладку <strong>General</strong></li>
+                                            <li data-ru="Перейдите на вкладку <strong>Monthly</strong>" data-en="Go to the <strong>Monthly</strong> tab">Перейдите на вкладку <strong>Monthly</strong></li>
                                             <li data-ru="Выберите нужный месяц с помощью стрелок навигации" data-en="Select the required month using navigation arrows">Выберите нужный месяц с помощью стрелок навигации</li>
                                             <li data-ru="Найдите нужный день в таблице (сегодняшний день выделен)" data-en="Find the required day in the table (today's day is highlighted)">Найдите нужный день в таблице (сегодняшний день выделен)</li>
                                             <li data-ru="Нажмите на ячейку в столбце <strong>Profit Target</strong> для дня" data-en="Click on the cell in the <strong>Profit Target</strong> column for the day">Нажмите на ячейку в столбце <strong>Profit Target</strong> для дня</li>
                                             <li data-ru="Введите желаемую цель по прибыли, например <strong>5</strong> (5% от начального баланса)" data-en="Enter the desired profit target, for example <strong>5</strong> (5% of initial balance)">Введите желаемую цель по прибыли, например <strong>5</strong> (5% от начального баланса)</li>
                                             <li data-ru="Аналогично установите цель по убыткам в столбце <strong>Loss Target</strong>, например <strong>-3</strong>" data-en="Similarly, set the loss target in the <strong>Loss Target</strong> column, for example <strong>-3</strong>">Аналогично установите цель по убыткам в столбце <strong>Loss Target</strong>, например <strong>-3</strong></li>
                                         </ol>
-                                        <p data-ru="Установленные цели будут отображаться в прогресс-баре на вкладке Table." data-en="The set goals will be displayed in the progress bar on the Table tab.">Установленные цели будут отображаться в прогресс-баре на вкладке Table.</p>
+                                        <p data-ru="Установленные цели будут отображаться в прогресс-баре на вкладке Daily." data-en="The set goals will be displayed in the progress bar on the Daily tab.">Установленные цели будут отображаться в прогресс-баре на вкладке Daily.</p>
                                     </div>
 
                                 </div>
@@ -5780,7 +5906,7 @@
                                     <div class="example">
                                         <h4 data-ru="Пример 3: Добавление вывода средств" data-en="Example 3: Adding a withdrawal">Пример 3: Добавление вывода средств</h4>
                                         <ol class="step-list">
-                                            <li data-ru="Откройте вкладку <strong>General</strong>" data-en="Open the <strong>General</strong> tab">Откройте вкладку <strong>General</strong></li>
+                                            <li data-ru="Откройте вкладку <strong>Monthly</strong>" data-en="Open the <strong>Monthly</strong> tab">Откройте вкладку <strong>Monthly</strong></li>
                                             <li data-ru="Убедитесь, что выбран текущий месяц" data-en="Make sure the current month is selected">Убедитесь, что выбран текущий месяц</li>
                                             <li data-ru="Нажмите кнопку <strong>+ Add Withdrawal</strong>" data-en='Click the <strong>"+ Add Withdrawal"</strong> button'>Нажмите кнопку <strong>"+ Add Withdrawal"</strong></li>
                                             <li data-ru="Введите сумму вывода, например <strong>500</strong>" data-en="Enter the withdrawal amount, for example <strong>500</strong>">Введите сумму вывода, например <strong>500</strong></li>
@@ -5800,7 +5926,7 @@
                                     <div class="example">
                                         <h4 data-ru="Пример 4: Анализ месячной статистики" data-en="Example 4: Analyzing monthly statistics">Пример 4: Анализ месячной статистики</h4>
                                         <ol class="step-list">
-                                            <li data-ru="Перейдите на вкладку <strong>General</strong>" data-en="Go to the <strong>General</strong> tab">Перейдите на вкладку <strong>General</strong></li>
+                                            <li data-ru="Перейдите на вкладку <strong>Monthly</strong>" data-en="Go to the <strong>Monthly</strong> tab">Перейдите на вкладку <strong>Monthly</strong></li>
                                             <li data-ru="Просмотрите таблицу дневной статистики" data-en="Review the daily statistics table">Просмотрите таблицу дневной статистики</li>
                                             <li data-ru="Оцените достижение целей в столбцах <strong>Actual P/L</strong>" data-en="Assess goal achievement in the <strong>Actual P/L</strong> columns">Оцените достижение целей в столбцах <strong>Actual P/L</strong></li>
                                             <li data-ru="Посмотрите количество выигрышных и проигрышных опционов" data-en="Look at the number of winning and losing options">Посмотрите количество выигрышных и проигрышных опционов</li>
@@ -6796,7 +6922,7 @@
         .nav-btn {
             background: var(--button-color);
             color: var(--button-text-color);
-            border: none;
+            border: inherit;
             padding: 6px 12px;
             border-radius: 8px;
             cursor: pointer;
@@ -6814,8 +6940,8 @@
 
         .nav-btn:hover:not(:disabled) {
             background: var(--button-color);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(69, 172, 241, 0.952);
             opacity: 0.9;
         }
 
@@ -6876,7 +7002,7 @@
 
         .corner-btn:hover {
             background: var(--cell-hover-bg);
-            transform: scale(1.05);
+            transform: scale(1.3);
         }
 
         .language-btn {
@@ -6907,6 +7033,10 @@
         
         .close-btn {
             position: static;
+            white-space: nowrap;
+            width: auto;
+            padding: 2px 2px;
+            font-size: 10px;
         }
         
         .header-actions {
@@ -7943,7 +8073,7 @@
                 // Update the close button in the guide to say "Back to Diary" and link to main app
                 const guideCloseBtn = document.getElementById('close-guide');
                 if (guideCloseBtn) {
-                    guideCloseBtn.textContent = 'Diary';
+                    guideCloseBtn.textContent = ' Back to Diary ↩';
                     guideCloseBtn.onclick = function(e) {
                         e.preventDefault();
                         showMainApp();
