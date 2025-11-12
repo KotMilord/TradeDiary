@@ -1938,8 +1938,9 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            color: var(--text-color);
+            color: var(--button-text-color);
             font-size: 0.8rem;
+            background: var(--hint-color);
         }
 
         .export-tab.active {
@@ -2145,8 +2146,8 @@
                 </div>
             </div>
             <div class="export-tabs">
-                <div class="export-tab active" data-tab="table">Table Data</div>
-                <div class="export-tab" data-tab="general">General Data</div>
+                <div class="export-tab active" data-tab="table">Daily</div>
+                <div class="export-tab" data-tab="general">Monthly</div>
             </div>
             <div class="modal-buttons">
                 <button class="modal-btn profit-btn" id="saveExportBtn">Export</button>
