@@ -134,7 +134,7 @@
         }
         
         header {
-            background: var(--bg-color);
+            background: var(--secondary-bg);
             color: var(--text-color);
             padding: 10px;
             text-align: left;
@@ -289,7 +289,7 @@
         .balance-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            margin-bottom: 15px;
+            margin-bottom: 0px;
             background: var(--bg-color);
             padding: 12px;
             border-radius: 10px;
@@ -1046,7 +1046,7 @@
         /* Более конкретные стили для вкладок дневника */
         #mainApp .tabs {
             display: flex;
-            margin-bottom: 12px;
+            margin-bottom: 0px;
             background: var(--tab-bg);
             border-radius: 12px;
             overflow: hidden;
@@ -1472,7 +1472,7 @@
         }
         
         .progress-container {
-            margin-top: 15px;
+            margin-top: 5px;
             padding: 12px;
             background: var(--secondary-bg);
             border-radius: 12px;
@@ -5367,8 +5367,25 @@
     <div id="mainApp" class="trading-diary-container">
         <div class="container">
             <header>
-                <div class="header-content">
-                    <h1>Trading Diary</h1>
+                <div class="balance-container">
+                    <div class="balance-item">
+                        <div class="balance-label">Starting Balance</div>
+                        <div class="balance-value starting-balance" id="startingBalanceValue">
+                            <span class="balance-amount" id="balanceAmount">10000</span>
+                            <div class="percentage-indicator" id="percentageIndicator">
+                                <div class="indicator-arrow" id="indicatorArrow">●</div>
+                                <span class="indicator-percentage" id="indicatorPercentage">0.0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="balance-item">
+                        <div class="balance-label">Current Balance</div>
+                        <div class="balance-value" id="currentBalanceValue">1000</div>
+                    </div>
+                    <div class="balance-item">
+                        <div class="balance-label">Day Result</div>
+                        <div class="balance-value" id="dayResultValue">0</div>
+                    </div>
                 </div>
             </header>
             
@@ -5433,26 +5450,6 @@
                 </div>
                 
                 <div class="tab-content" id="table-tab">
-                    <div class="balance-container">
-                        <div class="balance-item">
-                            <div class="balance-label">Starting Balance</div>
-                            <div class="balance-value starting-balance" id="startingBalanceValue">
-                                <span class="balance-amount" id="balanceAmount">10000</span>
-                                <div class="percentage-indicator" id="percentageIndicator">
-                                    <div class="indicator-arrow" id="indicatorArrow">●</div>
-                                    <span class="indicator-percentage" id="indicatorPercentage">0.0%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="balance-item">
-                            <div class="balance-label">Current Balance</div>
-                            <div class="balance-value" id="currentBalanceValue">1000</div>
-                        </div>
-                        <div class="balance-item">
-                            <div class="balance-label">Day Result</div>
-                            <div class="balance-value" id="dayResultValue">0</div>
-                        </div>
-                    </div>
 
                     <div class="progress-container">
                         <div class="progress-label">Daily Progress</div>
