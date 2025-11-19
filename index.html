@@ -687,19 +687,27 @@
             font-weight: 600;
         }
         
-        .profit {
-            background: var(--profit-bg) !important;
-            color: var(--positive-color) !important;
+        .amount-positive {
+            background: var(--profit-bg);
+            color: var(--positive-color);
+            border-left: 5px solid var(--positive-color);
         }
 
-        .loss {
-            background: var(--loss-bg) !important;
-            color: var(--negative-color) !important;
+        .amount-negative {
+            background: var(--loss-bg);
+            color: var(--negative-color);
+            border-left: 5px solid var(--negative-color);
         }
 
-        .refund {
-            background: var(--refund-bg) !important;
-            color: var(--refund-color) !important;
+        .amount-zero {
+            background: var(--refund-bg);
+            color: var(--refund-color);
+            border-left: 5px solid var(--refund-color);
+        }
+        
+        .summa {
+            background-color: #fffd9933;
+            color: var(--text-color);
         }
         
         .emotion-cell {
@@ -758,16 +766,6 @@
         }
 
         .modal-content {
-         .modal-btn {
-             padding: 6px 12px;
-             border: none;
-             border-radius: 4px;
-             cursor: pointer;
-             font-weight: bold;
-             font-size: 0.8rem;
-             flex: 1;
-             min-width: 80px;
-         }
             background: var(--modal-bg);
             color: var(--text-color);
             padding: 15px;
@@ -1601,19 +1599,6 @@
             }
         }
         
-        /* Background coloring for cells based on amounts */
-        .amount-positive {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1)) !important;
-        }
-
-        .amount-negative {
-            background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(211, 47, 47, 0.1)) !important;
-        }
-
-        .amount-zero {
-            background: linear-gradient(135deg, rgba(158, 158, 158, 0.1), rgba(189, 189, 189, 0.1)) !important;
-        }
-
         @media (max-width: 360px) {
             table th, table td {
                 min-width: 45px;
@@ -2690,11 +2675,7 @@
                 if (trade.tradeAmount !== null && trade.tradeAmount !== 0) {
                     tradeAmountCell.textContent = formatNumber(trade.tradeAmount);
                     if (trade.tradeAmount > 0) {
-                        tradeAmountCell.classList.add('amount-positive');
-                    } else if (trade.tradeAmount < 0) {
-                        tradeAmountCell.classList.add('amount-negative');
-                    } else {
-                        tradeAmountCell.classList.add('amount-zero');
+                        tradeAmountCell.classList.add('summa');
                     }
                 } else {
                     tradeAmountCell.textContent = 'Click to enter amount';
@@ -2833,11 +2814,7 @@
                     tradeAmountCell.style.color = '';
                     tradeAmountCell.style.fontStyle = '';
                     if (trade.tradeAmount > 0) {
-                        tradeAmountCell.classList.add('amount-positive');
-                    } else if (trade.tradeAmount < 0) {
-                        tradeAmountCell.classList.add('amount-negative');
-                    } else {
-                        tradeAmountCell.classList.add('amount-zero');
+                        tradeAmountCell.classList.add('summa');
                     }
                 } else {
                     tradeAmountCell.textContent = 'Click to enter amount';
@@ -3107,8 +3084,10 @@
             function canEditCurrentDate() {
                 const today = getToday();
                 const current = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-                
-                return current.getTime() === today.getTime();
+                const yesterday = new Date(today);
+                yesterday.setDate(today.getDate() - 1);
+
+                return current.getTime() === today.getTime() || current.getTime() === yesterday.getTime();
             }
             
             // Функция для обновления прав доступа к редактированию
