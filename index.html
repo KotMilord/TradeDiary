@@ -37,6 +37,8 @@
             --tab-active-bg: #3498dbb4;
             --notification-success: #27ae60;
             --notification-error: #e74c3c;
+            --shine-fade: #e11d48;
+            --shine-color: #ffffff;
         }
 
         [data-theme="dark"] {
@@ -66,6 +68,8 @@
             --tab-active-bg: #3498dbb4;
             --notification-success: #4CAF50;
             --notification-error: #F44336;
+            --shine-fade: #f472b6;
+            --shine-color: #ffffff;
         }
 
         [data-theme="dark"] .balance-label,
@@ -1975,6 +1979,100 @@
             opacity: 0.9;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        .button-wrapper {
+            display: flex;
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center;     /* Центрируем по вертикали (если есть высота) */
+            padding: 5px 5px;           /* Отступы вокруг, чтобы сияние не обрезалось */
+            text-align: center;
+            /* Можно задать ширину/высоту, если нужно */
+            width: 100%; 
+            box-sizing: border-box;
+        }
+
+        #myLink {
+            position: relative;
+            text-decoration: none;
+            border-radius: 12px;
+            background-color: var(--border-color);
+            padding: 2px;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+            margin: 0;
+            line-height: normal;
+        }
+
+        #myLink::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--shine-fade),
+                var(--shine-color),
+                var(--shine-fade), 
+                transparent
+            );
+            transform: skewX(-20deg);
+            animation: sborder-shine 2s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #myLink span {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-color); 
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 16px;
+            letter-spacing: 1.5px;
+            padding: 16px 40px;
+            border-radius: 10px;
+            z-index: 1;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .shiny-text {
+            /* Создаем градиент: Основной цвет -> Белый блик -> Основной цвет */
+            background: linear-gradient(
+                110deg,
+                var(--shine-fade) 40%,
+                var(--shine-color) 50%,  
+                var(--shine-fade) 60%
+            );
+            
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: text-shine-anim 2s linear infinite;
+        }
+
+        @keyframes sborder-shine {
+            0%  {
+                left: -150%;
+            }
+            50% {
+                left: 150%;
+            }
+            100% {
+                left: 150%;
+            }
+        }
+
+        @keyframes text-shine-anim {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
         }
 
     </style>
@@ -5340,6 +5438,18 @@
             // Call this on startup
             setTimeout(checkTelegramEnvironment, 500);
         });
+        
+        // Ждём полной загрузки страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const link = document.getElementById('myLink');
+            if (link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    Telegram.WebApp.openLink('https://t.me/m8y_chat');
+                });
+            }
+        });
+  
     </script>
     
     <!-- Main App Container - Обернем основное приложение в контейнер -->
@@ -5515,6 +5625,14 @@
 
                     <div class="settings-panel">
                         <h3>About</h3>
+                        <div class="button-wrapper">
+
+                            <a href="https://t.me/m8y_chat"id="myLink" >
+                                <span>
+                                    <strong class="shiny-text">Join Community</strong>
+                                </span>
+                            </a>
+                        </div>
                         <p>Trading Diary PRO v2.0</p>
                         <p>Developed for convenient tracking of trading results</p>
                         <button class="btn btn-success settings-btn" id="openGuideBtn">Trading Diary Guide</button>
